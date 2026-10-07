@@ -1,3 +1,5 @@
+import { ThemeProvider } from "./context/ThemeContext";
+
 export default function App() {
-  return null;
+  return <ThemeProvider>{null}</ThemeProvider>;
 }
