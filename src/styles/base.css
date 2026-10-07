@@ -1,4 +1,4 @@
-/* biome-ignore-all lint/complexity/noImportantStyles: the reduced-motion rule must override any component animation or transition */
+/* biome-ignore-all lint/complexity/noImportantStyles: the reduced-motion and theme-transition rules must override any component animation or transition */
 
 *,
 *::before,
@@ -51,5 +51,15 @@ button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-transition,
+  .theme-transition * {
+    transition:
+      background-color 200ms,
+      color 200ms,
+      border-color 200ms !important;
   }
 }
