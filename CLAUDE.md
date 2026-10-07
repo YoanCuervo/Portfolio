@@ -65,10 +65,10 @@ Aucune autre dépendance sans accord explicite de Yoan. Pas de framework CSS, pa
 
 1. Un ticket à la fois, dans l'ordre de la section 13. Ne pas déborder du ticket, même pour « améliorer au passage ».
 2. Avant de coder : annoncer en quelques lignes les fichiers créés ou modifiés et l'approche, puis attendre l'accord de Yoan.
-3. Une branche par ticket : `feat/T08-hero`, `chore/T01-init`, `fix/…`.
+3. Une branche par ticket, créée depuis `develop` : `feat/T08-hero`, `chore/T01-init`, `fix/…`.
 4. Commits en anglais, format Conventional Commits : `feat(hero): add animated name`.
 5. Avant de dire qu'un ticket est fini : `npm run check` et `npm run build` passent, et les critères du ticket sont repris un par un avec leur état.
-6. Ne jamais pousser sur `main` directement : `main` déclenche la mise en ligne. Passer par une demande de fusion.
+6. Chaque ticket passe par une demande de fusion vers `develop`. Ne jamais pousser sur `develop` ni sur `main` directement. `main` déclenche la mise en ligne : il ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion.
 7. Ne jamais annoncer qu'un rendu est conforme sans l'avoir vu. Sinon, lister ce que Yoan doit vérifier à l'écran.
 
 ## Définition de fini
