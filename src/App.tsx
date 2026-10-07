@@ -1,5 +1,10 @@
+import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 export default function App() {
-  return <ThemeProvider>{null}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <LanguageProvider>{null}</LanguageProvider>
+    </ThemeProvider>
+  );
 }
