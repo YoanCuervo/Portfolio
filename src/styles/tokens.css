@@ -1,0 +1,61 @@
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0f0f0f;
+  --fg: #e8e4df;
+  --muted: #9a9590;
+  --accent: #d4a574;
+  --accent-hover: #e8b4b8;
+  --rose: #e8b4b8;
+  --gold: #c9b896;
+  --icon: #c9b896;
+  --line: #34302c;
+  --card: #181716;
+  --control: #6e6558;
+  --tile-bg: transparent;
+  --tile-border: #34302c;
+  --btn-bg: #d4a574;
+  --btn-fg: #0f0f0f;
+
+  --w-body: 300;
+  --w-lead: 400;
+  --w-italic: 400;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #e8e4df;
+  --fg: #0f0f0f;
+  --muted: #5c5751;
+  --accent: #7d4f22;
+  --accent-hover: #0f0f0f;
+  --rose: #8f3f4b;
+  --gold: #8f7d4f;
+  --icon: #5f5030;
+  --line: #c9c2b8;
+  --card: #f4f1ed;
+  --control: #7d746a;
+  --tile-bg: #f4f1ed;
+  --tile-border: #b5ada1;
+  --btn-bg: #0f0f0f;
+  --btn-fg: #e8e4df;
+
+  --w-body: 400;
+  --w-lead: 500;
+  --w-italic: 500;
+}
+
+:root {
+  --halo-amber: #d4a574;
+  --halo-rose: #e8b4b8;
+  --halo-gold: #c9b896;
+
+  --font-serif: "Cormorant", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+}
