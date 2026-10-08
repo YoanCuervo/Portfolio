@@ -34,7 +34,7 @@ Ces scripts sont créés au ticket T01.
 
 ## Stack
 
-React, Vite, TypeScript, React Router (`HashRouter`), CSS Modules, Biome. Polices auto-hébergées (`@fontsource/cormorant`, `@fontsource/ibm-plex-sans`). Icônes de techno : `simple-icons`.
+React, Vite, TypeScript, React Router (paquet `react-router`, en `HashRouter`), CSS Modules, Biome. Polices auto-hébergées (`@fontsource/cormorant`, `@fontsource/ibm-plex-sans`). Icônes de techno : `simple-icons`.
 
 Aucune autre dépendance sans accord explicite de Yoan. Pas de framework CSS, pas de bibliothèque d'animation, pas de bibliothèque d'internationalisation, pas de bibliothèque de formulaire.
 
