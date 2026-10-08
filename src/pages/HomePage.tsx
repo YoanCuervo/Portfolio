@@ -1,18 +1,15 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import About from "../components/about/About";
+import Contact from "../components/contact/Contact";
 import Hero from "../components/hero/Hero";
-import Footer from "../components/layout/Footer";
 import ProjectsSection from "../components/projects/ProjectsSection";
 import Skills from "../components/skills/Skills";
-import { useLanguage } from "../context/LanguageContext";
 import { scrollToSection } from "../utils/scrollToSection";
-import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useLanguage();
 
   // Coming from /projects, the Navbar passes the target section in the navigation state.
   useEffect(() => {
@@ -24,23 +21,13 @@ export default function HomePage() {
     }
   }, [location.state, navigate]);
 
-  // Temporary section: replaced by its real component in T12.
   return (
     <main>
       <Hero />
       <Skills />
       <ProjectsSection />
       <About />
-      <section
-        id="contact"
-        aria-labelledby="contact-title"
-        className={styles.section}
-      >
-        <h2 id="contact-title">
-          {t.contact.titleQuestion} {t.contact.titleInvite}
-        </h2>
-        <Footer className={styles.footer} />
-      </section>
+      <Contact />
     </main>
   );
 }
