@@ -1,0 +1,40 @@
+.tile {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 88px;
+  margin-right: 16px;
+  padding: 0 26px 0 14px;
+  border: 1px solid var(--tile-border);
+  border-radius: 2px;
+  background: var(--tile-bg);
+}
+
+.logo,
+.placeholder {
+  flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+}
+
+.logo {
+  object-fit: contain;
+}
+
+/* Missing logo (T20). */
+.placeholder {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--control);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.name {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+}

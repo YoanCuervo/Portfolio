@@ -3,6 +3,7 @@ import { certifications } from "../../data/certifications";
 import { stack } from "../../data/skills";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
+import SectionSubtitle from "../layout/SectionSubtitle";
 import SectionTitle from "../layout/SectionTitle";
 import CertificationItem from "./CertificationItem";
 import styles from "./Skills.module.css";
@@ -25,14 +26,14 @@ export default function Skills() {
 
       <div className={styles.columns}>
         <div className={styles.stack}>
-          <h3 className={styles.subtitle}>{t.skills.stackTitle}</h3>
+          <SectionSubtitle>{t.skills.stackTitle}</SectionSubtitle>
           {stack.map((row) => (
             <StackRow key={row.id} row={row} />
           ))}
         </div>
 
         <div className={styles.certifications}>
-          <h3 className={styles.subtitle}>{t.skills.certificationsTitle}</h3>
+          <SectionSubtitle>{t.skills.certificationsTitle}</SectionSubtitle>
           {certifications.map((certification) => (
             <CertificationItem
               key={certification.id}

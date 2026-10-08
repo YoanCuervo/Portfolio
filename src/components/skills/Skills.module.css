@@ -26,11 +26,3 @@
   flex-direction: column;
   gap: 14px;
 }
-
-.subtitle {
-  color: var(--accent);
-  font-family: var(--font-serif);
-  font-size: 28px;
-  font-style: italic;
-  font-weight: var(--w-medium);
-}

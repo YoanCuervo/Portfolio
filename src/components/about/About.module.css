@@ -1,0 +1,70 @@
+/* No side padding: the carousel runs edge to edge. Text blocks get .padded. */
+.about {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 104px 0 48px;
+}
+
+.padded {
+  padding: 0 6%;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 72px;
+}
+
+.story {
+  flex: 3 1 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hook {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 31px;
+  font-weight: var(--w-regular);
+  line-height: 1.25;
+}
+
+.paragraph {
+  max-width: 40em;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: var(--w-body);
+  line-height: 1.6;
+}
+
+.quote {
+  color: var(--rose);
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-style: italic;
+  font-weight: var(--w-italic);
+  line-height: 1.2;
+}
+
+.softSkills {
+  flex: 2 1 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+.clients {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
