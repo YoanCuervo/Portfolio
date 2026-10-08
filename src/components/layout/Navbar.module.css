@@ -54,27 +54,6 @@
   gap: 8px;
 }
 
-.round {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--control);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--fg);
-  cursor: pointer;
-}
-
-.round svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 .flag {
   width: 24px;
   height: 16px;

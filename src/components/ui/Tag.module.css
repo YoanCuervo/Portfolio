@@ -1,0 +1,16 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--rose);
+  border-radius: 999px;
+  color: var(--rose);
+  font-size: 13px;
+  font-weight: var(--w-regular);
+  white-space: nowrap;
+}
+
+.dashed {
+  border-style: dashed;
+}

@@ -1,0 +1,30 @@
+.halo {
+  position: absolute;
+  z-index: -1;
+  top: var(--top);
+  right: var(--right);
+  bottom: var(--bottom);
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: var(--opacity-dark);
+  pointer-events: none;
+}
+
+:global([data-theme="light"]) .halo {
+  opacity: var(--opacity-light);
+}
+
+.amber {
+  background: var(--halo-amber);
+}
+
+.rose {
+  background: var(--halo-rose);
+}
+
+.gold {
+  background: var(--halo-gold);
+}
