@@ -1,0 +1,23 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.label {
+  flex: 0 0 140px;
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: var(--w-semibold);
+}
+
+.pills {
+  flex: 1 1 320px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
