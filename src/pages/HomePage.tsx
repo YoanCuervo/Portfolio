@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import Hero from "../components/hero/Hero";
 import Footer from "../components/layout/Footer";
+import ProjectsSection from "../components/projects/ProjectsSection";
 import Skills from "../components/skills/Skills";
 import { useLanguage } from "../context/LanguageContext";
 import { scrollToSection } from "../utils/scrollToSection";
@@ -22,18 +23,12 @@ export default function HomePage() {
     }
   }, [location.state, navigate]);
 
-  // Temporary sections: each one is replaced by its real component in T10 to T12.
+  // Temporary sections: each one is replaced by its real component in T11 and T12.
   return (
     <main>
       <Hero />
       <Skills />
-      <section
-        id="projects"
-        aria-labelledby="projects-title"
-        className={styles.section}
-      >
-        <h2 id="projects-title">{t.projects.title}</h2>
-      </section>
+      <ProjectsSection />
       <section
         id="about"
         aria-labelledby="about-title"

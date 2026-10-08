@@ -3,6 +3,7 @@ import { certifications } from "../../data/certifications";
 import { stack } from "../../data/skills";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
+import SectionTitle from "../layout/SectionTitle";
 import CertificationItem from "./CertificationItem";
 import styles from "./Skills.module.css";
 import StackRow from "./StackRow";
@@ -20,9 +21,7 @@ export default function Skills() {
         opacity={[0.2, 0.55]}
       />
 
-      <h2 id="skills-title" className={styles.title}>
-        {t.skills.title}
-      </h2>
+      <SectionTitle id="skills-title">{t.skills.title}</SectionTitle>
 
       <div className={styles.columns}>
         <div className={styles.stack}>

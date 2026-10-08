@@ -1,0 +1,53 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.details {
+  flex: 1 1 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 40px;
+}
+
+.block {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.blockTitle {
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: var(--w-medium);
+}
+
+.summary {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: var(--w-body);
+  line-height: 1.5;
+}

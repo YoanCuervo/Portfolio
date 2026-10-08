@@ -1,0 +1,19 @@
+.projects {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 100px 6% 40px;
+}
+
+.viewAll {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: var(--w-medium);
+}

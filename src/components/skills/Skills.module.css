@@ -7,14 +7,6 @@
   padding: 104px 6% 48px;
 }
 
-.title {
-  color: var(--fg);
-  font-family: var(--font-serif);
-  font-size: 60px;
-  font-weight: var(--w-semibold);
-  line-height: 1;
-}
-
 .columns {
   display: flex;
   flex-wrap: wrap;
