@@ -1,0 +1,15 @@
+.name {
+  overflow: hidden;
+  padding: 0.06em 0 0.1em;
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 9vw, 132px);
+  font-weight: var(--w-semibold);
+  line-height: 1;
+}
+
+/* inline-block so each letter can be moved by the animation; pre keeps the space visible. */
+.letter {
+  display: inline-block;
+  white-space: pre;
+}

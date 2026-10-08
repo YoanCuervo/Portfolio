@@ -1,0 +1,67 @@
+.hero {
+  min-height: calc(100svh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 6%;
+}
+
+.column {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-left: 40px;
+}
+
+.role {
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 52px;
+  font-style: italic;
+  font-weight: var(--w-italic);
+  line-height: 1.1;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-left: -32px;
+  padding: 6px 0 6px 30px;
+  border-left: 2px solid var(--gold);
+}
+
+.icons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Missing address (T20): same circle as IconLink, dashed and without a link. */
+.missing {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px dashed var(--control);
+  border-radius: 50%;
+  color: var(--fg);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: var(--w-lead);
+  line-height: 1.6;
+}

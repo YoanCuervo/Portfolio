@@ -19,6 +19,11 @@ export const fr: typeof en = {
   hero: {
     role: "Développeur web",
     emailMe: "M'écrire, vers le formulaire de contact",
+    links: {
+      github: "GitHub (nouvel onglet)",
+      linkedin: "LinkedIn (nouvel onglet)",
+      discord: "Discord (nouvel onglet)",
+    },
     greeting: "Bonjour\u00a0!",
     intro:
       "J'aime résoudre des problèmes et construire des expériences numériques soignées et engageantes.",
