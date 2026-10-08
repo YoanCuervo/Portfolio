@@ -8,6 +8,6 @@ export type Social = {
 // null = address not provided yet (T20): the icon is shown without a link.
 export const socials: Social[] = [
   { id: "github", url: "https://github.com/YoanCuervo" },
-  { id: "linkedin", url: null },
+  { id: "linkedin", url: "https://www.linkedin.com/in/cuervo-yoan" },
   { id: "discord", url: null },
 ];
