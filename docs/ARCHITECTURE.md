@@ -95,9 +95,11 @@ portfolio/
 │   │   ├── projects/ ProjectsSection, ProjectRow, ProjectCard
 │   │   ├── about/    About, Marquee, ClientTile
 │   │   └── contact/  Contact, ContactForm, Field
-│   └── pages/
-│       ├── HomePage.tsx
-│       └── ProjectsPage.tsx
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   └── ProjectsPage.tsx
+│   └── utils/
+│       └── scrollToSection.ts     défilement vers une section (le HashRouter interdit les ancres)
 ├── index.html                      script anti-flash du thème, balises meta
 ├── vite.config.ts                  `base` = nom du dépôt
 ├── biome.json
@@ -622,7 +624,7 @@ Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T
 
 - Ce fichier (`docs/ARCHITECTURE.md`) est la source de vérité. En cas d'écart avec une demande, le signaler avant de coder.
 - Un ticket par branche et par demande de fusion. Ne pas déborder du ticket.
-- Aucune nouvelle dépendance sans accord. Dépendances prévues : `react`, `react-dom`, `react-router-dom`, `@fontsource/cormorant`, `@fontsource/ibm-plex-sans`, `simple-icons` ; en développement : `vite`, `typescript`, `@biomejs/biome`.
+- Aucune nouvelle dépendance sans accord. Dépendances prévues : `react`, `react-dom`, `react-router`, `@fontsource/cormorant`, `@fontsource/ibm-plex-sans`, `simple-icons` ; en développement : `vite`, `typescript`, `@biomejs/biome`.
 - Aucune couleur ni graisse en dur dans les composants : uniquement les variables de `tokens.css`.
 - Aucun texte visible en dur dans les composants : tout passe par `locales/`.
 - Pas de style en ligne (les maquettes en utilisent, c'est une contrainte de l'outil de maquette, pas un modèle).

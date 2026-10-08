@@ -1,0 +1,14 @@
+.page {
+  min-height: calc(100svh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 40px 6% 56px;
+}
+
+.footer {
+  margin: 0 6%;
+}
