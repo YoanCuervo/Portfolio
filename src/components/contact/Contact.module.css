@@ -1,0 +1,29 @@
+/* The footer lives inside this section: contact and footer fit in one screen together. */
+.contact {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 104px 6% 0;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.invite {
+  font-weight: var(--w-regular);
+}
+
+.intro {
+  max-width: 34em;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: var(--w-body);
+  line-height: 1.6;
+}

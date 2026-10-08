@@ -1,0 +1,32 @@
+.form {
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.frame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--card);
+  text-align: left;
+}
+
+.submit {
+  height: 48px;
+  padding: 0 32px;
+  border: none;
+  border-radius: 2px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: 15px;
+  font-weight: var(--w-medium);
+  cursor: pointer;
+}
