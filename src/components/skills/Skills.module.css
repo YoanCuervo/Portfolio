@@ -1,0 +1,44 @@
+.skills {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 36px;
+  padding: 104px 6% 48px;
+}
+
+.title {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 60px;
+  font-weight: var(--w-semibold);
+  line-height: 1;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px 72px;
+}
+
+.stack {
+  flex: 2 1 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.certifications {
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.subtitle {
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-style: italic;
+  font-weight: var(--w-medium);
+}
