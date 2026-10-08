@@ -16,6 +16,11 @@ export const en = {
   hero: {
     role: "Web Developer",
     emailMe: "Email me, go to the contact form",
+    links: {
+      github: "GitHub (opens in a new tab)",
+      linkedin: "LinkedIn (opens in a new tab)",
+      discord: "Discord (opens in a new tab)",
+    },
     greeting: "Hello there!",
     intro:
       "I am a problem solver passionate about building thoughtful, engaging digital experiences.",
