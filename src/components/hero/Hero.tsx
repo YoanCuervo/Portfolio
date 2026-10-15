@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { siDiscord, siGithub } from "simple-icons";
 import { useLanguage } from "../../context/LanguageContext";
+import { useTheme } from "../../context/ThemeContext";
 import { type SocialId, socials } from "../../data/socials";
 import { scrollToSection } from "../../utils/scrollToSection";
 import BlurDecor from "../layout/BlurDecor";
@@ -8,6 +9,7 @@ import Section from "../layout/Section";
 import IconLink from "../ui/IconLink";
 import TechIcon from "../ui/TechIcon";
 import AnimatedName from "./AnimatedName";
+import CodeField from "./CodeField";
 import styles from "./Hero.module.css";
 
 // LinkedIn is no longer in simple-icons (removed at LinkedIn's request).
@@ -49,6 +51,7 @@ const socialIcons: Record<SocialId, ReactNode> = {
 
 export default function Hero() {
   const { t } = useLanguage();
+  const { theme } = useTheme();
 
   return (
     <Section id="home" className={styles.hero}>
@@ -73,6 +76,8 @@ export default function Hero() {
         bottom={-150}
         opacity={[0.24, 0.6]}
       />
+      {/* key: a new theme remounts the field, so it redraws with the new colors even when it is not animated. */}
+      <CodeField key={theme} />
 
       <div className={styles.column}>
         <AnimatedName id="home-title" text={t.meta.name} />
