@@ -20,6 +20,7 @@
   --hole: #0f0f0f;
   --lens: var(--accent);
   --code-intensity: 1;
+  --shadow: rgba(0, 0, 0, 0.55);
 
   --w-body: 300;
   --w-lead: 400;
@@ -48,6 +49,7 @@
   --lens: var(--rose);
   /* Dark text fading into a light background is much harder to see: the hero code field needs stronger opacities. */
   --code-intensity: 4;
+  --shadow: rgba(15, 15, 15, 0.16);
 
   --w-body: 400;
   --w-lead: 500;

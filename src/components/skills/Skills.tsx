@@ -1,6 +1,7 @@
 import { useLanguage } from "../../context/LanguageContext";
 import { certifications } from "../../data/certifications";
 import { stack } from "../../data/skills";
+import { useReveal } from "../../hooks/useReveal";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
 import SectionSubtitle from "../layout/SectionSubtitle";
@@ -11,6 +12,7 @@ import StackRow from "./StackRow";
 
 export default function Skills() {
   const { t } = useLanguage();
+  const { ref, revealed } = useReveal<HTMLDivElement>();
 
   return (
     <Section id="skills" className={styles.skills}>
@@ -24,20 +26,28 @@ export default function Skills() {
 
       <SectionTitle id="skills-title">{t.skills.title}</SectionTitle>
 
-      <div className={styles.columns}>
+      <div ref={ref} className={styles.columns}>
         <div className={styles.stack}>
           <SectionSubtitle>{t.skills.stackTitle}</SectionSubtitle>
-          {stack.map((row) => (
-            <StackRow key={row.id} row={row} />
+          {stack.map((row, index) => (
+            <StackRow
+              key={row.id}
+              row={row}
+              index={index}
+              revealed={revealed}
+            />
           ))}
         </div>
 
         <div className={styles.certifications}>
           <SectionSubtitle>{t.skills.certificationsTitle}</SectionSubtitle>
-          {certifications.map((certification) => (
+          {/* The certifications follow the stack rows in the same cascade. */}
+          {certifications.map((certification, index) => (
             <CertificationItem
               key={certification.id}
               certification={certification}
+              index={stack.length + index}
+              revealed={revealed}
             />
           ))}
         </div>

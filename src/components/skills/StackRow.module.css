@@ -21,3 +21,21 @@
   padding: 0;
   list-style: none;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    opacity: 0;
+  }
+
+  .row.revealed {
+    opacity: 1;
+    animation: fade-in 200ms ease-out both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

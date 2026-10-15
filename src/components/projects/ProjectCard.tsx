@@ -18,7 +18,9 @@ export default function ProjectCard({
   const content = (
     <>
       {project.screenshot ? (
-        <img src={project.screenshot} alt="" className={styles.screenshot} />
+        <span className={styles.shot}>
+          <img src={project.screenshot} alt="" className={styles.screenshot} />
+        </span>
       ) : (
         <div className={styles.placeholder}>
           {t.projects.screenshotPlaceholder}
@@ -37,7 +39,7 @@ export default function ProjectCard({
         href={project.liveUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.card}
+        className={`${styles.card} ${styles.link}`}
       >
         {content}
       </a>

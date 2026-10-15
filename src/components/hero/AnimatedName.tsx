@@ -5,8 +5,9 @@ type AnimatedNameProps = {
   text: string;
 };
 
-// One span per letter for the entrance animation (T15). The h1 carries the
-// whole name so a screen reader reads it as one word, not letter by letter.
+// One span per letter: the hero code field parks its lens on the last one. The
+// name itself does not animate (choice made at T15). The h1 carries the whole
+// name so a screen reader reads it as one word, not letter by letter.
 export default function AnimatedName({ id, text }: AnimatedNameProps) {
   const letters = [...text];
 

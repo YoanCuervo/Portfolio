@@ -18,3 +18,21 @@
   color: var(--muted);
   font-size: 15px;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    opacity: 0;
+  }
+
+  .item.revealed {
+    opacity: 1;
+    animation: fade-in 200ms ease-out both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

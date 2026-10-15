@@ -51,3 +51,22 @@
   font-weight: var(--w-body);
   line-height: 1.5;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    opacity: 0;
+  }
+
+  .row.revealed {
+    opacity: 1;
+    animation: rise 250ms ease-out both;
+    animation-delay: calc(var(--i) * 80ms);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

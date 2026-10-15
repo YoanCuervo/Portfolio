@@ -9,6 +9,23 @@
   font-weight: var(--w-regular);
   white-space: nowrap;
   vertical-align: middle;
+  transition:
+    background-color 200ms,
+    border-color 200ms,
+    color 200ms;
+}
+
+/* Colors swap on hover (devices with a real pointer only). */
+@media (hover: hover) {
+  .pill:hover {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .pill:hover .icon {
+    color: var(--bg);
+  }
 }
 
 .md {
@@ -30,4 +47,5 @@
 .icon {
   flex-shrink: 0;
   color: var(--icon);
+  transition: color 200ms;
 }
