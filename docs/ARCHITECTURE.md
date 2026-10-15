@@ -141,7 +141,7 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--pill-hover-fg` | Pastille survolée, texte | `var(--fg)` | `#0f0f0f` |
 | `--pill-hover-icon` | Pastille survolée, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
-| `--w-lead` | Graisse des paragraphes du hero | 400 | 500 |
+| `--w-lead` | Graisse des paragraphes du hero : identique dans les deux thèmes, pour que le texte passe à la ligne aux mêmes endroits et que le nom ne bouge pas au changement de thème | 400 | 400 |
 | `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
 
 Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes : `#d4a574`, `#e8b4b8`, `#c9b896`. Seule leur opacité change (voir 5.4).
