@@ -133,6 +133,12 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
+| `--pill-bg` | Pastille au repos, fond (T15) | `var(--fg)` | `#0f0f0f` |
+| `--pill-fg` | Pastille au repos, texte | `#0f0f0f` | `#e8e4df` |
+| `--pill-icon` | Pastille au repos, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
+| `--pill-hover-bg` | Pastille survolée, fond | `#0f0f0f` | `#ffffff` |
+| `--pill-hover-fg` | Pastille survolée, texte | `var(--fg)` | `#0f0f0f` |
+| `--pill-hover-icon` | Pastille survolée, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero | 400 | 500 |
 | `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
@@ -191,7 +197,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 5.5 Composants d'interface
 
-**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400 `--fg`, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Survol (T15, souris seulement) : couleurs inversées en 200 ms, fond `--fg`, texte et icône `--bg`.
+**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure dorée restant visible dans les deux. Thème clair : noir avec logo blanc au repos, blanc avec logo doré au survol. Thème sombre : l'inverse, blanc cassé avec logo doré au repos, noir avec logo blanc au survol. Survol réservé aux appareils avec une souris (`hover: hover`).
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
@@ -403,7 +409,7 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 |---|---|---|
 | Hero, rôle (« Web Developer ») | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace compte pour un cran). En place en moins de 1,1 s. Le nom et le reste du hero sont affichés d'emblée, sans animation (décidé à T15). |
 | Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : fondu 200 ms, décalage de 60 ms |
-| Pastille, étiquette | Survol | Couleurs inversées, 200 ms (voir 5.5) |
+| Pastille, étiquette | Survol | Échange des états clair et sombre (pastille) ou remplissage `--rose` (étiquette), 200 ms (voir 5.5) |
 | Projects (accueil et `/projects`) | Entrée dans l'écran | Chaque rangée monte de 16 px en fondu quand elle entre à l'écran, 250 ms, décalage de 80 ms |
 | Card projet | Survol | Soulèvement et ombre, 300 ms ; zoom de la capture si la card est un lien (voir 6.4) |
 | About, texte | Entrée dans l'écran | Fondu 250 ms |

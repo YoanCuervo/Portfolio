@@ -5,26 +5,26 @@
   margin: 0 10px 10px 0;
   border: 1px solid var(--gold);
   border-radius: 999px;
-  color: var(--fg);
+  background: var(--pill-bg);
+  color: var(--pill-fg);
   font-weight: var(--w-regular);
   white-space: nowrap;
   vertical-align: middle;
   transition:
     background-color 200ms,
-    border-color 200ms,
     color 200ms;
 }
 
-/* Colors swap on hover (devices with a real pointer only). */
+/* Rest and hover swap a dark and a light state (opposite in each theme, see the
+   --pill-* tokens); the gold border stays (devices with a real pointer only). */
 @media (hover: hover) {
   .pill:hover {
-    border-color: var(--fg);
-    background: var(--fg);
-    color: var(--bg);
+    background: var(--pill-hover-bg);
+    color: var(--pill-hover-fg);
   }
 
   .pill:hover .icon {
-    color: var(--bg);
+    color: var(--pill-hover-icon);
   }
 }
 
@@ -46,6 +46,6 @@
 
 .icon {
   flex-shrink: 0;
-  color: var(--icon);
+  color: var(--pill-icon);
   transition: color 200ms;
 }
