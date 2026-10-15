@@ -52,6 +52,7 @@ Avec `HashRouter`, le `#` de l'URL sert déjà au routage. Un lien `<a href="#sk
 - Depuis `/projects`, un clic sur Skills, About ou Contact fait `navigate('/', { state: { scrollTo: id } })`. `HomePage` lit cet état dans un `useEffect` et défile vers la section.
 - Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation).
 - Le défilement est doux (`scroll-behavior: smooth`), sauf si `prefers-reduced-motion: reduce`.
+- Au rechargement, la page repart toujours en haut : la restauration du défilement du navigateur est désactivée (`history.scrollRestoration = "manual"` dans `main.tsx`).
 
 ## 4. Arborescence cible
 

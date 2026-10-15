@@ -11,6 +11,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
+// On reload, the browser would put the visitor back where they left the page:
+// the site always opens at the top instead.
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+window.scrollTo({ top: 0, behavior: "instant" });
+
 const root = document.getElementById("root");
 
 if (!root) {
