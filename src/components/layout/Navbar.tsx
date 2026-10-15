@@ -67,6 +67,11 @@ export default function Navbar() {
                   to="/"
                   state={{ scrollTo: id }}
                   className={styles.link}
+                  aria-current={
+                    pathname === "/projects" && id === "projects"
+                      ? "page"
+                      : undefined
+                  }
                   onClick={(event) => handleClick(event, id)}
                 >
                   {t.nav[id]}
