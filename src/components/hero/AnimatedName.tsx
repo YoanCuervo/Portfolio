@@ -8,13 +8,17 @@ type AnimatedNameProps = {
 // One span per letter for the entrance animation (T15). The h1 carries the
 // whole name so a screen reader reads it as one word, not letter by letter.
 export default function AnimatedName({ id, text }: AnimatedNameProps) {
+  const letters = [...text];
+
   return (
     <h1 id={id} aria-label={text} className={styles.name}>
-      {[...text].map((char, index) => (
+      {letters.map((char, index) => (
         <span
           // biome-ignore lint/suspicious/noArrayIndexKey: the letters never move, so the index is a stable key
           key={index}
           aria-hidden="true"
+          // The hero code field parks its lens on the last letter when the mouse is away.
+          data-lens-anchor={index === letters.length - 1 ? "" : undefined}
           className={styles.letter}
         >
           {char}

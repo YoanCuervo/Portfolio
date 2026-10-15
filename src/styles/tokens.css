@@ -17,6 +17,9 @@
   --tile-border: #34302c;
   --btn-bg: #d4a574;
   --btn-fg: #0f0f0f;
+  --hole: #0f0f0f;
+  --lens: var(--accent);
+  --code-intensity: 1;
 
   --w-body: 300;
   --w-lead: 400;
@@ -41,6 +44,10 @@
   --tile-border: #b5ada1;
   --btn-bg: #0f0f0f;
   --btn-fg: #e8e4df;
+  --hole: var(--bg);
+  --lens: var(--rose);
+  /* Dark text fading into a light background is much harder to see: the hero code field needs stronger opacities. */
+  --code-intensity: 4;
 
   --w-body: 400;
   --w-lead: 500;
@@ -54,6 +61,7 @@
 
   --font-serif: "Cormorant", Georgia, serif;
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
 
   --w-regular: 400;
   --w-medium: 500;

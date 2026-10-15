@@ -52,6 +52,7 @@
   height: 48px;
   border: 1px dashed var(--control);
   border-radius: 50%;
+  background: var(--bg);
   color: var(--fg);
 }
 
