@@ -130,6 +130,9 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
 | `--btn-bg` | Bouton d'envoi, fond | `#d4a574` | `#0f0f0f` |
 | `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
+| `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
+| `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
+| `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero | 400 | 500 |
 | `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
@@ -194,7 +197,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 **Tag (étiquette)** : forme de la petite pastille, bordure et texte `--rose`. Variante `dashed` pour « In progress ».
 
-**IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire.
+**IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, fond plein `--bg` (le champ de code du hero ne doit pas apparaître à travers, T22), arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire. Lien externe avec `href`, bouton avec `onClick`.
 
 **ArrowLink (« View GitHub repo »)** : `inline-flex`, `gap: 8px`, hauteur minimale 44 px, texte 14 px graisse 500 `--accent`, souligné (`text-underline-offset: 4px`). Icône GitHub 16 px devant, flèche diagonale 16 px derrière (`path d="M7 17 17 7M9 7h8v8"`, trait 1.8).
 
@@ -235,16 +238,29 @@ Textes (anglais, validés) :
 
 Le premier paragraphe a un retour à la ligne après « Hello there! ».
 
-**Champ de code (`CodeField`, T22)** — ajouté le 15 octobre 2026, inspiré du fond de Claude Code. Valeurs validées par Yoan, à ajuster à l'écran.
+**Champ de code (`CodeField`, T22)** — ajouté le 15 octobre 2026, inspiré du fond de Claude Code, réglé à l'écran avec Yoan. Toutes les valeurs sont des constantes en haut de `CodeField.tsx`.
 
-- Un `<canvas>` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
-- Des lignes de caractères en `--font-mono` (jeu de symboles de code tirés au hasard, rangé dans `data/codeGlyphs.ts`) glissent lentement vers la gauche, chaque ligne à une vitesse légèrement différente.
-- Au repos, les caractères sont à peine visibles : `--gold`, opacité ≈ 0,06.
-- Au survol, un révélateur suit le curseur : dans un rayon ≈ 160 px, les caractères passent en `--accent` jusqu'à une opacité ≈ 0,35 au centre, avec un fondu jusqu'au bord du cercle. Le maximum reste bas pour garder le texte du hero lisible.
-- Les couleurs viennent des tokens : le thème clair fonctionne sans réglage propre.
-- Tactile (pas de survol) : le champ reste au repos.
-- `prefers-reduced-motion: reduce` : les lignes ne bougent plus ; le révélateur reste (il ne déplace rien).
-- Performance : animation suspendue quand le hero sort de l'écran (IntersectionObserver) ; le navigateur la suspend déjà quand l'onglet est caché. Une ligne de texte par rangée, plus un second passage limité au cercle du révélateur.
+*Le champ au repos*
+
+- Un `<canvas>` dans une `div` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
+- Lignes de caractères en `--font-mono`, 11 px, une ligne tous les 16 px. Caractères tirés au hasard dans `data/codeGlyphs.ts` : `A–Z a–z 0–9 / + = . ; ~` (aspect de jetons, d'empreintes, de données encodées).
+- Chaque ligne glisse vers la gauche à sa propre vitesse, entre 20 et 40 px/s.
+- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--gold` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
+
+*La lentille (trou noir)*
+
+- Lentille gravitationnelle : un point du fond à la distance d du centre est vu à (d + √(d² + 4E²)) / 2 (première image, repoussée vers l'extérieur : les lignes s'arquent au-dessus et en dessous du trou, comme le disque d'Interstellar) et, retourné, à (√(d² + 4E²) − d) / 2 (seconde image, en arcs serrés contre l'ombre). E = 34 px.
+- Ombre opaque de 24 px de rayon (48 px de diamètre, comme les ronds du hero), couleur `--hole`, avec un fin anneau `--lens` à 0,18.
+- Effet plein jusqu'à mi-rayon, puis fondu jusqu'à 180 px. Caractères orientés le long de la courbe, étirés le long du cercle (jusqu'à × 3), éclaircis jusqu'à 0,22 en `--lens` près du trou ; seconde image à 60 %.
+- La lentille suit la souris de près (90 % de l'écart rattrapé à chaque image).
+- Souris hors du hero (et au chargement) : la lentille se pose sur la dernière lettre du nom (le « o » de « Cuervo », marqué `data-lens-anchor` dans `AnimatedName`), un peu sous le milieu de sa boîte (centre optique). Retour en 1,4 s, départ et arrivée en douceur (ease-in-out), même durée sur tous les écrans.
+
+*Accessibilité et performance*
+
+- Tactile : pas de suivi, la lentille reste posée sur le « o ».
+- `prefers-reduced-motion: reduce` : ni défilement ni lentille ; à la place, un révélateur simple (dégradé circulaire jusqu'à 0,35 autour du curseur).
+- Animation suspendue quand le hero sort de l'écran (IntersectionObserver) ; taille du canvas suivie par un ResizeObserver (le hero change de taille sans que la fenêtre bouge, par exemple au changement de langue). Un changement de thème remonte le composant (`key={theme}`) pour relire les couleurs.
+- Performance : chaque ligne est dessinée une fois dans une image hors écran puis recopiée ; la lentille recopie chaque caractère depuis une planche de glyphes (`drawImage` + `setTransform`, opacité par `globalAlpha`) ; couleurs lues une seule fois ; caractères quasi invisibles sautés. Environ 2,4 ms par image avec la lentille, 1,4 ms sans (mesuré à 1024 × 768).
 
 ### 6.3 Skills (`#skills`)
 
@@ -388,7 +404,7 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 | Card projet | Survol | Capture à `scale(1.03)`, 200 ms |
 | About, texte | Entrée dans l'écran | Fondu 250 ms |
 | Carrousel | Permanent | Voir 6.5 |
-| Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; révélateur autour du curseur. Voir 6.2 (T22) |
+| Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; lentille gravitationnelle qui suit le curseur, retour en 1,4 s sur le « o » de « Cuervo ». Voir 6.2 (T22) |
 | Navigation | Changement de section | Soulignement du lien actif, 150 ms |
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
@@ -608,8 +624,8 @@ Critères : durées et décalages du tableau ; chaque animation ne se joue qu'un
 Critères : le lien souligné suit le défilement, sans clignotement entre deux sections.
 
 **T22 · Champ de code du hero** — dépend de T08 · spécification 6.2 (ajouté le 15 octobre 2026)
-`CodeField` (canvas), `data/codeGlyphs.ts`, token `--font-mono`.
-Critères : les caractères sont à peine visibles au repos et se révèlent autour du curseur ; les lignes glissent vers la gauche à des vitesses différentes ; le texte du hero reste lisible sous le révélateur ; immobile en mouvement réduit ; animation suspendue quand le hero n'est plus à l'écran ; ignoré des lecteurs d'écran ; conforme dans les deux thèmes.
+`CodeField` (canvas), `data/codeGlyphs.ts`, tokens `--font-mono`, `--hole`, `--lens`, `--code-intensity`, `data-lens-anchor` sur la dernière lettre du nom, fond plein des `IconLink`.
+Critères : champ à peine visible au repos, en tronçons ; les lignes glissent vers la gauche à des vitesses différentes ; la lentille courbe les lignes autour d'une ombre de 48 px et suit le curseur sans retard visible ; souris hors du hero, la lentille revient en douceur sur le « o » de « Cuervo » ; le texte du hero reste lisible ; défilement fluide avec la lentille active ; révélateur simple et aucun mouvement en mouvement réduit ; animation suspendue quand le hero n'est plus à l'écran ; ignoré des lecteurs d'écran ; conforme dans les deux thèmes.
 
 ### Lot 5 — Finitions
 

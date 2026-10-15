@@ -5,7 +5,8 @@
   padding: 0;
   border: 1px solid var(--control);
   border-radius: 50%;
-  background: transparent;
+  /* Solid background: the hero code field must not show through the icon. */
+  background: var(--bg);
   color: var(--fg);
   cursor: pointer;
 }
