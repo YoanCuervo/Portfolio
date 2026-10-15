@@ -17,6 +17,11 @@
   background: var(--card);
   color: var(--fg);
   font-size: 16px;
+  transition: border-color 150ms;
+}
+
+.control:focus {
+  border-color: var(--accent);
 }
 
 .input {
@@ -28,4 +33,9 @@
   padding: 12px 14px;
   line-height: 1.5;
   resize: vertical;
+}
+
+.error {
+  color: var(--rose);
+  font-size: 14px;
 }

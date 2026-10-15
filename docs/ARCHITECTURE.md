@@ -25,7 +25,7 @@ Objectif : qu'un recruteur comprenne en moins d'une minute qui est Yoan, ce qu'i
 | Hébergement | GitHub Pages, site 100 % statique **[FIGÉ]** |
 | Backend | Aucun **[FIGÉ]** |
 | Routage | React Router en `HashRouter` **[FIGÉ]** (pas de configuration serveur possible sur GitHub Pages) |
-| Formulaire de contact | Service de formulaire tiers qui relaie vers la boîte mail de Yoan **[FIGÉ]**. Service : Web3Forms via `fetch` **[PROPOSÉ]** (pas de dépendance, cohérent avec l'apprentissage de `fetch`). Vérifier le quota gratuit au moment du ticket. |
+| Formulaire de contact | Service de formulaire tiers qui relaie vers la boîte mail de Yoan **[FIGÉ]**. Service : Web3Forms via `fetch` (validé à T13 ; pas de dépendance, cohérent avec l'apprentissage de `fetch`). |
 | Langues | Anglais et français, un fichier de textes par langue **[FIGÉ]** |
 | Thèmes | Sombre (Dark Botanical) et clair, bouton de bascule dans la navigation **[FIGÉ]** |
 | Langage | TypeScript **[PROPOSÉ]** (déjà affiché dans la stack et utilisé sur Wedoo et Poke_Gacha) |
@@ -378,7 +378,12 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 | Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je vous réponds par e-mail. |
 | Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessayez dans un instant. |
 
-Envoi : `fetch` en `POST` vers le service de formulaire, corps JSON `{ name, email, message }`. Ajouter un champ leurre caché (anti-robots). La clé du service va dans une variable `VITE_…` ; elle est publique par nature (visible dans le code livré), l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
+Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps JSON `{ access_key, name, email, message, botcheck }`. La clé est dans `VITE_WEB3FORMS_KEY` : `.env.local` en local (ignoré par git), variable du dépôt GitHub pour la mise en ligne. Elle est publique par nature (visible dans le code livré) ; l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
+
+- Validation à l'envoi (`noValidate`, messages traduits) ; focus sur le premier champ en erreur ; une erreur disparaît dès que le champ est corrigé. Messages d'erreur et d'échec en `--rose`.
+- Champ leurre : case `botcheck` hors écran, `tabIndex={-1}`, `aria-hidden`. Cochée, rien n'est envoyé mais la confirmation s'affiche (le robot ne sait pas qu'il est repéré).
+- Succès : la zone `role="status"` est toujours présente (pour être annoncée) et reçoit le focus quand le formulaire disparaît.
+- Sans clé (par exemple en local sans `.env.local`), l'envoi échoue proprement.
 
 ### 6.7 Page `/projects` (`ProjectsPage`)
 
@@ -527,7 +532,7 @@ En attendant, coder de façon à ne rien bloquer :
 ## 11. Déploiement
 
 - Dépôt GitHub public. Nom du dépôt **[À FOURNIR]** : il fixe `base` dans `vite.config.ts` (`'/nom-du-depot/'`, ou `'/'` si le dépôt s'appelle `<utilisateur>.github.io`).
-- GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`).
+- GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`). Le build reçoit la clé Web3Forms par la variable du dépôt `VITE_WEB3FORMS_KEY` (Settings → Secrets and variables → Actions → Variables).
 - Dans les réglages du dépôt : Pages › Source = GitHub Actions.
 - Les images sont importées depuis `src/assets` (Vite gère alors le préfixe `base`). Ne jamais écrire de chemin absolu en `/…` à la main.
 - Balises à prévoir dans `index.html` : `title`, `description`, Open Graph (titre, description, image), `theme-color`. Image de partage **[À FOURNIR]** ou générée à partir du hero.
