@@ -81,7 +81,8 @@ portfolio/
 │   │   ├── certifications.ts
 │   │   ├── projects.ts
 │   │   ├── softSkills.ts
-│   │   └── clients.ts
+│   │   ├── clients.ts
+│   │   └── codeGlyphs.ts           caractères du champ de code du hero (T22)
 │   ├── assets/
 │   │   ├── icons/                  SVG en `currentColor` (source : paquet simple-icons)
 │   │   ├── flags/                  fr.svg, gb.svg
@@ -90,7 +91,7 @@ portfolio/
 │   ├── components/
 │   │   ├── layout/   Navbar, Footer, Section, BlurDecor
 │   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon
-│   │   ├── hero/     Hero, AnimatedName
+│   │   ├── hero/     Hero, AnimatedName, CodeField
 │   │   ├── skills/   Skills, StackRow, CertificationItem
 │   │   ├── projects/ ProjectsSection, ProjectRow, ProjectCard
 │   │   ├── about/    About, Marquee, ClientTile
@@ -139,6 +140,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 
 - Titres : **Cormorant** (serif). Graisses utilisées : 400, 600, italique 400, italique 500.
 - Texte : **IBM Plex Sans**. Graisses utilisées : 300, 400, 500.
+- Champ de code du hero (T22) : police à chasse fixe du système, `--font-mono: ui-monospace, Consolas, monospace` (aucune police chargée).
 - Taille de base : 16 px.
 
 | Élément | Police | Taille | Graisse | Interligne | Couleur |
@@ -232,6 +234,17 @@ Textes (anglais, validés) :
 > I'm constantly striving to improve my skills and design principles. I'm always eager to learn, collaborate, and contribute to projects that combine conceptual thinking with new technology.
 
 Le premier paragraphe a un retour à la ligne après « Hello there! ».
+
+**Champ de code (`CodeField`, T22)** — ajouté le 15 octobre 2026, inspiré du fond de Claude Code. Valeurs validées par Yoan, à ajuster à l'écran.
+
+- Un `<canvas>` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
+- Des lignes de caractères en `--font-mono` (jeu de symboles de code tirés au hasard, rangé dans `data/codeGlyphs.ts`) glissent lentement vers la gauche, chaque ligne à une vitesse légèrement différente.
+- Au repos, les caractères sont à peine visibles : `--gold`, opacité ≈ 0,06.
+- Au survol, un révélateur suit le curseur : dans un rayon ≈ 160 px, les caractères passent en `--accent` jusqu'à une opacité ≈ 0,35 au centre, avec un fondu jusqu'au bord du cercle. Le maximum reste bas pour garder le texte du hero lisible.
+- Les couleurs viennent des tokens : le thème clair fonctionne sans réglage propre.
+- Tactile (pas de survol) : le champ reste au repos.
+- `prefers-reduced-motion: reduce` : les lignes ne bougent plus ; le révélateur reste (il ne déplace rien).
+- Performance : animation suspendue quand le hero sort de l'écran (IntersectionObserver) ; le navigateur la suspend déjà quand l'onglet est caché. Une ligne de texte par rangée, plus un second passage limité au cercle du révélateur.
 
 ### 6.3 Skills (`#skills`)
 
@@ -375,6 +388,7 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 | Card projet | Survol | Capture à `scale(1.03)`, 200 ms |
 | About, texte | Entrée dans l'écran | Fondu 250 ms |
 | Carrousel | Permanent | Voir 6.5 |
+| Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; révélateur autour du curseur. Voir 6.2 (T22) |
 | Navigation | Changement de section | Soulignement du lien actif, 150 ms |
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
@@ -593,6 +607,10 @@ Critères : durées et décalages du tableau ; chaque animation ne se joue qu'un
 `useActiveSection`.
 Critères : le lien souligné suit le défilement, sans clignotement entre deux sections.
 
+**T22 · Champ de code du hero** — dépend de T08 · spécification 6.2 (ajouté le 15 octobre 2026)
+`CodeField` (canvas), `data/codeGlyphs.ts`, token `--font-mono`.
+Critères : les caractères sont à peine visibles au repos et se révèlent autour du curseur ; les lignes glissent vers la gauche à des vitesses différentes ; le texte du hero reste lisible sous le révélateur ; immobile en mouvement réduit ; animation suspendue quand le hero n'est plus à l'écran ; ignoré des lecteurs d'écran ; conforme dans les deux thèmes.
+
 ### Lot 5 — Finitions
 
 **T17 · Passe d'accessibilité** — dépend des lots 2 à 4 · spécification 9
@@ -616,7 +634,7 @@ Critères : plus aucun texte entre crochets ni zone en pointillés sur le site e
 **T21 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
 À découper en tickets une fois la maquette validée (navigation, hero, rangées de projet, carrousel, formulaire).
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T13 → T15, T16 → T17, T18 → T20 → T19 → T21. Déployer dès T02 : chaque ticket suivant est alors vérifiable en ligne.
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T13 → T15, T16, T22 → T17, T18 → T20 → T19 → T21. Déployer dès T02 : chaque ticket suivant est alors vérifiable en ligne.
 
 ## 14. Consignes pour Claude Code
 
