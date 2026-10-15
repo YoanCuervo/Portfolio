@@ -23,8 +23,13 @@ export default function ProjectsSection() {
 
       <SectionTitle id="projects-title">{t.projects.title}</SectionTitle>
 
-      {featured.map((project) => (
-        <ProjectRow key={project.id} project={project} headingLevel={3} />
+      {featured.map((project, index) => (
+        <ProjectRow
+          key={project.id}
+          project={project}
+          headingLevel={3}
+          index={index}
+        />
       ))}
 
       <Link to="/projects" className={styles.viewAll}>

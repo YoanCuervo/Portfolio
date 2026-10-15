@@ -65,8 +65,7 @@ portfolio/
 │   ├── App.tsx                     HashRouter + providers + routes
 │   ├── styles/
 │   │   ├── tokens.css              variables des deux thèmes
-│   │   ├── base.css                reset, typographie, focus, reduced-motion
-│   │   └── animations.css          keyframes partagées
+│   │   └── base.css                reset, typographie, focus, reduced-motion
 │   ├── context/
 │   │   ├── ThemeContext.tsx
 │   │   └── LanguageContext.tsx
@@ -91,7 +90,7 @@ portfolio/
 │   ├── components/
 │   │   ├── layout/   Navbar, Footer, Section, BlurDecor
 │   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon
-│   │   ├── hero/     Hero, AnimatedName, CodeField
+│   │   ├── hero/     Hero, AnimatedName, AnimatedRole, CodeField
 │   │   ├── skills/   Skills, StackRow, CertificationItem
 │   │   ├── projects/ ProjectsSection, ProjectRow, ProjectCard
 │   │   ├── about/    About, Marquee, ClientTile
@@ -133,6 +132,13 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
+| `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
+| `--pill-bg` | Pastille au repos, fond (T15) | `var(--fg)` | `#0f0f0f` |
+| `--pill-fg` | Pastille au repos, texte | `#0f0f0f` | `#e8e4df` |
+| `--pill-icon` | Pastille au repos, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
+| `--pill-hover-bg` | Pastille survolée, fond | `#0f0f0f` | `#ffffff` |
+| `--pill-hover-fg` | Pastille survolée, texte | `var(--fg)` | `#0f0f0f` |
+| `--pill-hover-icon` | Pastille survolée, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero | 400 | 500 |
 | `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
@@ -191,11 +197,11 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 5.5 Composants d'interface
 
-**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400 `--fg`, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ».
+**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure dorée restant visible dans les deux. Thème clair : noir avec logo blanc au repos, blanc avec logo doré au survol. Thème sombre : l'inverse, blanc cassé avec logo doré au repos, noir avec logo blanc au survol. Survol réservé aux appareils avec une souris (`hover: hover`).
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
-**Tag (étiquette)** : forme de la petite pastille, bordure et texte `--rose`. Variante `dashed` pour « In progress ».
+**Tag (étiquette)** : hauteur 28 px, `padding: 0 12px`, texte 13 px, arrondi 2 px (rectangle, décidé à T15), bordure et texte `--rose`. Variante `dashed` pour « In progress ». Survol (souris seulement) : couleurs inversées en 200 ms, fond `--rose`, texte `--bg`.
 
 **IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, fond plein `--bg` (le champ de code du hero ne doit pas apparaître à travers, T22), arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire. Lien externe avec `href`, bouton avec `onClick`.
 
@@ -220,9 +226,9 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 - Hauteur : `min-height: calc(100svh - 72px)` (828 px sur la maquette de 900 px), contenu centré verticalement et horizontalement, `padding: 32px 6%`.
 - Une colonne centrée de `max-width: 800px`, dont le contenu est **aligné à gauche**, `gap: 22px`.
 - Dans l'ordre :
-  1. `h1` « Yoan Cuervo », une `span` par lettre pour l'animation, `aria-label="Yoan Cuervo"` sur le `h1` et `aria-hidden="true"` sur chaque lettre. `overflow: hidden` et `padding: 0.06em 0 0.1em` pour masquer les lettres avant leur montée.
+  1. `h1` « Yoan Cuervo », fixe (pas d'animation, décidé à T15). Une `span` par lettre, en `aria-hidden="true"`, avec `aria-label="Yoan Cuervo"` sur le `h1` : la dernière lettre porte `data-lens-anchor`, où se pose la lentille du champ de code (T22).
   2. Un bloc décalé de `padding-left: 40px` qui contient :
-     - « Web Developer » (voir typographie) ;
+     - « Web Developer » (voir typographie), seul élément animé du hero : composant `AnimatedRole`, texte complet masqué visuellement pour les lecteurs d'écran et une lettre par `span` en `aria-hidden` pour l'animation (voir 7) ;
      - un groupe avec filet vertical : `margin-left: -32px; padding: 6px 0 6px 30px; border-left: 2px solid var(--gold)`, `gap: 22px`, qui contient :
        - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`) ;
        - trois paragraphes, `max-width: 760px`, `gap: 10px`.
@@ -297,7 +303,7 @@ Certifications :
    - la capture d'écran, `flex: 0 0 150px`, hauteur minimale 124 px (tant qu'elle manque : zone en pointillés `1px dashed var(--control)` avec le texte « Project screenshot ») ;
    - le titre du projet et son type (14 px, `--muted`).
    - Il n'y a **pas** de libellé « View site » : il a été retiré.
-   - Survol : la capture zoome à `scale(1.03)` en 200 ms.
+   - Survol (T15, souris seulement, coupé en mouvement réduit) : la card se soulève, `translateY(-4px) scale(1.02)`, ombre `0 18px 40px -18px var(--shadow)`, bordure `--control`, 300 ms `cubic-bezier(.2,.7,.2,1)`. Si la card est un lien, la capture zoome en plus à `scale(1.03)` en 200 ms, rognée par son cadre.
    - Si le projet n'a pas de site en ligne : **[PROPOSÉ]** la card est rendue en `div`, sans lien ni effet de survol.
 2. **Colonne de droite**, `flex: 1 1 520px`, `gap: 12px` :
    - petites pastilles de techno, puis l'étiquette « Team Project » ou « Solo Project » ;
@@ -401,12 +407,11 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 
 | Zone | Déclencheur | Effet |
 |---|---|---|
-| Hero, nom | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace entre prénom et nom compte pour un cran : Y 0, o 40, a 80, n 120, C 200, u 240, e 280, r 320, v 360, o 400 ms) |
-| Hero, reste | Chargement | Fondu 300 ms `ease-out`, lancé à 550 ms. Tout est en place en moins de 1,2 s |
-| Skills | Entrée dans l'écran | Pastilles ligne par ligne : fondu 200 ms, décalage de 60 ms par ligne |
-| Pastille | Survol | Bordure accentuée, 150 ms |
-| Projects | Entrée dans l'écran | Les rangées montent de 16 px en fondu, 250 ms, décalage de 80 ms |
-| Card projet | Survol | Capture à `scale(1.03)`, 200 ms |
+| Hero, rôle (« Web Developer ») | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace compte pour un cran). En place en moins de 1,1 s. Le nom et le reste du hero sont affichés d'emblée, sans animation (décidé à T15). |
+| Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : fondu 200 ms, décalage de 60 ms |
+| Pastille, étiquette | Survol | Échange des états clair et sombre (pastille) ou remplissage `--rose` (étiquette), 200 ms (voir 5.5) |
+| Projects (accueil et `/projects`) | Entrée dans l'écran | Chaque rangée monte de 16 px en fondu quand elle entre à l'écran, 250 ms, décalage de 80 ms |
+| Card projet | Survol | Soulèvement et ombre, 300 ms ; zoom de la capture si la card est un lien (voir 6.4) |
 | About, texte | Entrée dans l'écran | Fondu 250 ms |
 | Carrousel | Permanent | Voir 6.5 |
 | Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; lentille gravitationnelle qui suit le curseur, retour en 1,4 s sur le « o » de « Cuervo ». Voir 6.2 (T22) |
@@ -414,7 +419,7 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
 
-Implémentation : un hook `useReveal` (IntersectionObserver, se déconnecte après le premier déclenchement) qui pose une classe ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`.
+Implémentation : un hook `useReveal` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`. L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
 
 ## 8. Thème et langue
 
@@ -621,8 +626,8 @@ Critères : tous les projets listés ; « Projects » souligné dans la navigati
 ### Lot 4 — Mouvement
 
 **T15 · Animations d'entrée** — dépend de T08 à T11 · spécification 7
-`useReveal`, animation du nom, apparitions par section, survols.
-Critères : durées et décalages du tableau ; chaque animation ne se joue qu'une fois ; rien ne bouge en mouvement réduit.
+`useReveal`, `AnimatedRole` (le rôle remplace le nom comme élément animé, décidé à T15), apparitions par section, survols (cards, pastilles, étiquettes rectangulaires).
+Critères : durées et décalages du tableau ; seul le rôle s'anime dans le hero ; chaque animation ne se joue qu'une fois ; rien ne bouge ni ne reste masqué en mouvement réduit.
 
 **T16 · Lien de navigation actif** — dépend de T06
 `useActiveSection`.

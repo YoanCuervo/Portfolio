@@ -1,6 +1,7 @@
 import { useLanguage } from "../../context/LanguageContext";
 import { clientRows } from "../../data/clients";
 import { softSkills } from "../../data/softSkills";
+import { useReveal } from "../../hooks/useReveal";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
 import SectionSubtitle from "../layout/SectionSubtitle";
@@ -11,6 +12,7 @@ import Marquee from "./Marquee";
 
 export default function About() {
   const { t } = useLanguage();
+  const { ref, revealed } = useReveal<HTMLDivElement>();
 
   return (
     <Section id="about" className={styles.about}>
@@ -27,7 +29,12 @@ export default function About() {
       </div>
 
       <div className={`${styles.padded} ${styles.columns}`}>
-        <div className={styles.story}>
+        <div
+          ref={ref}
+          className={
+            revealed ? `${styles.story} ${styles.revealed}` : styles.story
+          }
+        >
           <p className={styles.hook}>{t.about.hook}</p>
           <p className={styles.paragraph}>{t.about.paragraph}</p>
           <blockquote className={styles.quote}>

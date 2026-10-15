@@ -9,6 +9,7 @@ import Section from "../layout/Section";
 import IconLink from "../ui/IconLink";
 import TechIcon from "../ui/TechIcon";
 import AnimatedName from "./AnimatedName";
+import AnimatedRole from "./AnimatedRole";
 import CodeField from "./CodeField";
 import styles from "./Hero.module.css";
 
@@ -83,7 +84,7 @@ export default function Hero() {
         <AnimatedName id="home-title" text={t.meta.name} />
 
         <div className={styles.body}>
-          <p className={styles.role}>{t.hero.role}</p>
+          <AnimatedRole text={t.hero.role} className={styles.role} />
 
           <div className={styles.group}>
             <div className={styles.icons}>

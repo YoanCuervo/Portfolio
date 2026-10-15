@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import type { Project } from "../../data/projects";
+import { useReveal } from "../../hooks/useReveal";
 import ArrowLink from "../ui/ArrowLink";
 import Pill from "../ui/Pill";
 import Tag from "../ui/Tag";
@@ -10,15 +12,25 @@ type ProjectRowProps = {
   project: Project;
   // 3 on the home page (under the "Projects" h2), 2 on /projects (under the page h1).
   headingLevel: 2 | 3;
+  index: number; // position in the entrance cascade
 };
 
-export default function ProjectRow({ project, headingLevel }: ProjectRowProps) {
+export default function ProjectRow({
+  project,
+  headingLevel,
+  index,
+}: ProjectRowProps) {
   const { t } = useLanguage();
+  const { ref, revealed } = useReveal<HTMLElement>();
   const BlockTitle = headingLevel === 2 ? "h3" : "h4";
   const text = t.projects.items[project.id];
 
   return (
-    <article className={styles.row}>
+    <article
+      ref={ref}
+      className={revealed ? `${styles.row} ${styles.revealed}` : styles.row}
+      style={{ "--i": index } as CSSProperties}
+    >
       <ProjectCard project={project} headingLevel={headingLevel} />
 
       <div className={styles.details}>

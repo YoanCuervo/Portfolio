@@ -53,8 +53,13 @@ export default function ProjectsPage() {
 
         <h1 className={styles.title}>{t.projectsPage.title}</h1>
 
-        {projects.map((project) => (
-          <ProjectRow key={project.id} project={project} headingLevel={2} />
+        {projects.map((project, index) => (
+          <ProjectRow
+            key={project.id}
+            project={project}
+            headingLevel={2}
+            index={index}
+          />
         ))}
       </main>
 

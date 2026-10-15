@@ -68,3 +68,20 @@
   flex-direction: column;
   gap: 14px;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .story {
+    opacity: 0;
+  }
+
+  .story.revealed {
+    opacity: 1;
+    animation: fade-in 250ms ease-out both;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
