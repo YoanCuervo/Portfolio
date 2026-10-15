@@ -1,4 +1,8 @@
+/* Same containment as Section: the halos stay behind the content and inside the page. */
 .page {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   min-height: calc(100svh - var(--nav-height));
   display: flex;
   flex-direction: column;
@@ -6,7 +10,28 @@
 
 .main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
   padding: 40px 6% 56px;
+}
+
+.back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--accent);
+  font-size: 15px;
+}
+
+.title {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 76px;
+  font-weight: var(--w-semibold);
+  line-height: 1;
 }
 
 .footer {

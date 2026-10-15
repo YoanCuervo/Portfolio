@@ -88,6 +88,16 @@ export const en = {
         summary: "[Project 3 summary]",
         build: "[Project 3 build]",
       },
+      project4: {
+        type: "[Project 4 type]",
+        summary: "[Project 4 summary]",
+        build: "[Project 4 build]",
+      },
+      project5: {
+        type: "[Project 5 type]",
+        summary: "[Project 5 summary]",
+        build: "[Project 5 build]",
+      },
     },
   },
   about: {

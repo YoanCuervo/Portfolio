@@ -91,6 +91,16 @@ export const fr: typeof en = {
         summary: "[Résumé du projet 3]",
         build: "[Construction du projet 3]",
       },
+      project4: {
+        type: "[Type du projet 4]",
+        summary: "[Résumé du projet 4]",
+        build: "[Construction du projet 4]",
+      },
+      project5: {
+        type: "[Type du projet 5]",
+        summary: "[Résumé du projet 5]",
+        build: "[Construction du projet 5]",
+      },
     },
   },
   about: {
