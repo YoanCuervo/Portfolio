@@ -48,7 +48,7 @@ Hors périmètre : page de détail par projet (`/projects/:slug`), téléchargem
 
 Avec `HashRouter`, le `#` de l'URL sert déjà au routage. Un lien `<a href="#skills">` casserait la route. Donc :
 
-- Les liens de navigation appellent une fonction `scrollToSection(id)` qui fait `document.getElementById(id)?.scrollIntoView()`.
+- Les liens de navigation appellent une fonction `scrollToSection(id)` qui fait `document.getElementById(id)?.scrollIntoView()`. Avant de défiler, elle envoie l'événement `section-navigate` (avec l'`id`) : la section visée rejoue son animation d'entrée (`useReveal(id)`, voir 7).
 - Depuis `/projects`, un clic sur Skills, About ou Contact fait `navigate('/', { state: { scrollTo: id } })`. `HomePage` lit cet état dans un `useEffect` et défile vers la section.
 - Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation).
 - Le défilement est doux (`scroll-behavior: smooth`), sauf si `prefers-reduced-motion: reduce`.
@@ -403,7 +403,7 @@ Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps J
 
 ## 7. Animations
 
-Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée ne se jouent qu'une fois ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt.
+Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée se jouent une fois au défilement, et à nouveau à chaque navigation volontaire par la `Navbar` vers la section concernée (décidé après T15) ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt.
 
 | Zone | Déclencheur | Effet |
 |---|---|---|
@@ -419,7 +419,7 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
 
-Implémentation : un hook `useReveal` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`. L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
+Implémentation : un hook `useReveal(sectionId)` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; à l'événement `section-navigate` de sa section, il retire la classe et observe à nouveau, pour rejouer l'animation à l'arrivée (le rôle du hero l'utilise aussi, avec `home`) ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`. L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
 
 ## 8. Thème et langue
 

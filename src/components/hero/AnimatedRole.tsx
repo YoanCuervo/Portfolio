@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { useReveal } from "../../hooks/useReveal";
 import styles from "./AnimatedRole.module.css";
 
 type AnimatedRoleProps = {
@@ -6,11 +7,17 @@ type AnimatedRoleProps = {
   className?: string;
 };
 
-// The letters rise one after the other on page load. A screen reader reads the
-// hidden full text; the animated letters are hidden from it.
+// The letters rise one after the other when the hero is on screen: on page load,
+// and again when the Navbar takes the visitor back to the top. A screen reader
+// reads the hidden full text; the animated letters are hidden from it.
 export default function AnimatedRole({ text, className }: AnimatedRoleProps) {
+  const { ref, revealed } = useReveal<HTMLParagraphElement>("home");
+  const classes = [styles.role, revealed && styles.revealed, className]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <p className={className ? `${styles.role} ${className}` : styles.role}>
+    <p ref={ref} className={classes}>
       <span className={styles.srOnly}>{text}</span>
       <span aria-hidden="true" className={styles.letters}>
         {[...text].map((char, index) => (
