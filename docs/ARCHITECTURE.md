@@ -634,7 +634,7 @@ Critères : plus aucun texte entre crochets ni zone en pointillés sur le site e
 **T21 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
 À découper en tickets une fois la maquette validée (navigation, hero, rangées de projet, carrousel, formulaire).
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T13 → T15, T16, T22 → T17, T18 → T20 → T19 → T21. Déployer dès T02 : chaque ticket suivant est alors vérifiable en ligne.
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T13 → T15, T16, T22 → T17, T18 → T20 → T19 → T21. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
 
 ## 14. Consignes pour Claude Code
 
