@@ -12,7 +12,7 @@ import StackRow from "./StackRow";
 
 export default function Skills() {
   const { t } = useLanguage();
-  const { ref, revealed } = useReveal<HTMLDivElement>();
+  const { ref, revealed } = useReveal<HTMLDivElement>("skills");
 
   return (
     <Section id="skills" className={styles.skills}>

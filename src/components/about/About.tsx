@@ -12,7 +12,7 @@ import Marquee from "./Marquee";
 
 export default function About() {
   const { t } = useLanguage();
-  const { ref, revealed } = useReveal<HTMLDivElement>();
+  const { ref, revealed } = useReveal<HTMLDivElement>("about");
 
   return (
     <Section id="about" className={styles.about}>

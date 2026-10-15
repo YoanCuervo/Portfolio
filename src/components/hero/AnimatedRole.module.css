@@ -26,8 +26,14 @@
   white-space: pre;
 }
 
+/* Hidden below the line until the role is revealed, then each letter rises. */
 @media (prefers-reduced-motion: no-preference) {
   .letter {
+    transform: translateY(115%);
+  }
+
+  .revealed .letter {
+    transform: none;
     animation: letter-rise 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
     animation-delay: calc(var(--i) * 40ms);
   }

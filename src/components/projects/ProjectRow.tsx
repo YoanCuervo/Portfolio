@@ -21,7 +21,7 @@ export default function ProjectRow({
   index,
 }: ProjectRowProps) {
   const { t } = useLanguage();
-  const { ref, revealed } = useReveal<HTMLElement>();
+  const { ref, revealed } = useReveal<HTMLElement>("projects");
   const BlockTitle = headingLevel === 2 ? "h3" : "h4";
   const text = t.projects.items[project.id];
 
