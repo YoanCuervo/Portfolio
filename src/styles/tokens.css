@@ -12,6 +12,7 @@
   --icon: #c9b896;
   --line: #34302c;
   --card: #181716;
+  --form-bg: #0f0f0f;
   --control: #6e6558;
   --tile-bg: transparent;
   --tile-border: #34302c;
@@ -46,6 +47,7 @@
   --icon: #5f5030;
   --line: #c9c2b8;
   --card: #f4f1ed;
+  --form-bg: #f4f1ed;
   --control: #7d746a;
   --tile-bg: #f4f1ed;
   --tile-border: #b5ada1;

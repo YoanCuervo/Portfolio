@@ -16,7 +16,7 @@
   padding: 28px;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: var(--card);
+  background: var(--form-bg);
   text-align: left;
 }
 

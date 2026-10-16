@@ -124,7 +124,8 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--gold` | Bordure des pastilles, filet vertical du hero | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
-| `--card` | Fond des cards projet, du cadre du formulaire, des champs | `#181716` | `#f4f1ed` |
+| `--card` | Fond des cards projet | `#181716` | `#f4f1ed` |
+| `--form-bg` | Fond du cadre du formulaire et des champs (noir des pastilles en sombre, 16 octobre 2026) | `#0f0f0f` | `#f4f1ed` |
 | `--control` | Bordure des boutons ronds, champs, zones en pointillés | `#6e6558` | `#7d746a` |
 | `--tile-bg` | Fond des tuiles du carrousel | transparent | `#f4f1ed` |
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
@@ -360,7 +361,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
   - `h2` centré : « What's on your mind? » en graisse 600, suivi de « Let's talk about it. » en graisse **normale** (400), sur la même ligne, 60 px.
   - Paragraphe centré : « Describe it in a few lines and I'll reply by email. » (17 px, `max-width: 34em`).
   - Formulaire, `max-width: 620px`, `gap: 18px` :
-    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--card`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
+    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--form-bg`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
     - le bouton d'envoi **hors du cadre**, centré dessous.
 - Champs (libellé au-dessus, 14 px graisse 500, `gap: 6px`) :
 
@@ -370,7 +371,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 | Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis |
 | Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` |
 
-- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--card`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
+- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
 - Bouton « Send my request » : hauteur 48 px, `padding: 0 32px`, sans bordure, arrondi 2 px, fond `--btn-bg`, texte `--btn-fg`, 15 px graisse 500.
 - **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`. Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
