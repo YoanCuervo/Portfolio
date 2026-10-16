@@ -19,11 +19,25 @@
 }
 
 .name {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-serif);
   font-size: 22px;
   font-weight: var(--w-semibold);
   color: var(--fg);
   text-decoration: none;
+}
+
+.monogram {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+}
+
+/* In light theme the tile has the page color: the gold border draws its edge. */
+:global([data-theme="light"]) .monogram {
+  border: 1px solid var(--gold);
 }
 
 .right {
