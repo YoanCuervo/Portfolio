@@ -9,5 +9,5 @@ export type Social = {
 export const socials: Social[] = [
   { id: "github", url: "https://github.com/YoanCuervo" },
   { id: "linkedin", url: "https://www.linkedin.com/in/cuervo-yoan" },
-  { id: "discord", url: null },
+  { id: "discord", url: "https://discord.com/users/1475181314218131560" },
 ];
