@@ -553,7 +553,6 @@ En attendant, coder de façon à ne rien bloquer :
 
 | Élément | Où |
 |---|---|
-| URL GitHub, LinkedIn, Discord | Hero |
 | URL du site en ligne et du dépôt de Wedoo et de Poke_Gacha | Projets |
 | Captures d'écran de Wedoo et de Poke_Gacha | Projets |
 | Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
