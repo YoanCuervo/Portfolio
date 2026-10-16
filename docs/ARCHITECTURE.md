@@ -405,23 +405,24 @@ Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps J
 
 ## 7. Animations
 
-Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée se jouent une fois au défilement, et à nouveau à chaque navigation volontaire par la `Navbar` vers la section concernée (décidé après T15) ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt.
+Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée se jouent une fois au défilement, et à nouveau à chaque navigation volontaire par la `Navbar` vers la section concernée (décidé après T15) ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt. Les animations d'entrée utilisent `--ease-out-slow: cubic-bezier(0, 0, 0.3, 1)` (`tokens.css`) : départ vif, long freinage, effet « pop » inspiré de mustsociete.com (16 octobre 2026).
 
 | Zone | Déclencheur | Effet |
 |---|---|---|
 | Hero, rôle (« Web Developer ») | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace compte pour un cran). En place en moins de 1,1 s. Le nom et le reste du hero sont affichés d'emblée, sans animation (décidé à T15). |
-| Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : fondu 200 ms, décalage de 60 ms |
+| Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms |
 | Pastille, étiquette | Survol | Échange des états clair et sombre (pastille) ou remplissage `--rose` (étiquette), 200 ms (voir 5.5) |
-| Projects (accueil et `/projects`) | Entrée dans l'écran | Chaque rangée monte de 16 px en fondu quand elle entre à l'écran, 250 ms, décalage de 80 ms |
+| Projects (accueil et `/projects`) | Entrée dans l'écran | Chaque rangée monte de 32 px en fondu quand elle entre à l'écran, 500 ms, `--ease-out-slow`, décalage de 75 ms. Une version liée au défilement (`animation-timeline: view()`, façon apple.com) a été essayée le 16 octobre 2026 et écartée : l'effet ne se voyait pas sur des rangées |
 | Card projet | Survol | Soulèvement et ombre, 300 ms ; zoom de la capture si la card est un lien (voir 6.4) |
-| About, texte | Entrée dans l'écran | Fondu 250 ms |
+| About, texte | Entrée dans l'écran | Montée de 24 px en fondu, 500 ms, `--ease-out-slow` |
+| Contact | Entrée dans l'écran | Titre, introduction puis formulaire : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms (16 octobre 2026 : Contact suit le reste de la page) |
 | Carrousel | Permanent | Voir 6.5 |
 | Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; lentille gravitationnelle qui suit le curseur, retour en 1,4 s sur le « o » de « Cuervo ». Voir 6.2 (T22) |
 | Navigation | Changement de section | Soulignement du lien actif, 150 ms |
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
 
-Implémentation : un hook `useReveal(sectionId)` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; à l'événement `section-navigate` de sa section, il retire la classe et observe à nouveau, pour rejouer l'animation à l'arrivée (le rôle du hero l'utilise aussi, avec `home`) ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`. L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
+Implémentation : un hook `useReveal(sectionId)` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; à l'événement `section-navigate` de sa section, il retire la classe et observe à nouveau, pour rejouer l'animation à l'arrivée (le rôle du hero l'utilise aussi, avec `home`) ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 75ms)` (Contact : `:nth-child`). L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
 
 ## 8. Thème et langue
 

@@ -29,13 +29,14 @@
 
   .row.revealed {
     opacity: 1;
-    animation: fade-in 200ms ease-out both;
-    animation-delay: calc(var(--i) * 60ms);
+    animation: rise 500ms var(--ease-out-slow) both;
+    animation-delay: calc(var(--i) * 75ms);
   }
 }
 
-@keyframes fade-in {
+@keyframes rise {
   from {
     opacity: 0;
+    transform: translateY(24px);
   }
 }
