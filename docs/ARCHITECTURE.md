@@ -124,7 +124,8 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--gold` | Bordure des pastilles, filet vertical du hero | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
-| `--card` | Fond des cards projet, du cadre du formulaire, des champs | `#181716` | `#f4f1ed` |
+| `--card` | Fond des cards projet | `#181716` | `#f4f1ed` |
+| `--form-bg` | Fond du cadre du formulaire et des champs (noir des pastilles en sombre, 16 octobre 2026) | `#0f0f0f` | `#f4f1ed` |
 | `--control` | Bordure des boutons ronds, champs, zones en pointillés | `#6e6558` | `#7d746a` |
 | `--tile-bg` | Fond des tuiles du carrousel | transparent | `#f4f1ed` |
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
@@ -134,12 +135,12 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
-| `--pill-bg` | Pastille au repos, fond (T15) | `var(--fg)` | `#0f0f0f` |
-| `--pill-fg` | Pastille au repos, texte | `#0f0f0f` | `#e8e4df` |
-| `--pill-icon` | Pastille au repos, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
-| `--pill-hover-bg` | Pastille survolée, fond | `#0f0f0f` | `#ffffff` |
-| `--pill-hover-fg` | Pastille survolée, texte | `var(--fg)` | `#0f0f0f` |
-| `--pill-hover-icon` | Pastille survolée, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
+| `--pill-bg` | Pastille au repos, fond (T15) | `#0f0f0f` | `#ffffff` |
+| `--pill-fg` | Pastille au repos, texte | `var(--fg)` | `#0f0f0f` |
+| `--pill-icon` | Pastille au repos, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
+| `--pill-hover-bg` | Pastille survolée, fond | `var(--fg)` | `#0f0f0f` |
+| `--pill-hover-fg` | Pastille survolée, texte | `#0f0f0f` | `#e8e4df` |
+| `--pill-hover-icon` | Pastille survolée, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero : identique dans les deux thèmes, pour que le texte passe à la ligne aux mêmes endroits et que le nom ne bouge pas au changement de thème | 400 | 400 |
 | `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
@@ -198,7 +199,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 5.5 Composants d'interface
 
-**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure dorée restant visible dans les deux. Thème clair : noir avec logo blanc au repos, blanc avec logo doré au survol. Thème sombre : l'inverse, blanc cassé avec logo doré au repos, noir avec logo blanc au survol. Survol réservé aux appareils avec une souris (`hover: hover`).
+**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure dorée restant visible dans les deux. Thème clair : blanc avec logo doré au repos, noir avec logo blanc au survol. Thème sombre : l'inverse, noir avec logo blanc au repos, blanc cassé avec logo doré au survol (échange inversé le 16 octobre 2026). Survol réservé aux appareils avec une souris (`hover: hover`).
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
@@ -360,7 +361,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
   - `h2` centré : « What's on your mind? » en graisse 600, suivi de « Let's talk about it. » en graisse **normale** (400), sur la même ligne, 60 px.
   - Paragraphe centré : « Describe it in a few lines and I'll reply by email. » (17 px, `max-width: 34em`).
   - Formulaire, `max-width: 620px`, `gap: 18px` :
-    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--card`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
+    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--form-bg`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
     - le bouton d'envoi **hors du cadre**, centré dessous.
 - Champs (libellé au-dessus, 14 px graisse 500, `gap: 6px`) :
 
@@ -370,7 +371,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 | Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis |
 | Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` |
 
-- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--card`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
+- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
 - Bouton « Send my request » : hauteur 48 px, `padding: 0 32px`, sans bordure, arrondi 2 px, fond `--btn-bg`, texte `--btn-fg`, 15 px graisse 500.
 - **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`. Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
