@@ -89,7 +89,7 @@ portfolio/
 │   │   ├── projects/               captures d'écran [À FOURNIR]
 │   │   └── logos/                  logos productions/clients [À FOURNIR]
 │   ├── components/
-│   │   ├── layout/   Navbar, Footer, Section, BlurDecor
+│   │   ├── layout/   Navbar, Footer, Section, BlurDecor, SkipLink
 │   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon
 │   │   ├── hero/     Hero, AnimatedName, AnimatedRole, CodeField
 │   │   ├── skills/   Skills, StackRow, CertificationItem
@@ -306,7 +306,7 @@ Certifications :
    - le titre du projet et son type (14 px, `--muted`).
    - Il n'y a **pas** de libellé « View site » : il a été retiré.
    - Survol (T15, souris seulement, coupé en mouvement réduit) : la card se soulève, `translateY(-4px) scale(1.02)`, ombre `0 18px 40px -18px var(--shadow)`, bordure `--control`, 300 ms `cubic-bezier(.2,.7,.2,1)`. Si la card est un lien, la capture zoome en plus à `scale(1.03)` en 200 ms, rognée par son cadre.
-   - Si le projet n'a pas de site en ligne : **[PROPOSÉ]** la card est rendue en `div`, sans lien ni effet de survol.
+   - Si le projet n'a pas de site en ligne : **[PROPOSÉ]** la card est rendue en `div`, sans lien ni effet de survol, mais atteignable au clavier (`tabIndex={0}`, focus visible) : à la demande de Yoan (T17), chaque card reste une étape du parcours au Tab.
 2. **Colonne de droite**, `flex: 1 1 520px`, `gap: 12px` :
    - petites pastilles de techno, puis l'étiquette « Team Project » ou « Solo Project » ;
    - deux blocs côte à côte (`flex: 1 1 240px`, `gap: 10px 40px`) :
@@ -353,6 +353,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 - Technique : chaque rangée contient la liste **deux fois** (la seconde copie en `aria-hidden="true"`), `width: max-content; white-space: nowrap`, animation de `translateX(-50%)` à `0` (rangée 1) ou de `0` à `-50%` (rangée 2), 40 s, linéaire, infinie.
 - Bords fondus : `mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)` sur le conteneur.
 - Pause au survol. Arrêt complet si `prefers-reduced-motion: reduce`.
+- Bouton pause / lecture (T17, WCAG 2.2.2 : le survol ne couvre ni le clavier ni le tactile) : `IconLink` rond de 44 px aligné à droite sous les deux rangées, qui arrête ou relance les deux à la fois. Son `aria-label` change avec l'état (« Pause the logo carousel » / « Play the logo carousel »). Masqué en mouvement réduit, où le carrousel est déjà à l'arrêt. Absent des maquettes, validé par Yoan le 16 octobre 2026.
 
 ### 6.6 Contact (`#contact`) et pied de page
 
@@ -373,7 +374,7 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 
 - Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
 - Bouton « Send my request » : hauteur 48 px, `padding: 0 32px`, sans bordure, arrondi 2 px, fond `--btn-bg`, texte `--btn-fg`, 15 px graisse 500.
-- **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`. Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
+- **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`, aligné à droite (T17 : à gauche, les halos flous passent derrière le texte et Lighthouse y mesure un contraste insuffisant). Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
 États du formulaire (comportement défini dans les notes de maquette, textes **[PROPOSÉ]**) :
 
@@ -515,11 +516,11 @@ Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
 ## 9. Accessibilité (exigences, pas options)
 
 - Structure : un seul `h1` par page, niveaux de titres sans saut, balises `header`, `nav`, `main`, `footer`, une `section` par partie avec `aria-labelledby`.
-- Lien d'évitement « Skip to content » en premier élément focusable **[PROPOSÉ]** (absent des maquettes).
+- Lien d'évitement « Skip to content » / « Aller au contenu » en premier élément focusable (validé à T17, absent des maquettes) : `SkipLink`, hors écran jusqu'au focus, puis en haut à gauche au-dessus de la `Navbar`, fond `--btn-bg`. C'est un `button` et non un lien : avec `HashRouter`, `href="#main"` changerait la route. Il donne le focus à `<main id="main" tabIndex={-1}>`.
 - Tout est utilisable au clavier, focus toujours visible.
 - Zones cliquables d'au moins 44 × 44 px.
 - Icônes décoratives : `aria-hidden="true"` ou `alt=""`. Boutons sans texte : `aria-label` traduit.
-- Liens externes : nouvel onglet avec `rel="noopener noreferrer"`.
+- Liens externes : nouvel onglet avec `rel="noopener noreferrer"`, annoncé aux lecteurs d'écran (« (opens in a new tab) », clé `a11y.newTab`, dans un `span.visually-hidden` ou dans l'`aria-label`).
 - Champs reliés à leur `label` par `for` / `id`, erreurs reliées par `aria-describedby`.
 - `prefers-reduced-motion` respecté partout.
 - Contrastes : les couleurs du thème clair ont été choisies plus sombres que leurs équivalents du thème sombre pour rester lisibles sur fond clair. Ne pas réutiliser `#d4a574`, `#e8b4b8` ou `#c9b896` pour du texte en thème clair.

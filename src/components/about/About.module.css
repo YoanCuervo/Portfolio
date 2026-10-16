@@ -69,6 +69,18 @@
   gap: 14px;
 }
 
+.carouselControl {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* The carousel does not move in reduced motion: nothing to pause. */
+@media (prefers-reduced-motion: reduce) {
+  .carouselControl {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .story {
     opacity: 0;

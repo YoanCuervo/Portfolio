@@ -1,5 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from "react-router";
 import Navbar from "./components/layout/Navbar";
+import SkipLink from "./components/layout/SkipLink";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import HomePage from "./pages/HomePage";
@@ -10,6 +11,7 @@ export default function App() {
     <ThemeProvider>
       <LanguageProvider>
         <HashRouter>
+          <SkipLink />
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />

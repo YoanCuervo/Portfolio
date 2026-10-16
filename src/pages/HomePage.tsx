@@ -22,7 +22,7 @@ export default function HomePage() {
   }, [location.state, navigate]);
 
   return (
-    <main>
+    <main id="main" tabIndex={-1}>
       <Hero />
       <Skills />
       <ProjectsSection />

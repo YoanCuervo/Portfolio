@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { siGithub } from "simple-icons";
+import { useLanguage } from "../../context/LanguageContext";
 import styles from "./ArrowLink.module.css";
 import TechIcon from "./TechIcon";
 
@@ -9,6 +10,8 @@ type ArrowLinkProps = {
 };
 
 export default function ArrowLink({ href, children }: ArrowLinkProps) {
+  const { t } = useLanguage();
+
   return (
     <a
       href={href}
@@ -18,6 +21,7 @@ export default function ArrowLink({ href, children }: ArrowLinkProps) {
     >
       <TechIcon icon={siGithub} size={16} />
       {children}
+      <span className="visually-hidden"> {t.a11y.newTab}</span>
       <svg
         viewBox="0 0 24 24"
         width="16"
