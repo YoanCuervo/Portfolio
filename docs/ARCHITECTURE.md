@@ -59,8 +59,10 @@ Avec `HashRouter`, le `#` de l'URL sert déjà au routage. Un lien `<a href="#sk
 ```
 portfolio/
 ├── .github/workflows/deploy.yml
-├── public/
-│   └── favicon.svg                 [À FOURNIR] ou [PROPOSÉ] : initiales YC en Cormorant
+├── public/                         servi tel quel (balises de index.html)
+│   ├── favicon.png                 monogramme YC de Yoan, noir sur blanc cassé, 180 px (T18)
+│   └── og-image.png                image d'aperçu de lien, 1200 × 630 (T18)
+├── scripts/share-images/           sources HTML des deux images ci-dessus et monogramme d'origine
 ├── src/
 │   ├── main.tsx
 │   ├── App.tsx                     HashRouter + providers + routes
@@ -544,7 +546,8 @@ En attendant, coder de façon à ne rien bloquer :
 - GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`). Le build reçoit la clé Web3Forms par la variable du dépôt `VITE_WEB3FORMS_KEY` (Settings → Secrets and variables → Actions → Variables).
 - Dans les réglages du dépôt : Pages › Source = GitHub Actions.
 - Les images sont importées depuis `src/assets` (Vite gère alors le préfixe `base`). Ne jamais écrire de chemin absolu en `/…` à la main.
-- Balises à prévoir dans `index.html` : `title`, `description`, Open Graph (titre, description, image), `theme-color`. Image de partage **[À FOURNIR]** ou générée à partir du hero.
+- Balises de `index.html` (T18) : `title` (« Yoan Cuervo », comme `meta.title`), `description`, `theme-color` (`#0f0f0f` en sombre, `#e8e4df` en clair, selon `prefers-color-scheme`), favicon et icône d'écran d'accueil (`/favicon.png` : Vite ajoute le préfixe `base` à ce chemin absolu, en développement comme en build ; `%BASE_URL%` le doublait en développement), Open Graph (type, URL, titre « Yoan Cuervo · Web Developer », description, image avec dimensions et texte alternatif) et `twitter:card`. Les robots des réseaux n'exécutent pas JavaScript et veulent des adresses absolues : l'URL du site, `https://yoancuervo.github.io/Portfolio/`, est écrite en entier. Ces balises restent en anglais (langue par défaut du site).
+- Les images de `public/` ne sont pas importées depuis `src/assets` : elles sont référencées par `index.html`, hors de React. Elles sont générées par Edge en mode sans interface à partir de `scripts/share-images/*.html` (commande en tête de chaque fichier) : l'image de partage reprend le hero en thème sombre, la favicon recolore le monogramme fourni par Yoan.
 
 ## 12. Contenus manquants
 
@@ -559,7 +562,6 @@ En attendant, coder de façon à ne rien bloquer :
 | Validation des textes français proposés | Fichier `fr.ts` |
 | Nom du dépôt GitHub | Déploiement |
 | Compte et clé du service de formulaire | Contact |
-| Favicon et image de partage | `index.html` |
 
 Remarque de fond sur un texte validé : « I worked as a 1st AD in audiovisual industry » est fautif en anglais. La forme correcte est « in **the** audiovisual industry ». De plus, « 1st AD » ne sera pas compris hors du milieu : « first assistant director » est plus sûr (c'est déjà la formule utilisée dans la section About).
 
