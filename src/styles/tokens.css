@@ -79,6 +79,9 @@
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: ui-monospace, Consolas, monospace;
 
+  /* Quick start, long braking: entrance animations "pop" then settle. */
+  --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
+
   --w-regular: 400;
   --w-medium: 500;
   --w-semibold: 600;

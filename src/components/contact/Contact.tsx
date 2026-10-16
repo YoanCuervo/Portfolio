@@ -1,4 +1,5 @@
 import { useLanguage } from "../../context/LanguageContext";
+import { useReveal } from "../../hooks/useReveal";
 import BlurDecor from "../layout/BlurDecor";
 import Footer from "../layout/Footer";
 import Section from "../layout/Section";
@@ -8,6 +9,7 @@ import ContactForm from "./ContactForm";
 
 export default function Contact() {
   const { t } = useLanguage();
+  const { ref, revealed } = useReveal<HTMLDivElement>("contact");
 
   return (
     <Section id="contact" className={styles.contact}>
@@ -26,7 +28,12 @@ export default function Contact() {
         opacity={[0.18, 0.5]}
       />
 
-      <div className={styles.center}>
+      <div
+        ref={ref}
+        className={
+          revealed ? `${styles.center} ${styles.revealed}` : styles.center
+        }
+      >
         <SectionTitle id="contact-title">
           {t.contact.titleQuestion}{" "}
           <span className={styles.invite}>{t.contact.titleInvite}</span>

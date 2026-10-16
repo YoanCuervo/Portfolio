@@ -27,3 +27,32 @@
   font-weight: var(--w-body);
   line-height: 1.6;
 }
+
+/* Title, intro, then form: nth-child gives the cascade without passing an
+   index to SectionTitle and ContactForm. The form's live status region sits
+   before the form, hence n + 3. */
+@media (prefers-reduced-motion: no-preference) {
+  .center > * {
+    opacity: 0;
+  }
+
+  .center.revealed > * {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+  }
+
+  .center.revealed > :nth-child(2) {
+    animation-delay: 75ms;
+  }
+
+  .center.revealed > :nth-child(n + 3) {
+    animation-delay: 150ms;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
