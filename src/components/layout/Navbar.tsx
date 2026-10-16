@@ -4,6 +4,7 @@ import frFlag from "../../assets/flags/fr.svg";
 import gbFlag from "../../assets/flags/gb.svg";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useActiveSection } from "../../hooks/useActiveSection";
 import { scrollToSection } from "../../utils/scrollToSection";
 import IconLink from "../ui/IconLink";
 import styles from "./Navbar.module.css";
@@ -38,10 +39,21 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { lang, t, toggleLang } = useLanguage();
+  const isHome = pathname === "/";
+  const activeSection = useActiveSection(isHome);
+
+  // On /projects, the Projects link names the current page; on the home page,
+  // the link of the section on screen names the current location.
+  function currentFor(id: (typeof sectionIds)[number]) {
+    if (pathname === "/projects" && id === "projects") {
+      return "page";
+    }
+    return isHome && activeSection === id ? "location" : undefined;
+  }
 
   // On the home page the section is already there: scroll without navigating.
   function handleClick(event: MouseEvent<HTMLAnchorElement>, id: string) {
-    if (pathname === "/") {
+    if (isHome) {
       event.preventDefault();
       scrollToSection(id);
     }
@@ -67,11 +79,7 @@ export default function Navbar() {
                   to="/"
                   state={{ scrollTo: id }}
                   className={styles.link}
-                  aria-current={
-                    pathname === "/projects" && id === "projects"
-                      ? "page"
-                      : undefined
-                  }
+                  aria-current={currentFor(id)}
                   onClick={(event) => handleClick(event, id)}
                 >
                   {t.nav[id]}
