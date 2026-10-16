@@ -6,6 +6,10 @@ export const fr: typeof en = {
     title: "Yoan Cuervo",
     name: "Yoan Cuervo",
   },
+  a11y: {
+    skipLink: "Aller au contenu",
+    newTab: "(s'ouvre dans un nouvel onglet)",
+  },
   nav: {
     label: "Navigation principale",
     skills: "Compétences",
@@ -124,6 +128,8 @@ export const fr: typeof en = {
     },
     clientsTitle: "Productions, clients et agences",
     logoPlaceholder: "Logo",
+    pauseClients: "Mettre en pause le carrousel des logos",
+    playClients: "Reprendre le carrousel des logos",
   },
   contact: {
     titleQuestion: "Un projet en tête\u00a0?",

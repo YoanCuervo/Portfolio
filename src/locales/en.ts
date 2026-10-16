@@ -3,6 +3,10 @@ export const en = {
     title: "Yoan Cuervo",
     name: "Yoan Cuervo",
   },
+  a11y: {
+    skipLink: "Skip to content",
+    newTab: "(opens in a new tab)",
+  },
   nav: {
     label: "Main navigation",
     skills: "Skills",
@@ -121,6 +125,8 @@ export const en = {
     },
     clientsTitle: "Productions, clients and agencies",
     logoPlaceholder: "Logo",
+    pauseClients: "Pause the logo carousel",
+    playClients: "Play the logo carousel",
   },
   contact: {
     titleQuestion: "What's on your mind?",

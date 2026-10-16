@@ -33,7 +33,7 @@ export default function ProjectsPage() {
         opacity={[0.18, 0.55]}
       />
 
-      <main className={styles.main}>
+      <main id="main" tabIndex={-1} className={styles.main}>
         <Link to="/" state={{ scrollTo: "home" }} className={styles.back}>
           <svg
             viewBox="0 0 24 24"

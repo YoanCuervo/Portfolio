@@ -7,7 +7,8 @@ type ProjectCardProps = {
   headingLevel: 2 | 3;
 };
 
-// The whole card links to the live site. Without a live site it is a plain div.
+// The whole card links to the live site. Without a live site it is a div, kept in
+// the Tab order on Yoan's request so keyboard users still stop on every card.
 export default function ProjectCard({
   project,
   headingLevel,
@@ -42,9 +43,15 @@ export default function ProjectCard({
         className={`${styles.card} ${styles.link}`}
       >
         {content}
+        <span className="visually-hidden">{t.a11y.newTab}</span>
       </a>
     );
   }
 
-  return <div className={styles.card}>{content}</div>;
+  return (
+    // biome-ignore lint/a11y/noNoninteractiveTabindex: the card must be reachable with Tab even without a live link
+    <div className={styles.card} tabIndex={0}>
+      {content}
+    </div>
+  );
 }

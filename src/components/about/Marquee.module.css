@@ -25,7 +25,8 @@
   animation-name: scroll-left;
 }
 
-.marquee:hover .track {
+.marquee:hover .track,
+.track.paused {
   animation-play-state: paused;
 }
 
