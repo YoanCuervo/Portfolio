@@ -50,7 +50,7 @@ Avec `HashRouter`, le `#` de l'URL sert déjà au routage. Un lien `<a href="#sk
 
 - Les liens de navigation appellent une fonction `scrollToSection(id)` qui fait `document.getElementById(id)?.scrollIntoView()`. Avant de défiler, elle envoie l'événement `section-navigate` (avec l'`id`) : la section visée rejoue son animation d'entrée (`useReveal(id)`, voir 7).
 - Depuis `/projects`, un clic sur Skills, About ou Contact fait `navigate('/', { state: { scrollTo: id } })`. `HomePage` lit cet état dans un `useEffect` et défile vers la section.
-- Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation).
+- Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation) : à l'arrivée sur une section, son haut se cale sous la barre. L'espace du haut des sections ne compte donc pas la barre (17 octobre 2026) : 48 px pour Projects et Contact, 56 px pour About, 0 pour Skills, dont le contenu est centré.
 - Le défilement est doux (`scroll-behavior: smooth`), sauf si `prefers-reduced-motion: reduce`.
 - Au rechargement, la page repart toujours en haut : la restauration du défilement du navigateur est désactivée (`history.scrollRestoration = "manual"` dans `main.tsx`).
 
@@ -122,14 +122,15 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--muted` | Texte secondaire, paragraphes | `#9a9590` | `#5c5751` |
 | `--accent` | Liens, sous-titres en italique, contour de focus | `#d4a574` | `#7d4f22` |
 | `--accent-hover` | Lien survolé | `#e8b4b8` | `#0f0f0f` |
-| `--rose` | Étiquettes (équipe, statut de certification), citation | `#e8b4b8` | `#8f3f4b` |
+| `--rose` | Étiquettes (équipe, statut de certification) | `#e8b4b8` | `#8f3f4b` |
 | `--gold` | Bordure des pastilles, filet vertical du hero | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
 | `--card` | Fond des cards projet | `#181716` | `#f4f1ed` |
 | `--form-bg` | Fond du cadre du formulaire et des champs (noir des pastilles en sombre, 16 octobre 2026) | `#0f0f0f` | `#f4f1ed` |
 | `--control` | Bordure des boutons ronds, champs, zones en pointillés | `#6e6558` | `#7d746a` |
-| `--tile-bg` | Fond des tuiles du carrousel | transparent | `#f4f1ed` |
+| `--tile-bg` | Fond des tuiles du carrousel, blanc du site en sombre (T23) | `var(--fg)` | `#f4f1ed` |
+| `--tile-fg` | Nom dans une tuile sans logo (T23) | `#0f0f0f` | `var(--fg)` |
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
 | `--btn-bg` | Bouton d'envoi, fond | `#d4a574` | `#0f0f0f` |
 | `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
@@ -145,7 +146,7 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--pill-hover-icon` | Pastille survolée, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero : identique dans les deux thèmes, pour que le texte passe à la ligne aux mêmes endroits et que le nom ne bouge pas au changement de thème | 400 | 400 |
-| `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
+| `--w-italic` | Graisse de « Web Developer » | 400 | 500 |
 
 Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes : `#d4a574`, `#e8b4b8`, `#c9b896`. Seule leur opacité change (voir 5.4).
 
@@ -168,7 +169,6 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 | Titre de certification | Cormorant | 27 px | 600 | 1.15 | `--fg` |
 | Titre de projet | Cormorant | 30 px | 600 | 1.1 | `--fg` |
 | Accroche d'About | Cormorant | 31 px | 400 | 1.25 | `--fg` |
-| Citation | Cormorant italique | 30 px | `--w-italic` | 1.2 | `--rose` |
 | Paragraphe courant (About, Contact) | Plex Sans | 17 px | `--w-body` | 1.6 | `--muted` |
 | Résumés de projet | Plex Sans | 14 px | `--w-body` | 1.5 | `--muted` |
 | Liens de navigation | Plex Sans | 15 px | 400 | | `--fg` |
@@ -274,7 +274,7 @@ Le premier paragraphe a un retour à la ligne après « Hello there! ».
 
 ### 6.3 Skills (`#skills`)
 
-- `min-height: 100svh`, contenu centré verticalement, `gap: 36px`, `padding: 104px 6% 48px`.
+- `min-height: 100svh`, contenu centré verticalement, sans espace en haut (17 octobre 2026), `gap: 36px`, `padding: 0 6% 48px`.
 - `h2` « Skills », puis deux colonnes en `flex-wrap` avec `gap: 48px 72px` :
   - **Stack** (`flex: 2 1 560px`) : cinq lignes. Chaque ligne : `border-top: 1px solid var(--line)`, `padding-top: 14px`, un libellé de 140 px de large à gauche et les pastilles à droite (`flex: 1 1 320px`).
   - **Certifications** (`flex: 1 1 340px`) : deux blocs, chacun `border-top: 1px solid var(--line)`, `padding: 18px 0 10px`, `gap: 8px` : titre, détail (15 px, `--muted`), étiquette.
@@ -298,7 +298,7 @@ Certifications :
 
 ### 6.4 Projects (`#projects`)
 
-- `min-height: 100svh`, `gap: 22px`, `padding: 100px 6% 40px`.
+- `min-height: 100svh`, `gap: 22px`, `padding: 48px 6% 40px`.
 - `h2` « Projects », trois `ProjectRow` (les projets `featured`), puis le lien « View all projects » **calé à droite** (Cormorant italique 500, 24 px, `--accent`) vers `/projects`.
 
 **`ProjectRow`** (`article`, `flex-wrap`, `gap: 18px 40px`, `padding-top: 20px`, `border-top: 1px solid var(--line)`) :
@@ -331,35 +331,41 @@ Contenu :
 
 ### 6.5 About (`#about`)
 
-- `min-height: 100svh`, `gap: 40px`, `padding: 104px 0 48px` (pas de marge latérale sur la section : le carrousel va d'un bord à l'autre ; les blocs de texte ont leur propre `padding: 0 6%`).
+- `min-height: 100svh`, `gap: 40px`, `padding: 56px 6% 48px`. Le carrousel respecte les mêmes marges que le texte (17 octobre 2026) : ses bords fondus se font à l'intérieur.
 - `h2` « About me », puis deux colonnes (`gap: 32px 72px`) :
-  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche, paragraphe (`max-width: 40em`), citation (`blockquote`) ;
-  - droite (`flex: 2 1 340px`) : `h3` « Soft Skills » et dix pastilles sans icône.
-- Puis `h3` « Productions, clients and agencies » et le carrousel.
+  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche, puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
+  - droite (`flex: 2 1 340px`, `gap: 14px`) : `h3` « Soft Skills » et dix pastilles sans icône. La citation « Imagination rules the world. » a été retirée le 17 octobre 2026.
+- Puis, 64 px plus bas (écart de section de 40 px + `margin-top: 24px`), une ligne avec `h3` « Productions & collaborations that trusted me » à gauche et le bouton pause à droite, puis le carrousel (17 octobre 2026).
 
-Textes :
+Textes (17 octobre 2026 : français écrit par Yoan, anglais traduit par Claude, à valider) :
 
-> After ten years in the audiovisual industry as a first assistant director, I traded my call sheets for code.
+> After ten years in the audiovisual industry as an assistant director, I traded my call sheets for code.
 
-> From 2014 to 2025, I organized shoots for fiction, commercials and live broadcasts, coordinated crews and met deadlines under heavy constraints. Today I build complete web applications and I am training in AI integration.
+> There I learned to turn a vision into reality, to coordinate teams with diverse expertise and to carry ambitious projects through to completion.
+>
+> Today I apply the same logic to web development: understanding a need, designing a solution and solving problems to bring functional, accessible applications to life.
+>
+> Alongside this, I am deepening my skills in artificial intelligence, eager to bring its possibilities into the development of useful, relevant applications.
+>
+> What drives me hasn't changed: **bringing ideas to life.**
 
-> “Imagination rules the world.”
+Soft skills, dans cet ordre : Adaptability, Prioritization, Autonomy, User understanding, Analytical thinking, Fast learner, Initiative, Product collaboration, Agile methods (Scrum), Debugging. Sur un écran de 1920 px, cet ordre donne deux lignes de quatre puis Agile et Debugging seuls, dans les deux langues. Plus étroit, le retour à la ligne change.
 
-Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast learner, Initiative, Agile methods (Scrum), Autonomy, Product collaboration, User understanding.
+**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu en sens alternés (T23, 17 octobre 2026 : liste tirée du profil LinkedIn de Yoan, diffuseurs, productions, agences et marques mélangés). Une rangée doit être plus large que l'écran, sinon la boucle laisse un vide : 10 tuiles de 176 px (marge comprise) couvrent les 1 690 px du carrousel sur un écran de 1920 px, marges de 6 % déduites.
 
-**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu.
-
-- Rangée 1, vers la droite : Canal+, Eurosport, France Télévisions, When We Were Kids, Studio Bagel, [À FOURNIR].
-- Rangée 2, vers la gauche : Les Guignols, Kayenta, Darjeeling, 48 Hour Film Project, [À FOURNIR], [À FOURNIR].
-- Tuile (`ClientTile`) : hauteur 88 px, `padding: 0 26px 0 14px`, `gap: 14px`, `margin-right: 16px`, fond `--tile-bg`, bordure `1px solid var(--tile-border)`, arrondi 2 px. Logo 58 × 58 px (tant qu'il manque : carré en pointillés « Logo »), nom en Cormorant 600, 24 px.
-- Technique : chaque rangée contient la liste **deux fois** (la seconde copie en `aria-hidden="true"`), `width: max-content; white-space: nowrap`, animation de `translateX(-50%)` à `0` (rangée 1) ou de `0` à `-50%` (rangée 2), 40 s, linéaire, infinie.
+- Rangée 1, vers la droite : Canal+, Adidas, Publicis, TF1, Microsoft, Iconoclast, Lego, Norma, France Télévisions, BETC (remplace Blue Paris, 17 octobre 2026).
+- Rangée 2, vers la gauche : Eurosport, Buzzman, Lidl, Sony Pictures, Quad, Le Coq Sportif, La Banque Postale, When We Were Kids, Volvic, Société Générale. Ponk et Lenthal retirés par Yoan le 17 octobre 2026.
+- **[À FOURNIR]** : liste définitive par Yoan, orthographe de « Norma » à confirmer.
+- Tuile (`ClientTile`) : 160 × 88 px, `padding: 0 16px`, `margin-right: 16px`, fond `--tile-bg`, bordure `1px solid var(--tile-border)`, arrondi 2 px. Logo seul, sans nom affiché, dans une case de 120 × 56 px. Les tuiles sont claires dans les deux thèmes : les logos, en couleurs d'origine, y gardent la même taille (la plaque claire du thème sombre a été retirée le 17 octobre 2026). Tant qu'un logo manque, la tuile affiche le nom en Cormorant 600, 18 px, couleur `--tile-fg`. En thème sombre, la tuile est blanche (`--fg`) et le texte noir (17 octobre 2026).
+- Survol d'une tuile : le logo, toujours en couleurs d'origine et à pleine opacité, grossit à 1,04 (250 ms). Une infobulle donne le nom : fond `--fg`, texte `--bg`, IBM Plex Sans 500, 13 px, `padding: 6px 10px`, arrondi 4 px, fondu de 200 ms. Elle sort du côté extérieur de la rangée (au-dessus de la rangée 1, en dessous de la rangée 2) pour ne jamais couvrir l'autre. Le conteneur, qui coupe ce qui dépasse, est agrandi de 44 px de ce côté (marge négative pour ne rien décaler) et laisse passer les clics hors des tuiles. Le nom reste lu par les lecteurs d'écran, le logo a un `alt` vide.
+- Technique : chaque rangée contient la liste **deux fois** (la seconde copie en `aria-hidden="true"`), `width: max-content; white-space: nowrap`, animation de `translateX(-50%)` à `0` (rangées impaires) ou de `0` à `-50%` (rangées paires), 40 s, linéaire, infinie.
 - Bords fondus : `mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)` sur le conteneur.
 - Pause au survol. Arrêt complet si `prefers-reduced-motion: reduce`.
-- Bouton pause / lecture (T17, WCAG 2.2.2 : le survol ne couvre ni le clavier ni le tactile) : `IconLink` rond de 44 px aligné à droite sous les deux rangées, qui arrête ou relance les deux à la fois. Son `aria-label` change avec l'état (« Pause the logo carousel » / « Play the logo carousel »). Masqué en mouvement réduit, où le carrousel est déjà à l'arrêt. Absent des maquettes, validé par Yoan le 16 octobre 2026.
+- Bouton pause / lecture (T17, WCAG 2.2.2 : le survol ne couvre ni le clavier ni le tactile) : `IconLink` rond de 44 px aligné à droite sur la ligne du titre, au-dessus des rangées (17 octobre 2026), qui les arrête ou les relance toutes à la fois. Son `aria-label` change avec l'état (« Pause the logo carousel » / « Play the logo carousel »). Masqué en mouvement réduit, où le carrousel est déjà à l'arrêt. Absent des maquettes, validé par Yoan le 16 octobre 2026.
 
 ### 6.6 Contact (`#contact`) et pied de page
 
-- `min-height: 100svh`, colonne centrée, `padding: 104px 6% 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
+- `min-height: 100svh`, colonne centrée, `padding: 48px 6% 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
 - Bloc central (`gap: 22px`, centré verticalement dans l'espace restant) :
   - `h2` centré : « What's on your mind? » en graisse 600, suivi de « Let's talk about it. » en graisse **normale** (400), sur la même ligne, 60 px.
   - Paragraphe centré : « Describe it in a few lines and I'll reply by email. » (17 px, `max-width: 34em`).
@@ -494,11 +500,10 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | Wedoo, sa construction | J'ai développé tout le système de signalement, du formulaire utilisateur au traitement par l'administrateur, côté front et back. |
 | Poke_Gacha, le projet | Jeu web de collection Pokémon : joueurs, collection, équipes, objets et évolutions. |
 | Poke_Gacha, sa construction | Base conçue en MCD Merise, puis schéma MySQL avec contraintes d'intégrité. API Express et interface React, en TypeScript. |
-| About, accroche | Après dix années dans l'audiovisuel comme premier assistant réalisateur, j'ai troqué mes feuilles de service contre du code. |
-| About, paragraphe | De 2014 à 2025, j'ai organisé des tournages de fiction, de publicité et de direct, coordonné des équipes et tenu des délais sous forte contrainte. Je développe aujourd'hui des applications web complètes et je me forme à l'intégration de l'IA. |
-| Citation | « L'imagination gouverne le monde. » |
-| Soft skills | Adaptabilité, Esprit analytique, Gestion des priorités, Debugging, Apprentissage rapide, Prise d'initiative, Méthodes agiles (Scrum), Autonomie, Collaboration produit, Compréhension des utilisateurs |
-| Carrousel | Productions, clients et agences |
+| About, accroche | Après dix années dans l'audiovisuel comme assistant réalisateur, (retour à la ligne) j'ai troqué mes feuilles de service contre du code. |
+| About, paragraphes | J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement. / Aujourd'hui, j'applique cette même logique au développement web : comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles. / En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes. / Ce qui m'anime reste inchangé : **donner vie aux idées.** |
+| Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
+| Carrousel | Productions & collaborations qui m'ont fait confiance |
 | Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
 | /projects | Retour à l'accueil · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
@@ -556,8 +561,8 @@ En attendant, coder de façon à ne rien bloquer :
 | URL du site en ligne et du dépôt de Wedoo et de Poke_Gacha | Projets |
 | Captures d'écran de Wedoo et de Poke_Gacha | Projets |
 | Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
-| Logos des productions et clients (format SVG de préférence, version lisible sur fond sombre et sur fond clair) | Carrousel |
-| Trois noms manquants du carrousel (une agence, un client, une production) | Carrousel |
+| Liste complète des agences, orthographe de « Norma » (T23) | Carrousel |
+| Logos : les 20 sont en place depuis le 17 octobre 2026. Publicis (logo carré) reste petit dans sa tuile : version recadrée ou texte seul à choisir par Yoan (T23) | Carrousel |
 | Validation des textes français proposés | Fichier `fr.ts` |
 | Nom du dépôt GitHub | Déploiement |
 | Compte et clé du service de formulaire | Contact |
@@ -641,6 +646,10 @@ Critères : le lien souligné suit le défilement, sans clignotement entre deux 
 **T22 · Champ de code du hero** — dépend de T08 · spécification 6.2 (ajouté le 15 octobre 2026)
 `CodeField` (canvas), `data/codeGlyphs.ts`, tokens `--font-mono`, `--hole`, `--lens`, `--code-intensity`, `data-lens-anchor` sur la dernière lettre du nom, fond plein des `IconLink`.
 Critères : champ à peine visible au repos, en tronçons ; les lignes glissent vers la gauche à des vitesses différentes ; la lentille courbe les lignes autour d'une ombre de 48 px et suit le curseur sans retard visible ; souris hors du hero, la lentille revient en douceur sur le « o » de « Cuervo » ; le texte du hero reste lisible ; défilement fluide avec la lentille active ; révélateur simple et aucun mouvement en mouvement réduit ; animation suspendue quand le hero n'est plus à l'écran ; ignoré des lecteurs d'écran ; conforme dans les deux thèmes.
+
+**T23 · Carrousel des références** — dépend de T11 · spécification 6.5 (ajouté le 16 octobre 2026, repris de T20)
+`data/clients.ts` en deux rangées mélangées (diffuseurs, productions, agences, marques), logos dans `src/assets/logos/`.
+Critères : noms tirés du parcours de Yoan ; un logo officiel par nom, sans nom affiché ; logos en couleurs d'origine ; au survol, la rangée s'arrête, le logo grossit légèrement et une infobulle donne le nom sans être coupée ; le bouton pause reste cliquable ; boucle sans vide sur grand écran ; conforme dans les deux thèmes.
 
 ### Lot 5 — Finitions
 

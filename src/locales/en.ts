@@ -106,10 +106,14 @@ export const en = {
   },
   about: {
     title: "About me",
-    hook: "After ten years in the audiovisual industry as a first assistant director, I traded my call sheets for code.",
-    paragraph:
-      "From 2014 to 2025, I organized shoots for fiction, commercials and live broadcasts, coordinated crews and met deadlines under heavy constraints. Today I build complete web applications and I am training in AI integration.",
-    quote: "“Imagination rules the world.”",
+    hook: "After ten years in the audiovisual industry as an assistant director,\nI traded my call sheets for code.",
+    paragraphs: [
+      "There I learned to turn a vision into reality, to coordinate teams with diverse expertise and to carry ambitious projects through to completion.",
+      "Today I apply the same logic to web development: understanding a need, designing a solution and solving problems to bring functional, accessible applications to life.",
+      "Alongside this, I am deepening my skills in artificial intelligence, eager to bring its possibilities into the development of useful, relevant applications.",
+    ],
+    closing: "What drives me hasn't changed: ",
+    closingEmphasis: "bringing ideas to life.",
     softSkillsTitle: "Soft Skills",
     softSkills: {
       adaptability: "Adaptability",
@@ -123,8 +127,7 @@ export const en = {
       productCollaboration: "Product collaboration",
       userUnderstanding: "User understanding",
     },
-    clientsTitle: "Productions, clients and agencies",
-    logoPlaceholder: "Logo",
+    clientsTitle: "Productions & collaborations that trusted me",
     pauseClients: "Pause the logo carousel",
     playClients: "Play the logo carousel",
   },

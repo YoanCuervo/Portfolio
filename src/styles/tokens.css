@@ -14,7 +14,8 @@
   --card: #181716;
   --form-bg: #0f0f0f;
   --control: #6e6558;
-  --tile-bg: transparent;
+  --tile-bg: var(--fg);
+  --tile-fg: #0f0f0f;
   --tile-border: #34302c;
   --btn-bg: #d4a574;
   --btn-fg: #0f0f0f;
@@ -50,6 +51,7 @@
   --form-bg: #f4f1ed;
   --control: #7d746a;
   --tile-bg: #f4f1ed;
+  --tile-fg: var(--fg);
   --tile-border: #b5ada1;
   --btn-bg: #0f0f0f;
   --btn-fg: #e8e4df;
