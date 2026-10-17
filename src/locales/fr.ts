@@ -109,10 +109,14 @@ export const fr: typeof en = {
   },
   about: {
     title: "À propos de moi",
-    hook: "Après dix années dans l'audiovisuel comme premier assistant réalisateur, j'ai troqué mes feuilles de service contre du code.",
-    paragraph:
-      "De 2014 à 2025, j'ai organisé des tournages de fiction, de publicité et de direct, coordonné des équipes et tenu des délais sous forte contrainte. Je développe aujourd'hui des applications web complètes et je me forme à l'intégration de l'IA.",
-    quote: "«\u00a0L'imagination gouverne le monde.\u00a0»",
+    hook: "Après dix années dans l'audiovisuel comme assistant réalisateur,\nj'ai troqué mes feuilles de service contre du code.",
+    paragraphs: [
+      "J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement.",
+      "Aujourd'hui, j'applique cette même logique au développement web\u00a0: comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles.",
+      "En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes.",
+    ],
+    closing: "Ce qui m'anime reste inchangé\u00a0: ",
+    closingEmphasis: "donner vie aux idées.",
     softSkillsTitle: "Soft Skills",
     softSkills: {
       adaptability: "Adaptabilité",
@@ -126,8 +130,7 @@ export const fr: typeof en = {
       productCollaboration: "Collaboration produit",
       userUnderstanding: "Compréhension des utilisateurs",
     },
-    clientsTitle: "Productions, clients et agences",
-    logoPlaceholder: "Logo",
+    clientsTitle: "Productions & collaborations qui m'ont fait confiance",
     pauseClients: "Mettre en pause le carrousel des logos",
     playClients: "Reprendre le carrousel des logos",
   },

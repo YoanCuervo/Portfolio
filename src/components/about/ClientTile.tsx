@@ -1,24 +1,32 @@
-import { useLanguage } from "../../context/LanguageContext";
 import type { Client } from "../../data/clients";
 import styles from "./ClientTile.module.css";
 
-export default function ClientTile({ client }: { client: Client }) {
-  const { t } = useLanguage();
+type ClientTileProps = {
+  client: Client;
+  tooltipSide: "above" | "below";
+};
 
+// The name stays in the DOM: it is what screen readers announce, the logo
+// itself has an empty alt.
+export default function ClientTile({ client, tooltipSide }: ClientTileProps) {
   return (
     <li className={styles.tile}>
       {client.logo ? (
-        <img
-          src={client.logo}
-          alt=""
-          width={58}
-          height={58}
-          className={styles.logo}
-        />
+        <>
+          <img
+            src={client.logo}
+            alt=""
+            width={120}
+            height={56}
+            className={styles.logo}
+          />
+          <span className={`${styles.tooltip} ${styles[tooltipSide]}`}>
+            {client.name}
+          </span>
+        </>
       ) : (
-        <span className={styles.placeholder}>{t.about.logoPlaceholder}</span>
+        <span className={styles.fallback}>{client.name}</span>
       )}
-      <span className={styles.name}>{client.name}</span>
     </li>
   );
 }

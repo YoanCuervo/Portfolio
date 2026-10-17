@@ -8,6 +8,20 @@
     #000 93%,
     transparent
   );
+  /* The box grows on the tooltip side, so the tooltip is not clipped, and the
+     negative margin keeps the layout in place. The extra area lets clicks
+     through, to the pause button for instance: only the tiles catch the mouse. */
+  pointer-events: none;
+}
+
+.above {
+  margin-top: -44px;
+  padding-top: 44px;
+}
+
+.below {
+  margin-bottom: -44px;
+  padding-bottom: 44px;
 }
 
 /* No gap here: the loop relies on translateX(-50%) landing exactly on the second copy. */
@@ -34,6 +48,7 @@
   display: flex;
   padding: 0;
   list-style: none;
+  pointer-events: auto;
 }
 
 @keyframes scroll-right {

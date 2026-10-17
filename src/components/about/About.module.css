@@ -1,14 +1,9 @@
-/* No side padding: the carousel runs edge to edge. Text blocks get .padded. */
 .about {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 104px 0 48px;
-}
-
-.padded {
-  padding: 0 6%;
+  padding: 56px 6% 48px;
 }
 
 .columns {
@@ -26,10 +21,12 @@
 
 .hook {
   color: var(--fg);
-  font-family: var(--font-serif);
-  font-size: 31px;
+  font-family: var(--font-sans);
+  font-size: 28px;
   font-weight: var(--w-regular);
   line-height: 1.25;
+  /* The text carries a line break ("\n"): the locale files hold no HTML. */
+  white-space: pre-line;
 }
 
 .paragraph {
@@ -40,13 +37,10 @@
   line-height: 1.6;
 }
 
-.quote {
-  color: var(--rose);
-  font-family: var(--font-serif);
-  font-size: 30px;
-  font-style: italic;
-  font-weight: var(--w-italic);
-  line-height: 1.2;
+/* IBM Plex Sans is only loaded up to 500: an explicit weight avoids a faux bold. */
+.emphasis {
+  color: var(--fg);
+  font-weight: var(--w-medium);
 }
 
 .softSkills {
@@ -63,15 +57,18 @@
   list-style: none;
 }
 
+/* Added to the section gap (40px): 64px between the text and the carousel. */
 .clients {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-top: 24px;
 }
 
-.carouselControl {
+.clientsHeader {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* The carousel does not move in reduced motion: nothing to pause. */

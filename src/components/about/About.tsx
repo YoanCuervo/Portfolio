@@ -48,11 +48,9 @@ export default function About() {
         opacity={[0.2, 0.55]}
       />
 
-      <div className={styles.padded}>
-        <SectionTitle id="about-title">{t.about.title}</SectionTitle>
-      </div>
+      <SectionTitle id="about-title">{t.about.title}</SectionTitle>
 
-      <div className={`${styles.padded} ${styles.columns}`}>
+      <div className={styles.columns}>
         <div
           ref={ref}
           className={
@@ -60,10 +58,19 @@ export default function About() {
           }
         >
           <p className={styles.hook}>{t.about.hook}</p>
-          <p className={styles.paragraph}>{t.about.paragraph}</p>
-          <blockquote className={styles.quote}>
-            <p>{t.about.quote}</p>
-          </blockquote>
+          <div>
+            {t.about.paragraphs.map((paragraph) => (
+              <p key={paragraph} className={styles.paragraph}>
+                {paragraph}
+              </p>
+            ))}
+            <p className={styles.paragraph}>
+              {t.about.closing}
+              <strong className={styles.emphasis}>
+                {t.about.closingEmphasis}
+              </strong>
+            </p>
+          </div>
         </div>
 
         <div className={styles.softSkills}>
@@ -79,19 +86,26 @@ export default function About() {
       </div>
 
       <div className={styles.clients}>
-        <SectionSubtitle className={styles.padded}>
-          {t.about.clientsTitle}
-        </SectionSubtitle>
-        <Marquee clients={clientRows[0]} direction="right" paused={paused} />
-        <Marquee clients={clientRows[1]} direction="left" paused={paused} />
-        <div className={`${styles.padded} ${styles.carouselControl}`}>
-          <IconLink
-            label={paused ? t.about.playClients : t.about.pauseClients}
-            onClick={() => setPaused(!paused)}
-          >
-            {paused ? playIcon : pauseIcon}
-          </IconLink>
+        <div className={styles.clientsHeader}>
+          <SectionSubtitle>{t.about.clientsTitle}</SectionSubtitle>
+          <div className={styles.carouselControl}>
+            <IconLink
+              label={paused ? t.about.playClients : t.about.pauseClients}
+              onClick={() => setPaused(!paused)}
+            >
+              {paused ? playIcon : pauseIcon}
+            </IconLink>
+          </div>
         </div>
+        {clientRows.map((row, index) => (
+          <Marquee
+            key={row[0].name}
+            clients={row}
+            direction={index % 2 === 0 ? "right" : "left"}
+            tooltipSide={index === 0 ? "above" : "below"}
+            paused={paused}
+          />
+        ))}
       </div>
     </Section>
   );
