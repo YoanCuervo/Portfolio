@@ -300,6 +300,7 @@ Certifications :
 
 - `min-height: 100svh`, `gap: 22px`, `padding: 48px 6% 40px`.
 - `h2` « Projects », trois `ProjectRow` (les projets `featured`), puis le lien « View all projects » **calé à droite** (Cormorant italique 500, 24 px, `--accent`) vers `/projects`.
+- Refonte prévue au ticket T19 (17 octobre 2026) : trois grandes cartes-images à la place des rangées, design en cours chez Yoan. La présentation en rangées décrite ici reste celle de `/projects`.
 
 **`ProjectRow`** (`article`, `flex-wrap`, `gap: 18px 40px`, `padding-top: 20px`, `border-top: 1px solid var(--line)`) :
 
@@ -660,7 +661,11 @@ Critères : parcours complet au clavier ; audit Lighthouse accessibilité à 100
 `title`, `description`, Open Graph, `theme-color`, favicon.
 Critères : l'aperçu de lien affiche titre, description et image.
 
-**T19 · Performance** — dépend de T20
+**T19 · Project Cards** — dépend de T10 · spécification 6.4 · **bloqué** tant que le design n'est pas tranché par Yoan (ajouté le 17 octobre 2026)
+Refonte visuelle de la section Projects de la page d'accueil : trois grandes cartes. Chaque carte est une image qui contient tous les éléments actuels : titre, type, étiquettes, « Le projet », « Sa construction » et lien GitHub. La page `/projects` garde la présentation actuelle en rangées.
+Critères : à définir avec la maquette.
+
+**T21 · Performance** — dépend de T19, T20 (ancien T19, renuméroté le 17 octobre 2026)
 Images au bon format et à la bonne taille, `loading="lazy"` hors du premier écran, `width` et `height` renseignés.
 Critères : Lighthouse performance ≥ 90 sur mobile ; aucun décalage de mise en page au chargement.
 
@@ -671,10 +676,10 @@ Critères : plus aucun texte entre crochets ni zone en pointillés sur le site e
 
 ### Lot 7 — Mobile
 
-**T21 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
+**T24 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
 À découper en tickets une fois la maquette validée (navigation, hero, rangées de projet, carrousel, formulaire).
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T20 → T19 → T21. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
 
 ## 14. Consignes pour Claude Code
 
