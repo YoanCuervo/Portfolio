@@ -21,8 +21,8 @@
 
 .hook {
   color: var(--fg);
-  font-family: var(--font-serif);
-  font-size: 31px;
+  font-family: var(--font-sans);
+  font-size: 28px;
   font-weight: var(--w-regular);
   line-height: 1.25;
   /* The text carries a line break ("\n"): the locale files hold no HTML. */

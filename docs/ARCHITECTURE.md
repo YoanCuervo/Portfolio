@@ -168,7 +168,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 | Libellé de ligne de stack (`h4`) | Cormorant | 22 px | 600 | | `--fg` |
 | Titre de certification | Cormorant | 27 px | 600 | 1.15 | `--fg` |
 | Titre de projet | Cormorant | 30 px | 600 | 1.1 | `--fg` |
-| Accroche d'About | Cormorant | 31 px | 400 | 1.25 | `--fg` |
+| Accroche d'About | Plex Sans, comme les paragraphes (17 octobre 2026) | 28 px | 400 | 1.25 | `--fg` |
 | Paragraphe courant (About, Contact) | Plex Sans | 17 px | `--w-body` | 1.6 | `--muted` |
 | Résumés de projet | Plex Sans | 14 px | `--w-body` | 1.5 | `--muted` |
 | Liens de navigation | Plex Sans | 15 px | 400 | | `--fg` |
@@ -562,7 +562,7 @@ En attendant, coder de façon à ne rien bloquer :
 | Captures d'écran de Wedoo et de Poke_Gacha | Projets |
 | Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
 | Liste complète des agences, orthographe de « Norma » (T23) | Carrousel |
-| Logos : les 20 sont en place depuis le 17 octobre 2026. Publicis (logo carré) reste petit dans sa tuile : version recadrée ou texte seul à choisir par Yoan (T23) | Carrousel |
+| Logos : les 20 sont en place depuis le 17 octobre 2026. Publicis validé par Yoan tel quel (T23) | Carrousel |
 | Validation des textes français proposés | Fichier `fr.ts` |
 | Nom du dépôt GitHub | Déploiement |
 | Compte et clé du service de formulaire | Contact |
