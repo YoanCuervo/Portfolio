@@ -23,6 +23,7 @@
   --lens: var(--accent);
   --code-intensity: 1;
   --shadow: rgba(0, 0, 0, 0.55);
+  --scrim: rgba(0, 0, 0, 0.78);
   --pill-bg: #0f0f0f;
   --pill-fg: var(--fg);
   --pill-icon: var(--fg);
@@ -60,6 +61,7 @@
   /* Dark text fading into a light background is much harder to see: the hero code field needs stronger opacities. */
   --code-intensity: 4;
   --shadow: rgba(15, 15, 15, 0.16);
+  --scrim: rgba(255, 255, 255, 0.65);
   --pill-bg: #ffffff;
   --pill-fg: #0f0f0f;
   --pill-icon: var(--icon);

@@ -67,6 +67,7 @@ export const en = {
     theProject: "The project",
     howBuilt: "How it was built",
     viewRepo: "View GitHub repo",
+    repoShort: "GitHub",
     screenshotPlaceholder: "Project screenshot",
     team: {
       team: "Team Project",

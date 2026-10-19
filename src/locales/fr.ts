@@ -70,6 +70,7 @@ export const fr: typeof en = {
     theProject: "Le projet",
     howBuilt: "Sa construction",
     viewRepo: "Voir le dépôt GitHub",
+    repoShort: "GitHub",
     screenshotPlaceholder: "Capture d'écran du projet",
     team: {
       team: "Projet d'équipe",

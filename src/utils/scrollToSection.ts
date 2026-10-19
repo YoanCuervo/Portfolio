@@ -2,9 +2,10 @@
 // entrance animation (useReveal, AnimatedRole).
 export const SECTION_NAVIGATE_EVENT = "section-navigate";
 
-export function scrollToSection(id: string) {
+// Without `behavior`, the scroll follows the CSS `scroll-behavior` (smooth).
+export function scrollToSection(id: string, behavior?: ScrollBehavior) {
   window.dispatchEvent(
     new CustomEvent<string>(SECTION_NAVIGATE_EVENT, { detail: id }),
   );
-  document.getElementById(id)?.scrollIntoView();
+  document.getElementById(id)?.scrollIntoView({ behavior });
 }

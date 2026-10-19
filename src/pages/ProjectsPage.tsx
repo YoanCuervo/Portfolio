@@ -34,7 +34,7 @@ export default function ProjectsPage() {
       />
 
       <main id="main" tabIndex={-1} className={styles.main}>
-        <Link to="/" state={{ scrollTo: "home" }} className={styles.back}>
+        <Link to="/" state={{ scrollTo: "projects" }} className={styles.back}>
           <svg
             viewBox="0 0 24 24"
             width="16"
