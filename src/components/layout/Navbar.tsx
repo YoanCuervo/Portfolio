@@ -2,7 +2,6 @@ import type { MouseEvent } from "react";
 import { Link, useLocation } from "react-router";
 import frFlag from "../../assets/flags/fr.svg";
 import gbFlag from "../../assets/flags/gb.svg";
-import monogram from "../../assets/monogram.png";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import { useActiveSection } from "../../hooks/useActiveSection";
@@ -69,7 +68,6 @@ export default function Navbar() {
           className={styles.name}
           onClick={(event) => handleClick(event, "home")}
         >
-          <img src={monogram} alt="" className={styles.monogram} />
           {t.meta.name}
         </Link>
 

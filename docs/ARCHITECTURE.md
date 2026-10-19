@@ -219,7 +219,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 ### 6.1 Navigation (`Navbar`) — commune aux deux pages
 
 - `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px 6%`, fond `--bg`, bordure basse `1px solid var(--line)`.
-- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil, précédé du monogramme (la favicon, `src/assets/monogram.png`, 36 × 36 px, arrondi 4 px, `gap: 12px`, `alt=""` car le nom suit). En thème clair, son fond se confond avec la page : une bordure `1px solid var(--gold)` en dessine le bord (validé par Yoan le 16 octobre 2026).
+- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil. Le monogramme qui le précédait a été retiré le 20 octobre 2026 ; il reste la favicon.
 - Droite, espacés de 28 px : Skills, Projects, About, Contact, puis deux boutons ronds espacés de 8 px.
 - **Lien actif** : souligné (`text-underline-offset: 6px`), transition 150 ms. Sur l'accueil, c'est la section visible (`useActiveSection`). Sur `/projects`, c'est « Projects ».
 - **Bouton thème** : en sombre il montre un soleil (`aria-label="Switch to light theme"`), en clair une lune (`aria-label="Switch to dark theme"`).
