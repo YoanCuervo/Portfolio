@@ -136,6 +136,7 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
 | `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
+| `--code` | Code au repos du champ de code (20 octobre 2026 : en clair, même rose que la lentille au lieu de `--gold`) | `var(--gold)` | `var(--lens)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
 | `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
@@ -219,7 +220,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 ### 6.1 Navigation (`Navbar`) — commune aux deux pages
 
 - `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px 6%`, fond `--bg`, bordure basse `1px solid var(--line)`.
-- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil, précédé du monogramme (la favicon, `src/assets/monogram.png`, 36 × 36 px, arrondi 4 px, `gap: 12px`, `alt=""` car le nom suit). En thème clair, son fond se confond avec la page : une bordure `1px solid var(--gold)` en dessine le bord (validé par Yoan le 16 octobre 2026).
+- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil. Le monogramme qui le précédait a été retiré le 20 octobre 2026 ; il reste la favicon.
 - Droite, espacés de 28 px : Skills, Projects, About, Contact, puis deux boutons ronds espacés de 8 px.
 - **Lien actif** : souligné (`text-underline-offset: 6px`), transition 150 ms. Sur l'accueil, c'est la section visible (`useActiveSection`). Sur `/projects`, c'est « Projects ».
 - **Bouton thème** : en sombre il montre un soleil (`aria-label="Switch to light theme"`), en clair une lune (`aria-label="Switch to dark theme"`).
@@ -235,7 +236,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
   2. Un bloc décalé de `padding-left: 40px` qui contient :
      - « Web Developer » (voir typographie), seul élément animé du hero : composant `AnimatedRole`, texte complet masqué visuellement pour les lecteurs d'écran et une lettre par `span` en `aria-hidden` pour l'animation (voir 7) ;
      - un groupe avec filet vertical : `margin-left: -32px; padding: 6px 0 6px 30px; border-left: 2px solid var(--gold)`, `gap: 22px`, qui contient :
-       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`) ;
+       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`). Au survol (souris) et au focus clavier (`:focus-visible`, le contour `--accent` restant visible), les quatre inversent leurs couleurs dans les deux thèmes : fond `--fg`, icône `--bg`, bordure `--fg`, 200 ms, sans transition en mouvement réduit (20 octobre 2026). Les autres `IconLink` (navigation, carrousel) ne changent pas ;
        - trois paragraphes, `max-width: 760px`, `gap: 10px`.
 
 Textes (anglais, validés) :
@@ -256,7 +257,7 @@ Le premier paragraphe a un retour à la ligne après « Hello there! ».
 - Un `<canvas>` dans une `div` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
 - Lignes de caractères en `--font-mono`, 11 px, une ligne tous les 16 px. Caractères tirés au hasard dans `data/codeGlyphs.ts` : `A–Z a–z 0–9 / + = . ; ~` (aspect de jetons, d'empreintes, de données encodées).
 - Chaque ligne glisse vers la gauche à sa propre vitesse, entre 20 et 40 px/s.
-- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--gold` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
+- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--code` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
 
 *La lentille (trou noir)*
 
@@ -423,7 +424,7 @@ Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps J
 
 - Même `Navbar` (« Projects » souligné), page en colonne `min-height: 100svh`.
 - `main` : `padding: 40px 6% 56px`, `gap: 22px` :
-  1. lien « Back to home » avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px). Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
+  1. lien « Back » (« Retour » en français, raccourci le 20 octobre 2026) avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px). Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
   2. `h1` « All projects » (76 px) ;
   3. **tous** les projets en `ProjectRow`, même composant que sur l'accueil. La maquette en montre cinq : Wedoo, Poke_Gacha, et trois emplacements vides.
 - Niveaux de titres décalés d'un cran : titre de projet en `h2`, « The project » et « How it was built » en `h3` (sur l'accueil : `h3` et `h4`). `ProjectRow` reçoit donc une prop `headingLevel`.
@@ -525,7 +526,7 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
 | Carrousel | Productions & collaborations qui m'ont fait confiance |
 | Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
-| /projects | Retour à l'accueil · Tous les projets |
+| /projects | Retour · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
 
 Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
@@ -651,7 +652,7 @@ Critères : un message de test arrive dans la boîte de Yoan ; chaque état du t
 ### Lot 3 — Page des projets
 
 **T14 · `/projects`** — dépend de T10 · spécification 6.7
-Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back to home » ramène sur la section Projects de l'accueil (modifié le 20 octobre 2026, avant : en haut de l'accueil) ; niveaux de titres corrects.
+Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back » ramène sur la section Projects de l'accueil (modifié le 20 octobre 2026, avant : en haut de l'accueil) ; niveaux de titres corrects.
 
 ### Lot 4 — Mouvement
 

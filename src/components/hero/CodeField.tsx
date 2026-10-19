@@ -148,7 +148,7 @@ export default function CodeField() {
       context.textBaseline = "top";
 
       const tokens = getComputedStyle(canvas);
-      const gold = hexToRgb(tokens.getPropertyValue("--gold"));
+      const code = hexToRgb(tokens.getPropertyValue("--code"));
       colors = {
         lens: hexToRgb(tokens.getPropertyValue("--lens")),
         hole: hexToRgb(tokens.getPropertyValue("--hole")),
@@ -185,9 +185,9 @@ export default function CodeField() {
           font,
         );
         if (layerContext) {
-          layerContext.fillStyle = `rgba(${gold}, ${REST_OPACITY * intensity})`;
+          layerContext.fillStyle = `rgba(${code}, ${REST_OPACITY * intensity})`;
           layerContext.fillText(half.faint, 0, 0);
-          layerContext.fillStyle = `rgba(${gold}, ${REST_OPACITY * BRIGHT_FACTOR * intensity})`;
+          layerContext.fillStyle = `rgba(${code}, ${REST_OPACITY * BRIGHT_FACTOR * intensity})`;
           layerContext.fillText(half.bright, 0, 0);
         }
         return {

@@ -151,7 +151,7 @@ export const en = {
     failure: "Sending failed. Try again in a moment.",
   },
   projectsPage: {
-    backToHome: "Back to home",
+    backToHome: "Back",
     title: "All projects",
   },
 };

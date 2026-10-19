@@ -44,6 +44,36 @@
   gap: 12px;
 }
 
+/* The round links and the mail button (IconLink) swap their colors on hover and on
+   keyboard focus, in both themes. Scoped to the hero: the Navbar buttons keep their
+   look. */
+.icons > :is(a, button) {
+  transition:
+    background-color 200ms,
+    color 200ms,
+    border-color 200ms;
+}
+
+.icons > :is(a, button):focus-visible {
+  border-color: var(--fg);
+  background: var(--fg);
+  color: var(--bg);
+}
+
+@media (hover: hover) {
+  .icons > :is(a, button):hover {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icons > :is(a, button) {
+    transition: none;
+  }
+}
+
 /* Missing address (T20): same circle as IconLink, dashed and without a link. */
 .missing {
   display: grid;

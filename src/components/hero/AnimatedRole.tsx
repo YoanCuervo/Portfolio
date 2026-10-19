@@ -19,7 +19,9 @@ export default function AnimatedRole({ text, className }: AnimatedRoleProps) {
   return (
     <p ref={ref} className={classes}>
       <span className={styles.srOnly}>{text}</span>
-      <span aria-hidden="true" className={styles.letters}>
+      {/* key={text}: on a language change React recreates every letter instead of
+          reusing the old ones, so the whole word rises again. */}
+      <span key={text} aria-hidden="true" className={styles.letters}>
         {[...text].map((char, index) => (
           <span
             // biome-ignore lint/suspicious/noArrayIndexKey: the letters never move, so the index is a stable key

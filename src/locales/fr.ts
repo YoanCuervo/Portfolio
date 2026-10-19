@@ -154,7 +154,7 @@ export const fr: typeof en = {
     failure: "L'envoi a échoué. Réessayez dans un instant.",
   },
   projectsPage: {
-    backToHome: "Retour à l'accueil",
+    backToHome: "Retour",
     title: "Tous les projets",
   },
 };
