@@ -577,18 +577,15 @@ En attendant, coder de façon à ne rien bloquer :
 
 ## 12. Contenus manquants
 
+État au 20 octobre 2026 : il ne manque plus que les contenus des projets. Yoan les fournira une fois les projets déployés (décision du 16 octobre 2026) ; d'ici là, ils restent entre crochets ou en pointillés.
+
 | Élément | Où |
 |---|---|
-| URL du site en ligne et du dépôt de Wedoo et de Poke_Gacha | Projets |
+| URL du site en ligne de Wedoo et de Poke_Gacha (les dépôts GitHub sont renseignés) | Projets |
 | Captures d'écran de Wedoo et de Poke_Gacha | Projets |
 | Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
-| Liste complète des agences, orthographe de « Norma » (T23) | Carrousel |
-| Logos : les 20 sont en place depuis le 17 octobre 2026. Publicis validé par Yoan tel quel (T23) | Carrousel |
-| Validation des textes français proposés | Fichier `fr.ts` |
-| Nom du dépôt GitHub | Déploiement |
-| Compte et clé du service de formulaire | Contact |
 
-Remarque de fond sur un texte validé : « I worked as a 1st AD in audiovisual industry » est fautif en anglais. La forme correcte est « in **the** audiovisual industry ». De plus, « 1st AD » ne sera pas compris hors du milieu : « first assistant director » est plus sûr (c'est déjà la formule utilisée dans la section About).
+Réglés depuis : carrousel complet avec ses 20 logos (T23), textes français validés par Yoan (20 octobre 2026), nom du dépôt (`Portfolio`), service de formulaire (Web3Forms, clé fournie par la CI, T13), liens GitHub, LinkedIn et Discord, formule « first assistant director in the audiovisual industry ».
 
 ## 13. Backlog
 
@@ -685,13 +682,13 @@ Critères : l'aperçu de lien affiche titre, description et image.
 Refonte visuelle de la section Projects de la page d'accueil : trois grandes cartes. Chaque carte est une image qui contient tous les éléments actuels : titre, type, étiquettes, « Le projet », « Sa construction » et lien GitHub. La page `/projects` garde la présentation actuelle en rangées.
 Critères : trois cartes côte à côte à 1440 px, la section tient dans l'écran sous la `Navbar` ; capture sur toute la carte, texte lisible dans les deux thèmes ; textes de 6.4 inchangés ; chaque carte est une étape du Tab, suivie de son lien GitHub ; entrée en éventail et effets de survol de 6.4, tous coupés en mouvement réduit, la mise en avant aussi au clavier ; `/projects` inchangée.
 
-**T21 · Performance** — dépend de T19, T20 (ancien T19, renuméroté le 17 octobre 2026)
+**T21 · Performance** — dépend de T19, T20 (ancien T19, renuméroté le 17 octobre 2026) · peut commencer sans attendre T20 : les captures des projets passeront par le même traitement à leur arrivée
 Images au bon format et à la bonne taille, `loading="lazy"` hors du premier écran, `width` et `height` renseignés.
 Critères : Lighthouse performance ≥ 90 sur mobile ; aucun décalage de mise en page au chargement.
 
 ### Lot 6 — Contenu
 
-**T20 · Contenus réels** — dépend de la fourniture des éléments de la section 12
+**T20 · Contenus réels** — dépend de la fourniture des éléments de la section 12 · **en attente** du déploiement des projets (il ne reste que leurs contenus)
 Critères : plus aucun texte entre crochets ni zone en pointillés sur le site en ligne.
 
 ### Lot 7 — Mobile
