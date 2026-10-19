@@ -1,9 +1,18 @@
+/* Fits the screen below the fixed Navbar, "View all projects" included. */
 .projects {
-  min-height: 100svh;
+  min-height: calc(100svh - var(--nav-height));
   display: flex;
   flex-direction: column;
   gap: 22px;
   padding: 48px 6% 40px;
+}
+
+/* Three columns on desktop; cards wrap on narrower screens until the mobile design (T24). */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
 }
 
 .viewAll {

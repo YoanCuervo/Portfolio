@@ -4,7 +4,7 @@ import { projects } from "../../data/projects";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
 import SectionTitle from "../layout/SectionTitle";
-import ProjectRow from "./ProjectRow";
+import FeaturedProjectCard from "./FeaturedProjectCard";
 import styles from "./ProjectsSection.module.css";
 
 export default function ProjectsSection() {
@@ -23,14 +23,15 @@ export default function ProjectsSection() {
 
       <SectionTitle id="projects-title">{t.projects.title}</SectionTitle>
 
-      {featured.map((project, index) => (
-        <ProjectRow
-          key={project.id}
-          project={project}
-          headingLevel={3}
-          index={index}
-        />
-      ))}
+      <div className={styles.cards}>
+        {featured.map((project, index) => (
+          <FeaturedProjectCard
+            key={project.id}
+            project={project}
+            index={index}
+          />
+        ))}
+      </div>
 
       <Link to="/projects" className={styles.viewAll}>
         {t.projects.viewAll}
