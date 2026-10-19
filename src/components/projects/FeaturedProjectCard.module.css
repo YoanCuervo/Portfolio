@@ -1,4 +1,5 @@
 .card {
+  --glow: color-mix(in srgb, var(--halo-amber) 35%, transparent);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -10,19 +11,33 @@
   transition:
     transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
     box-shadow 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 300ms;
+    border-color 300ms,
+    opacity 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    scale 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* The card lifts slightly on hover (real pointer, motion allowed). */
+:global([data-theme="light"]) .card {
+  --glow: color-mix(in srgb, var(--halo-rose) 60%, transparent);
+}
+
+/* The card lifts slightly on hover (real pointer, motion allowed), with a glow that
+   follows its outline: the second shadow has no offset. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card:hover {
     border-color: var(--control);
-    box-shadow: 0 18px 40px -18px var(--shadow);
+    box-shadow:
+      0 18px 40px -18px var(--shadow),
+      0 0 40px var(--glow);
     transform: translateY(-4px) scale(1.02);
   }
 
   .linked:hover .screenshot {
     transform: scale(1.03);
+  }
+
+  /* Lighter veil on hover: more of the screenshot shows through. */
+  .card:hover .body::before {
+    opacity: 0.87;
   }
 }
 
@@ -76,8 +91,8 @@
   inset: -80px 0 0;
   z-index: -1;
   background: linear-gradient(to bottom, transparent, var(--scrim) 80px);
+  transition: opacity 300ms;
 }
-
 .title {
   color: var(--fg);
   font-family: var(--font-serif);
@@ -169,13 +184,15 @@
   .card.revealed {
     opacity: 1;
     animation: rise 500ms var(--ease-out-slow) both;
-    animation-delay: calc(var(--i) * 75ms);
+    animation-delay: calc(var(--i) * 100ms);
   }
 }
 
+/* Fan entrance: the side cards start from the centre (--shift: 1 for the left card,
+   -1 for the right one, 0 for the middle one). */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(32px);
+    transform: translate(calc(var(--shift) * 60px), 32px);
   }
 }

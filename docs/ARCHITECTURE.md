@@ -138,7 +138,7 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
-| `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.78)` |
+| `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
 | `--pill-bg` | Pastille au repos, fond (T15) | `#0f0f0f` | `#ffffff` |
 | `--pill-fg` | Pastille au repos, texte | `var(--fg)` | `#0f0f0f` |
 | `--pill-icon` | Pastille au repos, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
@@ -305,13 +305,18 @@ Certifications :
 
 **`FeaturedProjectCard`** (T19, 19 octobre 2026, d'après la maquette de Yoan) : `article`, fond `--card`, bordure `1px solid var(--line)`. Les polices, tailles et couleurs sont celles de `ProjectRow` et `ProjectCard` ; seule la disposition change.
 
-- La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` (noir en thème sombre, blanc en thème clair), qui démarre en fondu 80 px au-dessus du texte, garde celui-ci lisible. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
+- La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` (noir à 78 % en thème sombre, blanc à 65 % en thème clair), qui démarre en fondu 80 px au-dessus du texte, garde celui-ci lisible. Le 20 octobre 2026, le blanc est passé de 78 % à 65 % : à 78 % il rendait les photos sombres laiteuses, à 50 % le texte devenait illisible. Un voile « givré » (`backdrop-filter: blur`) a été essayé et écarté le même jour. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
 - En haut à droite : l'étiquette « Team Project » ou « Solo Project » (`Tag`), sur un fond `--card` pour rester lisible sur la capture.
 - Le texte est calé en bas de la carte, de haut en bas : titre du projet (`h3`) et type ; « The project » et « How it was built » (`h4`) côte à côte, séparés par un filet vertical `--line` ; les pastilles de techno, centrées. Le lien GitHub (`ArrowLink`, sans fond, libellé court « GitHub » suivi du nom du projet en texte masqué pour les lecteurs d'écran) est dans le coin bas droit, symétrique de l'étiquette (centres à 28 px des bords).
 
 - Lien vers le site en ligne : porté par le titre, dont le pseudo-élément `::after` couvre toute la carte (le lien GitHub passe au-dessus avec `z-index`). Un `<a>` ne peut pas en contenir un autre, d'où ce choix. Le contour de focus est reporté sur la carte entière (`:has(:focus-visible)`).
 - Clavier : chaque carte est une étape du Tab (le lien du titre, ou la carte elle-même en `tabIndex={0}` sans site en ligne), suivie de son lien GitHub.
-- Survol : identique à `ProjectCard` (voir plus bas).
+- Survol (souris seulement, tout est coupé en mouvement réduit), 300 ms :
+  - soulèvement, ombre, bordure `--control` et zoom de la capture si la carte est un lien, comme `ProjectCard` (voir plus bas) ;
+  - lueur qui suit le contour de la carte : seconde ombre `0 0 40px`, sans décalage, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair (à 35 %, elle était presque invisible sur le fond clair). Elle n'apparaît que sur la carte survolée ; un halo commun qui glissait de carte en carte a été essayé et écarté (19 octobre 2026) ;
+  - les deux autres cartes reculent : `opacity: 0.6`, `scale: 0.98`. Même effet quand le focus clavier entre dans une carte (`:focus-within`) ;
+  - le voile `--scrim` s'allège (`opacity: 0.87` sur le voile, soit environ 68 %) pour laisser voir davantage la capture ;
+  - une lumière qui suivait le curseur (dégradé radial `--accent`) a été essayée et retirée le 20 octobre 2026.
 
 **`ProjectRow`** (`article`, `flex-wrap`, `gap: 18px 40px`, `padding-top: 20px`, `border-top: 1px solid var(--line)`) :
 
@@ -433,8 +438,10 @@ Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les a
 | Hero, rôle (« Web Developer ») | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace compte pour un cran). En place en moins de 1,1 s. Le nom et le reste du hero sont affichés d'emblée, sans animation (décidé à T15). |
 | Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms |
 | Pastille, étiquette | Survol | Échange des états clair et sombre (pastille) ou remplissage `--rose` (étiquette), 200 ms (voir 5.5) |
-| Projects (accueil et `/projects`) | Entrée dans l'écran | Chaque carte (accueil) ou rangée (`/projects`) monte de 32 px en fondu quand elle entre à l'écran, 500 ms, `--ease-out-slow`, décalage de 75 ms. Une version liée au défilement (`animation-timeline: view()`, façon apple.com) a été essayée le 16 octobre 2026 et écartée : l'effet ne se voyait pas sur des rangées |
+| Projects, accueil | Entrée dans l'écran | En éventail (T19) : la carte du milieu monte de 32 px en fondu, puis 100 ms plus tard les deux autres arrivent depuis le centre (décalage horizontal de 60 px en plus de la montée). 500 ms par carte, `--ease-out-slow` |
+| Projects, `/projects` | Entrée dans l'écran | Chaque rangée monte de 32 px en fondu quand elle entre à l'écran, 500 ms, `--ease-out-slow`, décalage de 75 ms. Une version liée au défilement (`animation-timeline: view()`, façon apple.com) a été essayée le 16 octobre 2026 et écartée : l'effet ne se voyait pas sur des rangées |
 | Card projet | Survol | Soulèvement et ombre, 300 ms ; zoom de la capture si la card est un lien (voir 6.4) |
+| Carte projet de l'accueil | Survol | En plus : lueur au contour, recul des deux autres cartes, voile allégé (voir 6.4) |
 | About, texte | Entrée dans l'écran | Montée de 24 px en fondu, 500 ms, `--ease-out-slow` |
 | Contact | Entrée dans l'écran | Titre, introduction puis formulaire : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms (16 octobre 2026 : Contact suit le reste de la page) |
 | Carrousel | Permanent | Voir 6.5 |
@@ -675,7 +682,7 @@ Critères : l'aperçu de lien affiche titre, description et image.
 
 **T19 · Project Cards** — dépend de T10 · spécification 6.4 (ajouté le 17 octobre 2026, maquette fournie le 19 octobre 2026)
 Refonte visuelle de la section Projects de la page d'accueil : trois grandes cartes. Chaque carte est une image qui contient tous les éléments actuels : titre, type, étiquettes, « Le projet », « Sa construction » et lien GitHub. La page `/projects` garde la présentation actuelle en rangées.
-Critères : trois cartes côte à côte à 1440 px, la section tient dans l'écran sous la `Navbar` ; capture sur toute la carte, texte lisible dans les deux thèmes ; textes de 6.4 inchangés ; chaque carte est une étape du Tab, suivie de son lien GitHub ; survol et entrée comme les rangées, coupés en mouvement réduit ; `/projects` inchangée.
+Critères : trois cartes côte à côte à 1440 px, la section tient dans l'écran sous la `Navbar` ; capture sur toute la carte, texte lisible dans les deux thèmes ; textes de 6.4 inchangés ; chaque carte est une étape du Tab, suivie de son lien GitHub ; entrée en éventail et effets de survol de 6.4, tous coupés en mouvement réduit, la mise en avant aussi au clavier ; `/projects` inchangée.
 
 **T21 · Performance** — dépend de T19, T20 (ancien T19, renuméroté le 17 octobre 2026)
 Images au bon format et à la bonne taille, `loading="lazy"` hors du premier écran, `width` et `height` renseignés.

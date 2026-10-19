@@ -9,7 +9,7 @@ import styles from "./FeaturedProjectCard.module.css";
 
 type FeaturedProjectCardProps = {
   project: Project;
-  index: number; // position in the entrance cascade
+  index: number; // column, 0 to 2
 };
 
 // The live-site link sits on the title and its ::after covers the whole card: a
@@ -27,11 +27,18 @@ export default function FeaturedProjectCard({
   if (project.liveUrl) classNames.push(styles.linked);
   if (revealed) classNames.push(styles.revealed);
 
+  // Fan entrance for the three cards: the middle one (index 1) comes first, then
+  // the side ones slide out from the centre.
+  const entrance = {
+    "--i": Math.abs(index - 1),
+    "--shift": 1 - index,
+  } as CSSProperties;
+
   return (
     <article
       ref={ref}
       className={classNames.join(" ")}
-      style={{ "--i": index } as CSSProperties}
+      style={entrance}
       tabIndex={project.liveUrl ? undefined : 0}
     >
       <div className={styles.media}>
