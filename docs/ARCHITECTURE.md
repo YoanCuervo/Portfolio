@@ -424,7 +424,7 @@ Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps J
 
 - Même `Navbar` (« Projects » souligné), page en colonne `min-height: 100svh`.
 - `main` : `padding: 40px 6% 56px`, `gap: 22px` :
-  1. lien « Back to home » avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px). Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
+  1. lien « Back » (« Retour » en français, raccourci le 20 octobre 2026) avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px). Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
   2. `h1` « All projects » (76 px) ;
   3. **tous** les projets en `ProjectRow`, même composant que sur l'accueil. La maquette en montre cinq : Wedoo, Poke_Gacha, et trois emplacements vides.
 - Niveaux de titres décalés d'un cran : titre de projet en `h2`, « The project » et « How it was built » en `h3` (sur l'accueil : `h3` et `h4`). `ProjectRow` reçoit donc une prop `headingLevel`.
@@ -526,7 +526,7 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
 | Carrousel | Productions & collaborations qui m'ont fait confiance |
 | Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
-| /projects | Retour à l'accueil · Tous les projets |
+| /projects | Retour · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
 
 Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
@@ -652,7 +652,7 @@ Critères : un message de test arrive dans la boîte de Yoan ; chaque état du t
 ### Lot 3 — Page des projets
 
 **T14 · `/projects`** — dépend de T10 · spécification 6.7
-Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back to home » ramène sur la section Projects de l'accueil (modifié le 20 octobre 2026, avant : en haut de l'accueil) ; niveaux de titres corrects.
+Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back » ramène sur la section Projects de l'accueil (modifié le 20 octobre 2026, avant : en haut de l'accueil) ; niveaux de titres corrects.
 
 ### Lot 4 — Mouvement
 
