@@ -136,6 +136,7 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
 | `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
+| `--code` | Code au repos du champ de code (20 octobre 2026 : en clair, même rose que la lentille au lieu de `--gold`) | `var(--gold)` | `var(--lens)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
 | `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
@@ -256,7 +257,7 @@ Le premier paragraphe a un retour à la ligne après « Hello there! ».
 - Un `<canvas>` dans une `div` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
 - Lignes de caractères en `--font-mono`, 11 px, une ligne tous les 16 px. Caractères tirés au hasard dans `data/codeGlyphs.ts` : `A–Z a–z 0–9 / + = . ; ~` (aspect de jetons, d'empreintes, de données encodées).
 - Chaque ligne glisse vers la gauche à sa propre vitesse, entre 20 et 40 px/s.
-- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--gold` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
+- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--code` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
 
 *La lentille (trou noir)*
 

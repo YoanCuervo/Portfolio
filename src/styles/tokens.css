@@ -21,6 +21,7 @@
   --btn-fg: #0f0f0f;
   --hole: #0f0f0f;
   --lens: var(--accent);
+  --code: var(--gold);
   --code-intensity: 1;
   --shadow: rgba(0, 0, 0, 0.55);
   --scrim: rgba(0, 0, 0, 0.78);
@@ -58,6 +59,7 @@
   --btn-fg: #e8e4df;
   --hole: var(--bg);
   --lens: var(--rose);
+  --code: var(--lens);
   /* Dark text fading into a light background is much harder to see: the hero code field needs stronger opacities. */
   --code-intensity: 4;
   --shadow: rgba(15, 15, 15, 0.16);
