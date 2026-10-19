@@ -235,7 +235,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
   2. Un bloc décalé de `padding-left: 40px` qui contient :
      - « Web Developer » (voir typographie), seul élément animé du hero : composant `AnimatedRole`, texte complet masqué visuellement pour les lecteurs d'écran et une lettre par `span` en `aria-hidden` pour l'animation (voir 7) ;
      - un groupe avec filet vertical : `margin-left: -32px; padding: 6px 0 6px 30px; border-left: 2px solid var(--gold)`, `gap: 22px`, qui contient :
-       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`) ;
+       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`). Au survol (souris) et au focus clavier (`:focus-visible`, le contour `--accent` restant visible), les quatre inversent leurs couleurs dans les deux thèmes : fond `--fg`, icône `--bg`, bordure `--fg`, 200 ms, sans transition en mouvement réduit (20 octobre 2026). Les autres `IconLink` (navigation, carrousel) ne changent pas ;
        - trois paragraphes, `max-width: 760px`, `gap: 10px`.
 
 Textes (anglais, validés) :
