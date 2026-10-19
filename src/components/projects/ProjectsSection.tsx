@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLanguage } from "../../context/LanguageContext";
 import { projects } from "../../data/projects";
 import BlurDecor from "../layout/BlurDecor";
@@ -9,7 +9,15 @@ import styles from "./ProjectsSection.module.css";
 
 export default function ProjectsSection() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const featured = projects.filter((project) => project.featured);
+
+  // Stores the target in the current history entry before leaving: the browser's
+  // back button from /projects then lands on this section (HomePage reads the
+  // state), not at the top of the page.
+  function rememberSection() {
+    navigate(".", { replace: true, state: { scrollTo: "projects" } });
+  }
 
   return (
     <Section id="projects" className={styles.projects}>
@@ -33,7 +41,7 @@ export default function ProjectsSection() {
         ))}
       </div>
 
-      <Link to="/projects" className={styles.viewAll}>
+      <Link to="/projects" onClick={rememberSection} className={styles.viewAll}>
         {t.projects.viewAll}
       </Link>
     </Section>
