@@ -96,6 +96,6 @@ Un ticket est fini quand ses critères (section 13) sont remplis :
 
 - Ajouter un backend, une base de données, un CMS, des statistiques de visite.
 - Créer une page de détail par projet ou un bouton de téléchargement du CV : retirés du périmètre.
-- Coder la version mobile avant que sa maquette existe (ticket T21 bloqué). Ne pas inventer de menu mobile.
+- Coder la version mobile avant que sa maquette existe (ticket T24 bloqué). Ne pas inventer de menu mobile.
 - Remettre en cause une décision marquée [FIGÉ].
 - Écrire l'adresse mail de Yoan dans le dépôt : elle reste configurée côté service de formulaire.
