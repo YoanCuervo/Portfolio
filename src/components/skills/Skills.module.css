@@ -26,3 +26,12 @@
   flex-direction: column;
   gap: 14px;
 }
+
+/* Mobile: natural height, a rule between sections. */
+@media (max-width: 767px) {
+  .skills {
+    min-height: 0;
+    padding: var(--section-y) var(--gutter);
+    border-top: 1px solid var(--line);
+  }
+}

@@ -37,3 +37,18 @@
 .footer {
   margin: 0 6%;
 }
+
+@media (max-width: 767px) {
+  .main {
+    padding: var(--section-y) var(--gutter);
+  }
+
+  .title {
+    font-size: 48px;
+    line-height: 1.05;
+  }
+
+  .footer {
+    margin: 0 var(--gutter);
+  }
+}

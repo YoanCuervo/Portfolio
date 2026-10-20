@@ -20,8 +20,15 @@
   transition: transform 250ms ease;
 }
 
-.tile:hover .logo {
-  transform: scale(1.04);
+/* A real pointer only: on touch, a tap would leave the zoom and the tooltip stuck. */
+@media (hover: hover) {
+  .tile:hover .logo {
+    transform: scale(1.04);
+  }
+
+  .tile:hover .tooltip {
+    opacity: 1;
+  }
 }
 
 .tooltip {
@@ -48,10 +55,6 @@
 
 .below {
   top: calc(100% + 8px);
-}
-
-.tile:hover .tooltip {
-  opacity: 1;
 }
 
 /* Missing logo (T23): the name stands in for it. */

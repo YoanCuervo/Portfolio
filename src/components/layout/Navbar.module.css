@@ -69,3 +69,10 @@
   height: 16px;
   object-fit: cover;
 }
+
+/* Mobile: the section links move to the tab bar (T24b). */
+@media (max-width: 767px) {
+  .links {
+    display: none;
+  }
+}
