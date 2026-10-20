@@ -44,7 +44,11 @@ export default function ProjectRow({
               ))}
             </ul>
           )}
-          {project.team && <Tag>{t.projects.team[project.team]}</Tag>}
+          {project.team && (
+            <div className={styles.desktopOnly}>
+              <Tag>{t.projects.team[project.team]}</Tag>
+            </div>
+          )}
         </div>
 
         <div className={styles.blocks}>
@@ -54,7 +58,7 @@ export default function ProjectRow({
             </BlockTitle>
             <p className={styles.summary}>{text.summary}</p>
             {project.repoUrl && (
-              <div>
+              <div className={styles.desktopOnly}>
                 <ArrowLink href={project.repoUrl}>
                   {t.projects.viewRepo}
                 </ArrowLink>
@@ -68,6 +72,21 @@ export default function ProjectRow({
             <p className={styles.summary}>{text.build}</p>
           </div>
         </div>
+
+        {/* Mobile: the tag and the GitHub link move below the two blocks. A second copy
+            rather than CSS reordering, so screen readers and Tab follow the visual order. */}
+        {(project.team || project.repoUrl) && (
+          <div className={styles.footer}>
+            {project.team && <Tag>{t.projects.team[project.team]}</Tag>}
+            {project.repoUrl && (
+              <div className={styles.footerRepo}>
+                <ArrowLink href={project.repoUrl}>
+                  {t.projects.viewRepo}
+                </ArrowLink>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
