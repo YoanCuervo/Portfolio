@@ -16,6 +16,7 @@ Site vitrine statique d'un développeur web fullstack : une page d'accueil en ci
 | Animations | 7 |
 | Thème, langue, textes français | 8 |
 | Accessibilité | 9 |
+| Version mobile (point de rupture, règles par section) | 10 |
 | Contenus manquants | 12 |
 | Tickets et critères de fin | 13 |
 
@@ -59,7 +60,8 @@ Aucune autre dépendance sans accord explicite de Yoan. Pas de framework CSS, pa
 - **Flash de thème** : `data-theme` est posé sur `<html>` par un script en ligne dans `index.html`, avant React. Ne pas déplacer cette logique dans un `useEffect`.
 - **`localStorage`** : lecture et écriture dans un `try/catch`, le site doit fonctionner sans.
 - **Carrousel** : chaque rangée contient la liste deux fois, la seconde copie en `aria-hidden`. La boucle repose sur `translateX(-50%)` : ne pas ajouter de `gap` entre les deux copies.
-- **Maquettes** : elles sont en style en ligne et en largeur fixe de 1440 px. Ce sont des contraintes de l'outil de maquette, pas un modèle de code.
+- **Maquettes** : elles sont en style en ligne et en largeur fixe (1440 px pour le bureau, 428 px pour le mobile). Ce sont des contraintes de l'outil de maquette, pas un modèle de code.
+- **Maquette mobile** (`docs/maquette-mobile/`) : guide visuel seulement. En cas d'écart (textes, couleurs, contenus, comportements), le cahier fait foi.
 
 ## Méthode de travail
 
@@ -96,6 +98,6 @@ Un ticket est fini quand ses critères (section 13) sont remplis :
 
 - Ajouter un backend, une base de données, un CMS, des statistiques de visite.
 - Créer une page de détail par projet ou un bouton de téléchargement du CV : retirés du périmètre.
-- Coder la version mobile avant que sa maquette existe (ticket T24 bloqué). Ne pas inventer de menu mobile.
+- Reprendre de la maquette mobile un texte, une couleur ou un comportement qui contredit le cahier.
 - Remettre en cause une décision marquée [FIGÉ].
 - Écrire l'adresse mail de Yoan dans le dépôt : elle reste configurée côté service de formulaire.
