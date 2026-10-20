@@ -122,8 +122,9 @@
   outline: none;
 }
 
+/* Cancels the body's 14px gap: the type sits right under the title. */
 .type {
-  margin-top: -8px;
+  margin-top: -14px;
   color: var(--fg);
   font-size: 14px;
 }
@@ -179,11 +180,12 @@
 }
 
 /* Mobile: same card, the two blocks are stacked and the pills are smaller, so five
-   of them fit on one line from 390px. The 51px the pills free up go to the top
-   padding: the card keeps its height and more of the screenshot shows. */
+   of them fit on one line from 390px. The space the pills (51px) and the title
+   gap (6px) free up goes to the top padding: the card keeps its height and more of
+   the screenshot shows. */
 @media (max-width: 767px) {
   .card {
-    padding-top: 107px;
+    padding-top: 113px;
   }
 
   .stack {
