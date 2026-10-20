@@ -45,9 +45,11 @@
 
 /* Mobile: natural height, a rule between sections. */
 @media (max-width: 767px) {
+  /* Shorter top padding than the other sections, equal to the title-to-cards gap:
+     the carousel and its controls fit the screen on more phones. */
   .projects {
     min-height: 0;
-    padding: var(--section-y) var(--gutter);
+    padding: 22px var(--gutter) var(--section-y);
     border-top: 1px solid var(--line);
   }
 

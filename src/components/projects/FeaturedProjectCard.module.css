@@ -124,7 +124,7 @@
 
 .type {
   margin-top: -8px;
-  color: var(--muted);
+  color: var(--fg);
   font-size: 14px;
 }
 
@@ -151,8 +151,10 @@
   font-weight: var(--w-medium);
 }
 
+/* --fg, not --muted like ProjectRow: over the screenshot and its veil, grey text
+   drops below 4.5:1 in both themes. */
 .summary {
-  color: var(--muted);
+  color: var(--fg);
   font-size: 14px;
   font-weight: var(--w-body);
   line-height: 1.5;
@@ -176,11 +178,23 @@
   z-index: 1;
 }
 
-/* Mobile: same card, the two blocks are stacked. The taller top padding keeps above
-   the fullest card's text the same 168px of screenshot as on desktop. */
+/* Mobile: same card, the two blocks are stacked and the pills are smaller, so five
+   of them fit on one line from 390px. The 51px the pills free up go to the top
+   padding: the card keeps its height and more of the screenshot shows. */
 @media (max-width: 767px) {
   .card {
-    padding-top: 168px;
+    padding-top: 107px;
+  }
+
+  .stack {
+    gap: 4px;
+  }
+
+  .stack > li > * {
+    height: 22px;
+    margin: 0;
+    padding: 0 6px;
+    font-size: 10px;
   }
 
   .blocks {
