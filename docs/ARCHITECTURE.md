@@ -758,7 +758,7 @@ Critères : plus aucun texte entre crochets ni zone en pointillés sur le site e
 
 ### Lot 7 — Mobile
 
-T24 (version mobile) est découpé en sept tickets le 20 octobre 2026, une fois la maquette reçue · spécification 10. Pour chacun, en plus des critères listés : rendu bureau inchangé à 1440 px ; aucun défilement horizontal à 320, 375, 390, 430 et 767 px ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
+T24 (version mobile) est découpé en sept tickets le 20 octobre 2026, une fois la maquette reçue · spécification 10. Exception à la règle des demandes de fusion (décision de Yoan, 20 octobre 2026) : chaque ticket T24 part de la branche d'intégration `docs/T24-mobile-tickets` et y revient par sa demande de fusion ; cette branche ne rejoint `develop` qu'une fois les sept tickets finis, par une seule demande de fusion. La CI ne tourne pas sur ces demandes intermédiaires : `npm run check` et `npm run build` en local en tiennent lieu. Pour chacun, en plus des critères listés : rendu bureau inchangé à 1440 px ; aucun défilement horizontal à 320, 375, 390, 430 et 767 px ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
 
 **T24a · Socle mobile** · spécification 10 et 10.1
 Point de rupture, variables, `viewport-fit=cover`, tailles de titres, hauteurs naturelles et filets des sections, survols sous `@media (hover: hover)`, correction du débordement.

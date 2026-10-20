@@ -42,3 +42,17 @@
   font-style: italic;
   font-weight: var(--w-medium);
 }
+
+/* Mobile: natural height, a rule between sections. */
+@media (max-width: 767px) {
+  .projects {
+    min-height: 0;
+    padding: var(--section-y) var(--gutter);
+    border-top: 1px solid var(--line);
+  }
+
+  /* One card per row until the mobile carousel (T24d): minmax(320px) overflows below 365px. */
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

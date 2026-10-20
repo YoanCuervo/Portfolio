@@ -5,3 +5,10 @@
   font-weight: var(--w-semibold);
   line-height: 1;
 }
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 42px;
+    line-height: 1.1;
+  }
+}

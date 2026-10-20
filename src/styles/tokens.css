@@ -94,3 +94,13 @@
 
   --nav-height: 72px;
 }
+
+/* Mobile layout (T24, section 10 of the architecture doc): one breakpoint for the whole site. */
+@media (max-width: 767px) {
+  :root {
+    --nav-height: 64px;
+    --gutter: 36px;
+    --section-y: 72px;
+    --tabbar-h: 64px;
+  }
+}

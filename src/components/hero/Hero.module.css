@@ -96,3 +96,10 @@
   font-weight: var(--w-lead);
   line-height: 1.6;
 }
+
+@media (max-width: 767px) {
+  .role {
+    font-size: 34px;
+    line-height: 1.15;
+  }
+}

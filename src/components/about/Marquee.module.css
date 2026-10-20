@@ -39,9 +39,15 @@
   animation-name: scroll-left;
 }
 
-.marquee:hover .track,
 .track.paused {
   animation-play-state: paused;
+}
+
+/* On touch, a tap would pause the rows with no way to resume them: the pause button does it. */
+@media (hover: hover) {
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
 }
 
 .list {
