@@ -176,6 +176,26 @@
   z-index: 1;
 }
 
+/* Mobile: same card, the two blocks are stacked. The taller top padding keeps above
+   the fullest card's text the same 168px of screenshot as on desktop. */
+@media (max-width: 767px) {
+  .card {
+    padding-top: 168px;
+  }
+
+  .blocks {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .block + .block {
+    padding-top: 16px;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .card {
     opacity: 0;
@@ -185,6 +205,15 @@
     opacity: 1;
     animation: rise 500ms var(--ease-out-slow) both;
     animation-delay: calc(var(--i) * 100ms);
+  }
+}
+
+/* Mobile: ProjectCarousel enters as a whole, the cards have no entrance of their own. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .card,
+  .card.revealed {
+    opacity: 1;
+    animation: none;
   }
 }
 

@@ -7,7 +7,7 @@
   padding: 48px 6% 40px;
 }
 
-/* Three columns on desktop; cards wrap on narrower screens until the mobile design (T24). */
+/* Three columns on desktop; cards wrap on narrower screens above the breakpoint. */
 .cards {
   flex: 1;
   display: grid;
@@ -51,8 +51,8 @@
     border-top: 1px solid var(--line);
   }
 
-  /* One card per row until the mobile carousel (T24d): minmax(320px) overflows below 365px. */
+  /* ProjectCarousel takes over. */
   .cards {
-    grid-template-columns: 1fr;
+    display: none;
   }
 }

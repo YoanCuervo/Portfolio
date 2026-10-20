@@ -1,0 +1,120 @@
+/* Shown below the breakpoint only, in place of the grid. */
+.carousel {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* The three slides share one grid cell: the stage takes the height of the tallest
+   card and the controls below don't move from card to card. pan-y leaves vertical
+   page scrolling to the browser and horizontal swipes to the carousel. */
+.stage {
+  display: grid;
+  touch-action: pan-y;
+}
+
+.slide {
+  grid-area: 1 / 1;
+  display: flex;
+}
+
+.slide > * {
+  flex: 1;
+}
+
+.center {
+  z-index: 1;
+}
+
+/* Background cards: smaller and faded like the desktop cards stepping back. The
+   5% offsets the scale, so each one sticks out 60px past the centre card at any
+   width: it fills the 36px side margin and runs off the screen (the section's
+   overflow: hidden cuts it, no horizontal scroll). */
+.left,
+.right {
+  opacity: 0.6;
+}
+
+.left {
+  transform: translateX(calc(-5% - 60px)) scale(0.9);
+}
+
+.right {
+  transform: translateX(calc(5% + 60px)) scale(0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .slide {
+    transition:
+      transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .carousel {
+    opacity: 0;
+  }
+
+  .carousel.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dots {
+  display: flex;
+}
+
+.dot {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dotMark {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--muted);
+}
+
+.dot[aria-current="true"] .dotMark {
+  width: 24px;
+  background: var(--accent);
+}
+
+.counter {
+  color: var(--muted);
+  font-size: 12px;
+}
