@@ -629,7 +629,7 @@ Décisions du 20 octobre 2026 :
 
 - Titre de 42 px sur plusieurs lignes, introduction, formulaire. Le cadre autour des champs disparaît : les champs sont empilés, écart de 18 px.
 - Champs de 52 px de haut, texte à 16 px au moins (en dessous, iOS zoome au focus). Bouton d'envoi en pleine largeur, 52 px, couleurs de 6.6.
-- Pied de page sous la section, `padding: 24px var(--gutter) 32px` : « © 2026 Yoan Cuervo » à gauche, à droite un lien « Back to top ↑ » / « Haut de page ↑ » (zone de 44 px de haut) qui ramène en haut de la page. Ce lien n'existe que sur mobile. Même pied de page sur `/projects`.
+- Pied de page sous la section, `margin-top: 40px` (sur l'accueil, il ne colle plus au bouton d'envoi), `padding: 24px 0 12px` (les marges latérales viennent du parent) : « © 2026 Yoan Cuervo » à droite comme sur bureau (contraste sur les halos). Pas de lien « Haut de page » : le nom dans l'en-tête y ramène déjà (décision de Yoan, 20 octobre 2026). Même pied de page sur `/projects`.
 
 ## 11. Déploiement
 
@@ -765,7 +765,7 @@ Point de rupture, variables, `viewport-fit=cover`, tailles de titres, hauteurs n
 Critères : aucun défilement horizontal aux largeurs listées ni à 768 et 1024 px ; aucun survol ne reste affiché après un appui au toucher ; à l'arrivée sur une section, son titre n'est pas masqué par l'en-tête de 64 px.
 
 **T24b · Navigation mobile** — dépend de T24a · spécification 10.2 et 10.8 (pied de page)
-En-tête mobile, `TabBar`, `TabIcon`, lien « Haut de page » du pied de page.
+En-tête mobile, `TabBar`, `TabIcon`, pied de page mobile.
 Critères : les quatre onglets défilent vers la bonne section depuis les deux pages ; l'onglet actif suit la section visible, aucun dans le hero, Projects sur `/projects` ; une seule `nav` principale lue à la fois ; le pied de page n'est pas caché par la barre, zone de sécurité de l'iPhone comprise ; cibles de 44 px au moins.
 
 **T24c · Hero et Skills mobiles** — dépend de T24a · spécification 10.3 et 10.4

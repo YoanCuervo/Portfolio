@@ -1,15 +1,11 @@
-import type { MouseEvent } from "react";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import frFlag from "../../assets/flags/fr.svg";
 import gbFlag from "../../assets/flags/gb.svg";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
-import { useActiveSection } from "../../hooks/useActiveSection";
-import { scrollToSection } from "../../utils/scrollToSection";
 import IconLink from "../ui/IconLink";
 import styles from "./Navbar.module.css";
-
-const sectionIds = ["skills", "projects", "about", "contact"] as const;
+import { sectionIds, useSectionNav } from "./sectionNav";
 
 const iconProps = {
   viewBox: "0 0 24 24",
@@ -36,42 +32,23 @@ const moonIcon = (
 );
 
 export default function Navbar() {
-  const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { lang, t, toggleLang } = useLanguage();
-  const isHome = pathname === "/";
-  const activeSection = useActiveSection(isHome);
-
-  // On /projects, the Projects link names the current page; on the home page,
-  // the link of the section on screen names the current location.
-  function currentFor(id: (typeof sectionIds)[number]) {
-    if (pathname === "/projects" && id === "projects") {
-      return "page";
-    }
-    return isHome && activeSection === id ? "location" : undefined;
-  }
-
-  // On the home page the section is already there: scroll without navigating.
-  function handleClick(event: MouseEvent<HTMLAnchorElement>, id: string) {
-    if (isHome) {
-      event.preventDefault();
-      scrollToSection(id);
-    }
-  }
+  const { currentFor, handleClick } = useSectionNav();
 
   return (
     <header className={styles.header}>
-      <nav className={styles.nav} aria-label={t.nav.label}>
-        <Link
-          to="/"
-          state={{ scrollTo: "home" }}
-          className={styles.name}
-          onClick={(event) => handleClick(event, "home")}
-        >
-          {t.meta.name}
-        </Link>
+      <Link
+        to="/"
+        state={{ scrollTo: "home" }}
+        className={styles.name}
+        onClick={(event) => handleClick(event, "home")}
+      >
+        {t.meta.name}
+      </Link>
 
-        <div className={styles.right}>
+      <div className={styles.right}>
+        <nav aria-label={t.nav.label} className={styles.nav}>
           <ul className={styles.links}>
             {sectionIds.map((id) => (
               <li key={id}>
@@ -87,28 +64,26 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+        </nav>
 
-          <div className={styles.buttons}>
-            <IconLink
-              label={
-                theme === "dark" ? t.nav.switchToLight : t.nav.switchToDark
-              }
-              onClick={toggleTheme}
-            >
-              {theme === "dark" ? sunIcon : moonIcon}
-            </IconLink>
-            <IconLink label={t.nav.switchLang} onClick={toggleLang}>
-              <img
-                src={lang === "en" ? frFlag : gbFlag}
-                alt=""
-                width={24}
-                height={16}
-                className={styles.flag}
-              />
-            </IconLink>
-          </div>
+        <div className={styles.buttons}>
+          <IconLink
+            label={theme === "dark" ? t.nav.switchToLight : t.nav.switchToDark}
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? sunIcon : moonIcon}
+          </IconLink>
+          <IconLink label={t.nav.switchLang} onClick={toggleLang}>
+            <img
+              src={lang === "en" ? frFlag : gbFlag}
+              alt=""
+              width={24}
+              height={16}
+              className={styles.flag}
+            />
+          </IconLink>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }
