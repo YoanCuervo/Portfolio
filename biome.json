@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!src/assets"]
+    "includes": ["**", "!src/assets", "!docs/maquette-mobile"]
   },
   "formatter": {
     "enabled": true,
