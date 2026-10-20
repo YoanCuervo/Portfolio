@@ -33,6 +33,13 @@ button {
   color: inherit;
 }
 
+/* Mobile: the fixed TabBar must not cover the footer. */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  }
+}
+
 section[id] {
   scroll-margin-top: var(--nav-height);
 }

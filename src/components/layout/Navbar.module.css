@@ -6,16 +6,10 @@
   padding: 8px 6%;
   display: flex;
   align-items: center;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-}
-
-.nav {
-  flex: 1;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 28px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
 }
 
 .name {
@@ -70,9 +64,20 @@
   object-fit: cover;
 }
 
-/* Mobile: the section links move to the tab bar (T24b). */
+/* Mobile: the section links move to the TabBar, which carries the main
+   navigation label: only one of the two navs is read at a time. */
 @media (max-width: 767px) {
-  .links {
+  .header {
+    min-height: 0;
+    height: var(--nav-height);
+    padding: 0 28px 0 var(--gutter);
+  }
+
+  .name {
+    font-size: 24px;
+  }
+
+  .nav {
     display: none;
   }
 }

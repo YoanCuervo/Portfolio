@@ -7,3 +7,12 @@
   font-size: 14px;
   color: var(--muted);
 }
+
+/* Mobile: room above the rule (the form button sits right before it), and the
+   text closer to the TabBar than to the rule. */
+@media (max-width: 767px) {
+  .footer {
+    margin-top: 40px;
+    padding: 24px 0 12px;
+  }
+}
