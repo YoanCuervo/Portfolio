@@ -72,6 +72,12 @@ export const fr: typeof en = {
     viewRepo: "Voir le dépôt GitHub",
     repoShort: "GitHub",
     screenshotPlaceholder: "Capture d'écran du projet",
+    carousel: {
+      roleDescription: "carrousel",
+      previous: "Projet précédent",
+      next: "Projet suivant",
+      goTo: "Aller au projet",
+    },
     team: {
       team: "Projet d'équipe",
       solo: "Projet solo",

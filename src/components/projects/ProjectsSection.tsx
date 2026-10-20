@@ -5,6 +5,7 @@ import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
 import SectionTitle from "../layout/SectionTitle";
 import FeaturedProjectCard from "./FeaturedProjectCard";
+import ProjectCarousel from "./ProjectCarousel";
 import styles from "./ProjectsSection.module.css";
 
 export default function ProjectsSection() {
@@ -40,6 +41,8 @@ export default function ProjectsSection() {
           />
         ))}
       </div>
+
+      <ProjectCarousel projects={featured} />
 
       <Link to="/projects" onClick={rememberSection} className={styles.viewAll}>
         {t.projects.viewAll}

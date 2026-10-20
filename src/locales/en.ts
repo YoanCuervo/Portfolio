@@ -69,6 +69,12 @@ export const en = {
     viewRepo: "View GitHub repo",
     repoShort: "GitHub",
     screenshotPlaceholder: "Project screenshot",
+    carousel: {
+      roleDescription: "carousel",
+      previous: "Previous project",
+      next: "Next project",
+      goTo: "Go to project", // followed by the project number
+    },
     team: {
       team: "Team Project",
       solo: "Solo Project",
