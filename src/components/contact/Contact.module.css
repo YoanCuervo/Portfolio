@@ -57,11 +57,12 @@
   }
 }
 
-/* Mobile: natural height, a rule between sections. */
+/* Mobile: natural height, a rule between sections, 22px above the title like the
+   other sections. */
 @media (max-width: 767px) {
   .contact {
     min-height: 0;
-    padding: var(--section-y) var(--gutter) 0;
+    padding: 22px var(--gutter) 0;
     border-top: 1px solid var(--line);
   }
 }
