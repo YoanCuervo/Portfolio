@@ -575,7 +575,7 @@ Décisions du 20 octobre 2026 :
 ### 10.1 Socle
 
 - Variables, sous le point de rupture : `--gutter: 36px` (marges latérales des sections, de l'en-tête et du pied de page), `--section-y: 72px` (marge verticale des sections), `--tabbar-h: 64px`, et `--nav-height` passe à 64 px (le `scroll-margin-top` des sections suit).
-- Les sections perdent leur `min-height` plein écran : hauteur naturelle, `padding: var(--section-y) var(--gutter)`, filet haut `1px solid var(--line)` (sauf le hero).
+- Les sections perdent leur `min-height` plein écran : hauteur naturelle, `padding: 22px var(--gutter) var(--section-y)` (Contact : 0 en bas, le pied de page suit), filet haut `1px solid var(--line)` (sauf le hero). La marge haute de 22 px, d'abord réglée sur Projects à T24d, s'applique à Skills, Projects, About et Contact (décision de Yoan, 20 octobre 2026) : le titre arrive vite sous le filet et l'écran montre plus de contenu.
 - Balise `viewport` de `index.html` : ajouter `viewport-fit=cover`, sinon `env(safe-area-inset-bottom)` vaut 0.
 - Tailles : `h1` du hero 48 px (`line-height: 1.05`) ; rôle 34 px ; `h2` de section 42 px (`line-height: 1.1`) ; `h1` de `/projects` 48 px.
 - Aucun défilement horizontal, à aucune largeur. À 435 px, la page mesurait 564 px de large le 20 octobre 2026 : trouver l'élément responsable avant tout le reste.
@@ -596,7 +596,7 @@ Décisions du 20 octobre 2026 :
 
 ### 10.3 Hero
 
-- Hauteur naturelle (plus de centrage vertical), `padding: var(--section-y) var(--gutter) 80px` : le `h1` « Yoan Cuervo » est à la même distance de l'en-tête que le titre `h2` de Skills, Projects et About (décision de Yoan, 20 octobre 2026). Exception depuis T24d : Projects a une marge haute de 22 px (voir 10.5).
+- Hauteur naturelle (plus de centrage vertical), `padding: var(--section-y) var(--gutter) 80px` : le `h1` « Yoan Cuervo » était réglé à la même distance de l'en-tête que les titres `h2` des sections (décision de Yoan, 20 octobre 2026). Depuis que les sections sont passées à 22 px en haut (10.1), le hero garde ses 72 px et son titre est plus bas que les autres ; l'aligner reste à décider.
 - Contenu aligné à gauche : nom, rôle, les quatre ronds (44 px, même ordre et mêmes liens), puis les trois paragraphes de 6.2, textes inchangés. Filet doré et décalage de 40 px gardés, comme sur bureau (décision de Yoan, 20 octobre 2026).
 - Le champ de code (`CodeField`) et sa lentille restent affichés, comme sur bureau (décision de Yoan, 20 octobre 2026). La taille de la lentille (ombre, anneau, zone de distorsion) suit celle du « o » de « Cuervo », sa référence : rendu inchangé à 1440 px, plus petite quand le nom rétrécit. Valeurs réglées à l'écran à T24c.
 - Les trois halos flous (`BlurDecor`) du hero ne sont pas affichés sur mobile. À leur place, un dégradé part du coin haut droit : `radial-gradient(200px 250px at 100% 0, …)` en `--halo-amber`, dense dans le coin, plus léger à mi-chemin, nul au bord (sombre : 28 % puis 14 % ; clair : 70 % puis 23 %). Il couvre le coin jusqu'au « v » de « Cuervo » et à « Développeur web », sans toucher les ronds ni les paragraphes (décision de Yoan, 20 octobre 2026). Les halos des autres sections ne changent pas.
@@ -621,7 +621,7 @@ Décisions du 20 octobre 2026 :
   - marge haute de 113 px au lieu de 56 : les 51 px libérés par les pastilles et les 6 px de l'écart titre–type restent dans la carte, qui garde sa hauteur (540 px à 390, 519 px à 430) et montre plus de capture. Une marge de 168 px a été essayée et écartée : la carte et ses contrôles dépassaient l'espace visible entre l'en-tête et la barre d'onglets.
 - Lisibilité : même règle que sur bureau (6.4), le type et les résumés en `--fg` sur toutes les cartes, dans les deux thèmes.
 - « View all projects » calé à droite, comme sur bureau.
-- Marge haute de la section : 22 px au lieu de `--section-y` (72 px), soit l'écart entre le titre et les cartes. À l'œil, le filet de l'en-tête est aussi loin du haut des lettres de « Projects » que leur ligne de base l'est des cartes (32 px). Objectif : faire tenir le titre, la carte et les contrôles sur plus de téléphones (décision de Yoan, 20 octobre 2026). Exception à la règle de 10.3 ; l'appliquer aussi à Skills, About et Contact reste à décider.
+- Marge haute de la section : 22 px (10.1), soit l'écart entre le titre et les cartes. À l'œil, le filet de l'en-tête est aussi loin du haut des lettres de « Projects » que leur ligne de base l'est des cartes (32 px). Objectif : faire tenir le titre, la carte et les contrôles sur plus de téléphones (décision de Yoan, 20 octobre 2026).
 
 ### 10.6 Page `/projects`
 
