@@ -39,8 +39,9 @@
 }
 
 @media (max-width: 767px) {
+  /* 22px on top like the home page sections. */
   .main {
-    padding: var(--section-y) var(--gutter);
+    padding: 22px var(--gutter) var(--section-y);
   }
 
   .title {

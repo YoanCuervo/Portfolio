@@ -625,7 +625,9 @@ Décisions du 20 octobre 2026 :
 
 ### 10.6 Page `/projects`
 
-- Les `ProjectRow` sont empilées et prennent le style de la carte mobile (10.5) : `ProjectCard` en pleine largeur, capture de 200 px en haut, blocs « The project » et « How it was built » empilés. Pas de carrousel. Niveaux de titres inchangés.
+- Les `ProjectRow` gardent leur design du bureau (6.4), réagencé en une colonne : pas le style de la carte de l'accueil (décision de Yoan, 20 octobre 2026 : sur mobile, on change les positions, pas le design). De haut en bas : `ProjectCard` en pleine largeur (capture, ou zone en pointillés, sur toute la largeur et 200 px de haut, puis titre et type dessous), les pastilles, « The project » et son résumé, « How it was built » et son résumé, puis une dernière ligne avec l'étiquette « Team Project » ou « Solo Project » à gauche et « View GitHub repo » à droite (décision de Yoan, 20 octobre 2026). L'étiquette et le lien sont rendus une seconde fois en bas de la rangée et le CSS affiche la bonne copie selon le point de rupture : l'ordre lu et l'ordre du Tab suivent l'ordre affiché, ce qu'un réordonnancement en CSS ne garantit pas. Pas de carrousel. Niveaux de titres inchangés.
+- Pas de filet entre les deux blocs (il n'existe pas dans `ProjectRow` sur bureau). Pastilles réduites et centrées comme sur les cartes de l'accueil (10.5) : texte 10 px, hauteur 22 px, `padding: 0 6px`, 4 px d'écart (décision de Yoan, 20 octobre 2026). Le reste de la rangée reste aligné à gauche.
+- `main` : marge haute de 22 px au-dessus de « Back », comme les sections de l'accueil (10.1) ; marges latérales `--gutter`, marge basse `--section-y`.
 - Barre d'onglets présente, Projects actif.
 
 ### 10.7 About et références

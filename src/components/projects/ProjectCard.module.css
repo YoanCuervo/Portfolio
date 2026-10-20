@@ -74,10 +74,16 @@
   font-size: 14px;
 }
 
-/* Mobile: no room for the screenshot beside the title, it goes on top (final layout in T24e). */
+/* Mobile: same card in a column, the screenshot on top across the full width,
+   200px high (the column turns flex-basis into a height). */
 @media (max-width: 767px) {
   .card {
     flex-basis: 100%;
     flex-direction: column;
+  }
+
+  .shot,
+  .placeholder {
+    flex-basis: 200px;
   }
 }

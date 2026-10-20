@@ -52,6 +52,43 @@
   line-height: 1.5;
 }
 
+/* Mobile only: tag on the left, GitHub link on the right (the link stays right even
+   without a tag). */
+.footer {
+  display: none;
+}
+
+.footerRepo {
+  margin-left: auto;
+}
+
+@media (max-width: 767px) {
+  .desktopOnly {
+    display: none;
+  }
+
+  /* Same small, centred pills as the home page cards on mobile. The stack takes the
+     whole width of .meta, whose only visible child it is. */
+  .stack {
+    flex: 1;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .stack > li > * {
+    height: 22px;
+    margin: 0;
+    padding: 0 6px;
+    font-size: 10px;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .row {
     opacity: 0;
