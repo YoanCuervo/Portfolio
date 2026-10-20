@@ -139,12 +139,16 @@ export const en = {
   },
   contact: {
     titleQuestion: "What's on your mind?",
-    titleInvite: "Let's talk about it.",
-    intro: "Describe it in a few lines and I'll reply by email.",
+    titleInvite: "Let's talk!",
     fields: {
       name: "Name",
       email: "Email address",
       message: "Project description",
+    },
+    placeholders: {
+      name: "Your name",
+      email: "you@example.com",
+      message: "Describe your project…",
     },
     submit: "Send my request",
     sending: "Sending…",

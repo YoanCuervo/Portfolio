@@ -38,7 +38,6 @@ export default function Contact() {
           {t.contact.titleQuestion}{" "}
           <span className={styles.invite}>{t.contact.titleInvite}</span>
         </SectionTitle>
-        <p className={styles.intro}>{t.contact.intro}</p>
         <ContactForm />
       </div>
 

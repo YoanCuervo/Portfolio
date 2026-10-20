@@ -142,21 +142,25 @@ export const fr: typeof en = {
   },
   contact: {
     titleQuestion: "Un projet en tête\u00a0?",
-    titleInvite: "Parlons-en.",
-    intro: "Décrivez-le en quelques lignes, je vous réponds par e-mail.",
+    titleInvite: "Parlons-en\u00a0!",
     fields: {
       name: "Nom",
       email: "Adresse e-mail",
       message: "Description du projet",
     },
+    placeholders: {
+      name: "Ton nom",
+      email: "toi@exemple.fr",
+      message: "Décris ton projet…",
+    },
     submit: "Envoyer ma demande",
     sending: "Envoi en cours…",
     errors: {
       required: "Ce champ est obligatoire.",
-      invalidEmail: "Saisissez une adresse e-mail valide.",
+      invalidEmail: "Saisis une adresse e-mail valide.",
     },
-    success: "Message envoyé. Je vous réponds par e-mail.",
-    failure: "L'envoi a échoué. Réessayez dans un instant.",
+    success: "Message envoyé. Je te réponds par e-mail.",
+    failure: "L'envoi a échoué. Réessaie dans un instant.",
   },
   projectsPage: {
     backToHome: "Retour",

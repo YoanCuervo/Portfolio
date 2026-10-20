@@ -120,10 +120,10 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--bg` | Fond de page et de navigation | `#0f0f0f` | `#e8e4df` |
 | `--fg` | Texte principal, titres | `#e8e4df` | `#0f0f0f` |
 | `--muted` | Texte secondaire, paragraphes | `#9a9590` | `#5c5751` |
-| `--accent` | Liens, sous-titres en italique, contour de focus | `#d4a574` | `#7d4f22` |
+| `--accent` | Liens, sous-titres en italique, contour de focus, onglet actif, accroche d'About, seconde partie du titre de Contact, fond du bouton d'envoi | `#d4a574` | `var(--rose)` (`#8f3f4b`) |
 | `--accent-hover` | Lien survolé | `#e8b4b8` | `#0f0f0f` |
 | `--rose` | Étiquettes (équipe, statut de certification) | `#e8b4b8` | `#8f3f4b` |
-| `--gold` | Bordure des pastilles, filet vertical du hero | `#c9b896` | `#8f7d4f` |
+| `--gold` | Filet vertical du hero, code au repos en sombre | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
 | `--card` | Fond des cards projet | `#181716` | `#f4f1ed` |
@@ -132,8 +132,8 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--tile-bg` | Fond des tuiles du carrousel, blanc du site en sombre (T23) | `var(--fg)` | `#f4f1ed` |
 | `--tile-fg` | Nom dans une tuile sans logo (T23) | `#0f0f0f` | `var(--fg)` |
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
-| `--btn-bg` | Bouton d'envoi, fond | `#d4a574` | `#0f0f0f` |
-| `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
+| `--btn-bg` | Fond du lien d'évitement (le bouton d'envoi prend `--accent` depuis le 21 octobre 2026) | `#d4a574` | `#0f0f0f` |
+| `--btn-fg` | Texte du bouton d'envoi et du lien d'évitement | `#0f0f0f` | `#e8e4df` |
 | `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
 | `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
 | `--code` | Code au repos du champ de code (20 octobre 2026 : en clair, même rose que la lentille au lieu de `--gold`) | `var(--gold)` | `var(--lens)` |
@@ -142,13 +142,16 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
 | `--pill-bg` | Pastille au repos, fond (T15) | `#0f0f0f` | `#ffffff` |
 | `--pill-fg` | Pastille au repos, texte | `var(--fg)` | `#0f0f0f` |
-| `--pill-icon` | Pastille au repos, logo | `var(--fg)` (blanc) | `var(--icon)` (doré) |
-| `--pill-hover-bg` | Pastille survolée, fond | `var(--fg)` | `#0f0f0f` |
+| `--pill-border` | Bordure des pastilles (21 octobre 2026) | `var(--gold)` | `var(--rose)` |
+| `--pill-icon` | Pastille au repos, logo | `var(--fg)` (blanc) | `var(--rose)` (21 octobre 2026 ; doré `var(--icon)` avant) |
+| `--pill-hover-bg` | Pastille survolée, fond | `var(--fg)` | `var(--rose)` (21 octobre 2026 ; noir avant) |
 | `--pill-hover-fg` | Pastille survolée, texte | `#0f0f0f` | `#e8e4df` |
 | `--pill-hover-icon` | Pastille survolée, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
 | `--w-lead` | Graisse des paragraphes du hero : identique dans les deux thèmes, pour que le texte passe à la ligne aux mêmes endroits et que le nom ne bouge pas au changement de thème | 400 | 400 |
 | `--w-italic` | Graisse de « Web Developer » | 400 | 500 |
+
+Depuis le 21 octobre 2026 (décision de Yoan, à T24g), le thème clair n'a plus qu'une couleur d'accent : `--accent` pointe sur `--rose` (`#8f3f4b`, le rouge rosé du code du hero) au lieu du brun `#7d4f22`. Contraste sur `--bg` : environ 5,6:1 (5,5:1 pour l'ancien brun). Les pastilles suivent le même jour (`--pill-border`, `--pill-icon`, `--pill-hover-bg` en rouge rosé : logo sur blanc ≈ 7:1, texte crème sur rosé au survol ≈ 5,6:1). Le thème sombre garde le doré.
 
 Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes : `#d4a574`, `#e8b4b8`, `#c9b896`. Seule leur opacité change (voir 5.4).
 
@@ -203,7 +206,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 5.5 Composants d'interface
 
-**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure dorée restant visible dans les deux. Thème clair : blanc avec logo doré au repos, noir avec logo blanc au survol. Thème sombre : l'inverse, noir avec logo blanc au repos, blanc cassé avec logo doré au survol (échange inversé le 16 octobre 2026). Survol réservé aux appareils avec une souris (`hover: hover`).
+**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--pill-border)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure restant visible dans les deux. Thème clair (depuis le 21 octobre 2026) : bordure rouge rosé, blanc avec logo rouge rosé au repos, rouge rosé avec texte et logo crème au survol (avant : bordure dorée, blanc avec logo doré, noir avec logo blanc). Thème sombre : l'inverse, noir avec logo blanc au repos, blanc cassé avec logo doré au survol (échange inversé le 16 octobre 2026). Survol réservé aux appareils avec une souris (`hover: hover`).
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
@@ -392,21 +395,24 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 
 - `min-height: 100svh`, colonne centrée, `padding: 48px 6% 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
 - Bloc central (`gap: 22px`, centré verticalement dans l'espace restant) :
-  - `h2` centré : « What's on your mind? » en graisse 600, suivi de « Let's talk about it. » en graisse **normale** (400), sur la même ligne, 60 px.
-  - Paragraphe centré : « Describe it in a few lines and I'll reply by email. » (17 px, `max-width: 34em`).
-  - Formulaire, `max-width: 620px`, `gap: 18px` :
-    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--form-bg`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
+  - `h2` centré : « What's on your mind? » en graisse 600, 60 px (42 px sur mobile), puis **sur la ligne suivante** « Let's talk! » (« Parlons-en ! » en français) en graisse **normale** (400), 32 px, couleur `--accent` (celle des sous-titres), sur bureau et sur mobile (décisions de Yoan, 21 octobre 2026 ; avant : « Let's talk about it. », même ligne, même taille). La seconde partie est un `span` en `display: block`, pas un `<br>` : l'espace reste dans le texte, lu d'une traite. Sur bureau, 14 px séparent les deux lignes (`margin-top`) ; une version sur une seule ligne a été essayée et écartée (21 octobre 2026).
+  - Le paragraphe d'introduction (« Describe it in a few lines and I'll reply by email. ») a été retiré le 21 octobre 2026, sur bureau et sur mobile ; les champs ont reçu des textes indicatifs à la place.
+  - Formulaire, `max-width: 720px` (620 px jusqu'au 21 octobre 2026), `gap: 18px` :
+    - un **cadre** qui contient les trois champs : `padding: 32px`, fond `--form-bg`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
     - le bouton d'envoi **hors du cadre**, centré dessous.
-- Champs (libellé au-dessus, 14 px graisse 500, `gap: 6px`) :
+- Champs (libellé au-dessus, 16 px graisse 500, `gap: 6px`) :
 
-| Libellé | Balise | Attributs |
-|---|---|---|
-| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis |
-| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis |
-| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` |
+| Libellé | Balise | Attributs | Texte indicatif EN | Texte indicatif FR |
+|---|---|---|---|---|
+| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis | Your name | Ton nom |
+| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis | you@example.com | toi@exemple.fr |
+| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` | Describe your project… | Décris ton projet… |
 
-- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
-- Bouton « Send my request » : hauteur 48 px, `padding: 0 32px`, sans bordure, arrondi 2 px, fond `--btn-bg`, texte `--btn-fg`, 15 px graisse 500.
+- Textes indicatifs (`placeholder`, 21 octobre 2026) en `--muted` : ils complètent les libellés, qui restent au-dessus des champs. Le français tutoie dans toute la section Contact (décision de Yoan, 21 octobre 2026, une fois l'introduction au vouvoiement retirée).
+
+- Style des champs : hauteur 56 px (`input`), `padding: 0 16px` (`textarea` : `14px 16px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 18 px `--fg` ; messages d'erreur en 16 px. Formulaire agrandi le 21 octobre 2026 pour la lisibilité et le confort au toucher, sur la place libérée par l'introduction (avant : libellés 14 px, champs 48 px et texte 16 px, erreurs 14 px, cadre 28 px, bouton 48 px et 15 px). Sur bureau, Contact et le pied de page tiennent toujours dans 900 px.
+- Bouton « Send my request » : hauteur 56 px, `padding: 0 40px`, sans bordure, arrondi 2 px, 17 px graisse 500. Fond `--accent`, la couleur de « Let's talk! », dans les deux thèmes ; texte `--btn-fg` : noir sur le doré en sombre (≈ 8,5:1), crème sur le rouge rosé en clair (≈ 5,6:1 ; un texte noir n'y atteindrait que 2,7:1) (décisions de Yoan, 21 octobre 2026, après un essai en blanc ; l'accent du thème clair est passé au rouge rosé le même jour, voir 5.1).
+- Survol du bouton (souris seulement, coupé en mouvement réduit, 21 octobre 2026), 250 ms `cubic-bezier(.2,.7,.2,1)` : il monte de 2 px, avec une ombre douce (`0 10px 24px -12px var(--shadow)`) et la lueur des cartes de projet (`0 0 40px`, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair). À l'appui, il revient en place et se réduit à 0,98. Pas de changement de couleur : en thème clair, `--btn-bg` et `--accent-hover` sont tous deux noirs.
 - **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`, aligné à droite (T17 : à gauche, les halos flous passent derrière le texte et Lighthouse y mesure un contraste insuffisant). Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
 États du formulaire (comportement défini dans les notes de maquette, textes **[PROPOSÉ]**) :
@@ -415,10 +421,10 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 |---|---|---|---|
 | Champ actif | Bordure `--accent`, transition 150 ms | | |
 | Champ vide à l'envoi | Message sous le champ, relié par `aria-describedby`, `aria-invalid="true"` | This field is required. | Ce champ est obligatoire. |
-| E-mail invalide | idem | Enter a valid email address. | Saisissez une adresse e-mail valide. |
+| E-mail invalide | idem | Enter a valid email address. | Saisis une adresse e-mail valide. |
 | Envoi | Bouton désactivé, texte changé | Sending… | Envoi en cours… |
-| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je vous réponds par e-mail. |
-| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessayez dans un instant. |
+| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je te réponds par e-mail. |
+| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessaie dans un instant. |
 
 Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps JSON `{ access_key, name, email, message, botcheck }`. La clé est dans `VITE_WEB3FORMS_KEY` : `.env.local` en local (ignoré par git), variable du dépôt GitHub pour la mise en ligne. Elle est publique par nature (visible dans le code livré) ; l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
 
@@ -532,7 +538,7 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | About, paragraphes | J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement. / Aujourd'hui, j'applique cette même logique au développement web : comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles. / En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes. / Ce qui m'anime reste inchangé : **donner vie aux idées.** |
 | Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
 | Carrousel | Productions & collaborations |
-| Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
+| Contact | Un projet en tête ? Parlons-en ! · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
 | /projects | Retour · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
 
@@ -646,8 +652,9 @@ Décisions du 20 octobre 2026 :
 
 ### 10.8 Contact et pied de page
 
-- Titre de 42 px sur plusieurs lignes, introduction, formulaire. Le cadre autour des champs disparaît : les champs sont empilés, écart de 18 px.
-- Champs de 52 px de haut, texte à 16 px au moins (en dessous, iOS zoome au focus). Bouton d'envoi en pleine largeur, 52 px, couleurs de 6.6.
+- Titre aligné à gauche, comme les autres titres de section ; première partie à 42 px, seconde à 32 px, `--accent`. En français, « Parlons-en ! » reste sur sa ligne ; en anglais, « Let's talk! » suit directement « What's on your mind? » (`html[lang="en"]`, `display: inline`), car la question passe déjà sur deux lignes à 42 px : deux lignes en tout de 375 à 430 px, trois à 320 px. Puis le formulaire, 22 px plus bas (plus d'introduction). Sur bureau, le titre reste centré, la seconde partie sur sa ligne (décisions de Yoan, 21 octobre 2026). Exception à la règle « rendu bureau inchangé » du Lot 7 (21 octobre 2026). Le cadre autour des champs est gardé tel quel (`padding: 28px`, bordure `--line`), champs empilés avec 18 px d'écart, comme sur bureau (décision de Yoan, 21 octobre 2026 : sur mobile, on change les positions, pas le design ; le retrait du cadre proposé par la maquette n'est pas repris).
+- Champs de 56 px de haut et texte à 18 px, comme sur bureau (6.6) : au-dessus du minimum tactile de 44 px et des 16 px sous lesquels iOS zoome au focus.
+- Bouton d'envoi en pleine largeur du formulaire, 56 px de haut, couleurs de 6.6 (décision de Yoan, 21 octobre 2026).
 - Pied de page sous la section, `margin-top: 40px` (sur l'accueil, il ne colle plus au bouton d'envoi), `padding: 24px 0 12px` (les marges latérales viennent du parent) : « © 2026 Yoan Cuervo » à droite comme sur bureau (contraste sur les halos). Pas de lien « Haut de page » : le nom dans l'en-tête y ramène déjà (décision de Yoan, 20 octobre 2026). Même pied de page sur `/projects`.
 
 ## 11. Déploiement

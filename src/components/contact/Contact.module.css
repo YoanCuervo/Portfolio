@@ -16,21 +16,26 @@
   text-align: center;
 }
 
+/* Second part of the title on its own line, smaller and in the accent colour of
+   the subtitles. A block rather than a <br>: the space stays in the text, read as
+   one sentence. */
 .invite {
+  display: block;
+  color: var(--accent);
+  font-size: 32px;
   font-weight: var(--w-regular);
 }
 
-.intro {
-  max-width: 34em;
-  color: var(--muted);
-  font-size: 17px;
-  font-weight: var(--w-body);
-  line-height: 1.6;
+/* Desktop: a little room between the two lines of the title. */
+@media (min-width: 768px) {
+  .invite {
+    margin-top: 14px;
+  }
 }
 
-/* Title, intro, then form: nth-child gives the cascade without passing an
-   index to SectionTitle and ContactForm. The form's live status region sits
-   before the form, hence n + 3. */
+/* Title, then form: nth-child gives the cascade without passing an index to
+   SectionTitle and ContactForm. The form's live status region sits before the
+   form, hence n + 2. */
 @media (prefers-reduced-motion: no-preference) {
   .center > * {
     opacity: 0;
@@ -41,11 +46,7 @@
     animation: rise 500ms var(--ease-out-slow) both;
   }
 
-  .center.revealed > :nth-child(2) {
-    animation-delay: 75ms;
-  }
-
-  .center.revealed > :nth-child(n + 3) {
+  .center.revealed > :nth-child(n + 2) {
     animation-delay: 150ms;
   }
 }
@@ -64,5 +65,16 @@
     min-height: 0;
     padding: 22px var(--gutter) 0;
     border-top: 1px solid var(--line);
+  }
+
+  /* The title is left-aligned like the other section titles. In English the long
+     question already wraps, so the invite follows it on the same line. */
+  .center > h2 {
+    align-self: stretch;
+    text-align: left;
+  }
+
+  :global(html[lang="en"]) .invite {
+    display: inline;
   }
 }
