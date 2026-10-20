@@ -595,13 +595,15 @@ Décisions du 20 octobre 2026 :
 
 ### 10.3 Hero
 
-- `padding: 72px var(--gutter) 80px`, contenu aligné à gauche : nom, rôle, les quatre ronds (44 px, même ordre et mêmes liens), puis les trois paragraphes de 6.2, textes inchangés. Pas de filet doré ni de décalage de 40 px.
-- Le champ de code (`CodeField`) n'est pas affiché : il est remplacé par un halo, `radial-gradient(120% 60% at 80% 0%, <--accent à 16 %>, transparent 70%)`. Thème clair à valider à l'écran.
+- Hauteur naturelle (plus de centrage vertical), `padding: var(--section-y) var(--gutter) 80px` : le `h1` « Yoan Cuervo » est à la même distance de l'en-tête que le titre `h2` de Skills, Projects et About (décision de Yoan, 20 octobre 2026).
+- Contenu aligné à gauche : nom, rôle, les quatre ronds (44 px, même ordre et mêmes liens), puis les trois paragraphes de 6.2, textes inchangés. Filet doré et décalage de 40 px gardés, comme sur bureau (décision de Yoan, 20 octobre 2026).
+- Le champ de code (`CodeField`) et sa lentille restent affichés, comme sur bureau (décision de Yoan, 20 octobre 2026). La taille de la lentille (ombre, anneau, zone de distorsion) suit celle du « o » de « Cuervo », sa référence : rendu inchangé à 1440 px, plus petite quand le nom rétrécit. Valeurs réglées à l'écran à T24c.
+- Les trois halos flous (`BlurDecor`) du hero ne sont pas affichés sur mobile. À leur place, un dégradé part du coin haut droit : `radial-gradient(200px 250px at 100% 0, …)` en `--halo-amber`, dense dans le coin, plus léger à mi-chemin, nul au bord (sombre : 28 % puis 14 % ; clair : 70 % puis 23 %). Il couvre le coin jusqu'au « v » de « Cuervo » et à « Développeur web », sans toucher les ronds ni les paragraphes (décision de Yoan, 20 octobre 2026). Les halos des autres sections ne changent pas.
 - Le rôle s'anime comme sur bureau.
 
 ### 10.4 Skills
 
-- Cinq groupes empilés, écart de 22 px. Le libellé de chaque ligne devient un titre au-dessus des pastilles (Cormorant 24 px, graisse 500, `--accent`), les pastilles passent à la ligne (`gap: 8px`). Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
+- Groupes en grille de deux colonnes (décision de Yoan, 20 octobre 2026) : Languages et Frontend sur la première ligne, Backend et Tools sur la deuxième, Learning sur toute la largeur ; 22 px entre les lignes. Dans chaque case, les pastilles sont empilées une par ligne ; celles de Learning restent côte à côte, LLM commençant une nouvelle ligne (Python, CI/CD, MLOps puis LLM, RAG, Agentic AI ; à 320 px, MLOps passe seul à la ligne faute de place). Titre et pastilles sont centrés dans chaque case, Learning compris. Le filet sous « Stack » court sur toute la largeur, à 14 px du titre. Le libellé de chaque ligne devient un titre au-dessus des pastilles (Cormorant 24 px, graisse 500, `--accent`), 8 px entre les pastilles. Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
 - Certifications : les deux blocs empilés, contenu et étiquettes de 6.3.
 
 ### 10.5 Projects (accueil) : carrousel
@@ -622,6 +624,7 @@ Décisions du 20 octobre 2026 :
 ### 10.7 About et références
 
 - Accroche en Cormorant italique 27 px `--accent`, puis les paragraphes et la conclusion de 6.5 (`strong` inchangé), puis Soft Skills.
+- Filet `--line` sous le titre « Soft Skills », comme sous « Stack » et « Certifications » (demande de Yoan, 20 octobre 2026, notée pour T24f). Portée à préciser à T24f : mobile seulement ou aussi bureau.
 - Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2).
 - Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px), bords fondus à 15 % au lieu de 7 %. **[PROPOSÉ]** à valider à l'écran à T24f.
 
@@ -769,7 +772,7 @@ En-tête mobile, `TabBar`, `TabIcon`, pied de page mobile.
 Critères : les quatre onglets défilent vers la bonne section depuis les deux pages ; l'onglet actif suit la section visible, aucun dans le hero, Projects sur `/projects` ; une seule `nav` principale lue à la fois ; le pied de page n'est pas caché par la barre, zone de sécurité de l'iPhone comprise ; cibles de 44 px au moins.
 
 **T24c · Hero et Skills mobiles** — dépend de T24a · spécification 10.3 et 10.4
-Critères : disposition de la maquette, textes du cahier ; champ de code absent et halo affiché ; le nom est lu « Yoan Cuervo » par un lecteur d'écran ; ordre des pastilles inchangé, ligne Learning en pointillés.
+Critères : disposition de la maquette, textes du cahier ; `h1` à la même distance de l'en-tête que les titres des autres sections ; champ de code et lentille affichés, lentille à l'échelle du « o » ; dégradé du coin haut droit à la place des halos du hero ; le nom est lu « Yoan Cuervo » par un lecteur d'écran ; ordre des pastilles inchangé, ligne Learning en pointillés.
 
 **T24d · Carrousel des projets** — dépend de T24a · spécification 10.5
 `ProjectCarousel`, disposition mobile de `FeaturedProjectCard`.
@@ -791,6 +794,7 @@ Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T
 À recopier dans le `CLAUDE.md` du dépôt :
 
 - Ce fichier (`docs/ARCHITECTURE.md`) est la source de vérité. En cas d'écart avec une demande, le signaler avant de coder.
+- **Aucune liberté.** Ne faire que ce que Yoan demande explicitement. Tout ce qui retire, ajoute ou modifie un élément visible (filet, décalage, effet, champ de code, halo…) sans demande explicite de Yoan se pose d'abord comme une question, avec l'élément nommé. Une ligne du cahier validée en bloc ne vaut pas accord pour retirer un élément visible : le signaler à part avant de l'appliquer. Une branche se crée seulement à la demande de Yoan, depuis la branche de base à jour (récupérée sur GitHub, ticket précédent fusionné). Décision de Yoan, 20 octobre 2026.
 - Un ticket par branche et par demande de fusion. Ne pas déborder du ticket.
 - Aucune nouvelle dépendance sans accord. Dépendances prévues : `react`, `react-dom`, `react-router`, `@fontsource/cormorant`, `@fontsource/ibm-plex-sans`, `simple-icons` ; en développement : `vite`, `typescript`, `@biomejs/biome`.
 - Aucune couleur ni graisse en dur dans les composants : uniquement les variables de `tokens.css`.
