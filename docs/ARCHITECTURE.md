@@ -91,11 +91,11 @@ portfolio/
 │   │   ├── projects/               captures d'écran [À FOURNIR]
 │   │   └── logos/                  logos productions/clients [À FOURNIR]
 │   ├── components/
-│   │   ├── layout/   Navbar, Footer, Section, BlurDecor, SkipLink
-│   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon
+│   │   ├── layout/   Navbar, TabBar, Footer, Section, BlurDecor, SkipLink
+│   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon, TabIcon
 │   │   ├── hero/     Hero, AnimatedName, AnimatedRole, CodeField
 │   │   ├── skills/   Skills, StackRow, CertificationItem
-│   │   ├── projects/ ProjectsSection, FeaturedProjectCard, ProjectRow, ProjectCard
+│   │   ├── projects/ ProjectsSection, ProjectCarousel, FeaturedProjectCard, ProjectRow, ProjectCard
 │   │   ├── about/    About, Marquee, ClientTile
 │   │   └── contact/  Contact, ContactForm, Field
 │   ├── pages/
@@ -556,15 +556,80 @@ Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
 
 ## 10. Responsive
 
-Seul le bureau (1440 × 900 par section) est maquetté. **La version mobile n'est pas dessinée** : elle fera l'objet d'une maquette, puis d'un lot de tickets.
+Le bureau est maquetté en 1440 × 900 par section. La version mobile est maquettée depuis le 20 octobre 2026 : `docs/maquette-mobile/Main.dc.html` (page complète en 428 px), `Ecran.dc.html` (un écran de 428 × 926 avec la barre d'onglets) et leur note `specs-mobile-428.md`.
 
-En attendant, coder de façon à ne rien bloquer :
+**La maquette mobile est un guide visuel, pas une source de contenu** (décision de Yoan, 20 octobre 2026). En cas d'écart (textes, ordre, couleurs, contenus, comportements), ce cahier fait foi. Ses fichiers sont ceux d'un outil de maquette : styles en ligne, balises `<sc-if>` et `<sc-for>`, ne rien en copier.
 
-- garder les `flex-wrap` et les `flex-basis` indiqués plus haut : les colonnes passent déjà l'une sous l'autre quand la largeur manque ;
-- le nom du hero est déjà fluide (`clamp`) ;
-- aucune largeur fixe en pixels sur un conteneur, seulement des `max-width` ;
-- unités `svh` pour les hauteurs plein écran ;
-- ne pas inventer de menu mobile : il sera dessiné.
+Décisions du 20 octobre 2026 :
+
+- **Un seul point de rupture : `@media (max-width: 767px)`**. La note dit 428 px, mais les iPhone Pro Max et Plus font 430 px et la navigation bureau ne tient pas en dessous d'environ 900 px. Au-dessus de 767 px, le rendu bureau ne change pas.
+- **Couleurs** : uniquement les tokens de 5.1, dans les deux thèmes. Les filets translucides de la maquette (opacité 0,08 et 0,10) deviennent `--line`, ses bordures translucides (0,18 à 0,28) `--control`. Le thème clair n'est pas dessiné : mêmes tokens que sur bureau, rendu à valider à l'écran.
+- **Formes** : angles droits comme sur bureau (boutons, champs, blocs) ; les pastilles et les ronds gardent leur forme du bureau. Les arrondis de la maquette ne sont pas repris.
+- **Textes** : ceux de `src/locales/`, identiques sur bureau et sur mobile. Les variantes de la maquette (paragraphes du hero, « En apprentissage », étiquettes des certifications, « Scrum », titre des références) ne sont pas reprises.
+- **Survols** : toutes les règles `:hover` sont placées sous `@media (hover: hover)`. Au toucher, rien ne les remplace.
+- **Animations** : les apparitions (section 7) sont gardées. L'éventail des cartes de l'accueil n'existe pas sur mobile. En mouvement réduit, rien ne bouge et le carrousel des projets change de carte sans glissement.
+- **Cibles tactiles** : 44 × 44 px au moins.
+- Toujours valables : `flex-wrap` et `flex-basis`, aucune largeur fixe sur un conteneur, `svh` pour les hauteurs plein écran.
+
+### 10.1 Socle
+
+- Variables, sous le point de rupture : `--gutter: 36px` (marges latérales des sections, de l'en-tête et du pied de page), `--section-y: 72px` (marge verticale des sections), `--tabbar-h: 64px`, et `--nav-height` passe à 64 px (le `scroll-margin-top` des sections suit).
+- Les sections perdent leur `min-height` plein écran : hauteur naturelle, `padding: var(--section-y) var(--gutter)`, filet haut `1px solid var(--line)` (sauf le hero).
+- Balise `viewport` de `index.html` : ajouter `viewport-fit=cover`, sinon `env(safe-area-inset-bottom)` vaut 0.
+- Tailles : `h1` du hero 48 px (`line-height: 1.05`) ; rôle 34 px ; `h2` de section 42 px (`line-height: 1.1`) ; `h1` de `/projects` 48 px.
+- Aucun défilement horizontal, à aucune largeur. À 435 px, la page mesurait 564 px de large le 20 octobre 2026 : trouver l'élément responsable avant tout le reste.
+
+### 10.2 En-tête et barre d'onglets
+
+**En-tête** : même `Navbar`, toujours `sticky`, 64 px de haut, `padding: 0 28px 0 var(--gutter)`. Le nom passe à 24 px. Les quatre liens sont masqués ; restent les boutons thème et langue (drapeau, comme sur bureau), en `IconLink` de 44 px.
+
+**Barre d'onglets (`TabBar`)**, affichée seulement sous le point de rupture :
+
+- `nav` avec l'`aria-label` de la navigation principale, qui contient une `ul`. La `nav` du bureau est masquée (`display: none`) au même moment : une seule est lue à la fois.
+- `position: fixed` en bas, pleine largeur, hauteur `var(--tabbar-h)` plus `padding-bottom: env(safe-area-inset-bottom)`, fond `--bg`, filet haut `1px solid var(--line)`.
+- Quatre onglets en `grid-template-columns: repeat(4, 1fr)` : Skills, Projects, About, Contact (pas d'onglet Accueil). Chacun : icône de 22 px (`stroke-width: 1.6`) au-dessus du libellé (12 px), écart de 4 px, zone cliquable sur toute la hauteur.
+- Icônes : les tracés SVG de la maquette (dessins de Lucide, licence ISC), recopiés dans un composant `TabIcon`. Pas de dépendance `lucide-react`.
+- Onglet inactif `--muted` ; onglet actif `--accent`, graisse 500, `aria-current` comme dans la `Navbar`, et un trait de 28 × 2 px `--accent` centré sur le filet du haut.
+- Mêmes liens et même mécanisme que la `Navbar` (`Link` vers `/` avec `state`, puis `scrollToSection`), donc fonctionnels depuis `/projects`. Actif : la section visible (`useActiveSection`), aucun dans le hero ; sur `/projects`, Projects.
+- Le `body` reçoit `padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom))` : le pied de page ne passe pas sous la barre.
+
+### 10.3 Hero
+
+- `padding: 72px var(--gutter) 80px`, contenu aligné à gauche : nom, rôle, les quatre ronds (44 px, même ordre et mêmes liens), puis les trois paragraphes de 6.2, textes inchangés. Pas de filet doré ni de décalage de 40 px.
+- Le champ de code (`CodeField`) n'est pas affiché : il est remplacé par un halo, `radial-gradient(120% 60% at 80% 0%, <--accent à 16 %>, transparent 70%)`. Thème clair à valider à l'écran.
+- Le rôle s'anime comme sur bureau.
+
+### 10.4 Skills
+
+- Cinq groupes empilés, écart de 22 px. Le libellé de chaque ligne devient un titre au-dessus des pastilles (Cormorant 24 px, graisse 500, `--accent`), les pastilles passent à la ligne (`gap: 8px`). Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
+- Certifications : les deux blocs empilés, contenu et étiquettes de 6.3.
+
+### 10.5 Projects (accueil) : carrousel
+
+- Sous le point de rupture, `ProjectCarousel` remplace la grille de trois cartes : une carte visible à la fois, les trois projets `featured`.
+- Glissement au doigt sans bibliothèque : conteneur en `overflow-x: auto` et `scroll-snap-type: x mandatory`, cartes en `scroll-snap-align: center`.
+- Sous la carte : boutons Précédent et Suivant (ronds de 44 px, `aria-label` traduits) aux deux bords, et au centre trois points cliquables (zone de 32 × 44 px, `aria-label` traduits) au-dessus d'un compteur « 1 / 3 ». Point actif : 24 × 6 px `--accent` ; inactifs : 6 × 6 px `--muted`. La navigation boucle (après le dernier, le premier).
+- Boutons, points et compteur suivent aussi le glissement au doigt.
+- Accessibilité : conteneur en `role="region"`, `aria-roledescription` traduit (« carousel » / « carrousel »), `aria-label` = titre de la section. Le compteur est en `aria-live="polite"`. Les cartes hors écran sont `inert` : le Tab ne passe que par la carte visible.
+- Carte : même `FeaturedProjectCard`, autre disposition. Capture en haut, 200 px de haut, sans voile (tant qu'elle manque : la zone en pointillés de 6.4, sur ces 200 px). Étiquette en haut à droite. Puis titre (Cormorant 30 px), type, « The project » et « How it was built » **empilés**, le second sous un filet `--line` avec 16 px de marge, pastilles centrées, lien GitHub dans le coin bas droit. Le titre reste le lien vers le site en ligne.
+- « View all projects » calé à droite, comme sur bureau.
+
+### 10.6 Page `/projects`
+
+- Les `ProjectRow` sont empilées et prennent le style de la carte mobile (10.5) : `ProjectCard` en pleine largeur, capture de 200 px en haut, blocs « The project » et « How it was built » empilés. Pas de carrousel. Niveaux de titres inchangés.
+- Barre d'onglets présente, Projects actif.
+
+### 10.7 About et références
+
+- Accroche en Cormorant italique 27 px `--accent`, puis les paragraphes et la conclusion de 6.5 (`strong` inchangé), puis Soft Skills.
+- Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2).
+- Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px), bords fondus à 15 % au lieu de 7 %. **[PROPOSÉ]** à valider à l'écran à T24f.
+
+### 10.8 Contact et pied de page
+
+- Titre de 42 px sur plusieurs lignes, introduction, formulaire. Le cadre autour des champs disparaît : les champs sont empilés, écart de 18 px.
+- Champs de 52 px de haut, texte à 16 px au moins (en dessous, iOS zoome au focus). Bouton d'envoi en pleine largeur, 52 px, couleurs de 6.6.
+- Pied de page sous la section, `padding: 24px var(--gutter) 32px` : « © 2026 Yoan Cuervo » à gauche, à droite un lien « Back to top ↑ » / « Haut de page ↑ » (zone de 44 px de haut) qui ramène en haut de la page. Ce lien n'existe que sur mobile. Même pied de page sur `/projects`.
 
 ## 11. Déploiement
 
@@ -693,10 +758,33 @@ Critères : plus aucun texte entre crochets ni zone en pointillés sur le site e
 
 ### Lot 7 — Mobile
 
-**T24 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
-À découper en tickets une fois la maquette validée (navigation, hero, rangées de projet, carrousel, formulaire).
+T24 (version mobile) est découpé en sept tickets le 20 octobre 2026, une fois la maquette reçue · spécification 10. Pour chacun, en plus des critères listés : rendu bureau inchangé à 1440 px ; aucun défilement horizontal à 320, 375, 390, 430 et 767 px ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
+**T24a · Socle mobile** · spécification 10 et 10.1
+Point de rupture, variables, `viewport-fit=cover`, tailles de titres, hauteurs naturelles et filets des sections, survols sous `@media (hover: hover)`, correction du débordement.
+Critères : aucun défilement horizontal aux largeurs listées ni à 768 et 1024 px ; aucun survol ne reste affiché après un appui au toucher ; à l'arrivée sur une section, son titre n'est pas masqué par l'en-tête de 64 px.
+
+**T24b · Navigation mobile** — dépend de T24a · spécification 10.2 et 10.8 (pied de page)
+En-tête mobile, `TabBar`, `TabIcon`, lien « Haut de page » du pied de page.
+Critères : les quatre onglets défilent vers la bonne section depuis les deux pages ; l'onglet actif suit la section visible, aucun dans le hero, Projects sur `/projects` ; une seule `nav` principale lue à la fois ; le pied de page n'est pas caché par la barre, zone de sécurité de l'iPhone comprise ; cibles de 44 px au moins.
+
+**T24c · Hero et Skills mobiles** — dépend de T24a · spécification 10.3 et 10.4
+Critères : disposition de la maquette, textes du cahier ; champ de code absent et halo affiché ; le nom est lu « Yoan Cuervo » par un lecteur d'écran ; ordre des pastilles inchangé, ligne Learning en pointillés.
+
+**T24d · Carrousel des projets** — dépend de T24a · spécification 10.5
+`ProjectCarousel`, disposition mobile de `FeaturedProjectCard`.
+Critères : glissement au doigt d'une carte à l'autre ; boutons, points et compteur synchronisés avec le glissement ; la navigation boucle ; seule la carte visible est atteignable au Tab ; le changement de carte est annoncé ; changement sans glissement en mouvement réduit ; grille de trois cartes inchangée sur bureau.
+
+**T24e · `/projects` mobile** — dépend de T24a · spécification 10.6
+Critères : rangées empilées au style de la carte mobile ; niveaux de titres inchangés ; « Back » toujours fonctionnel.
+
+**T24f · About et références mobiles** — dépend de T24a · spécification 10.7
+Critères : boucle du carrousel sans vide à toutes les largeurs listées ; bouton pause atteignable et fonctionnel ; taille des tuiles validée à l'écran par Yoan.
+
+**T24g · Contact mobile** — dépend de T24a · spécification 10.8
+Critères : pas de zoom au focus sur iOS ; bouton en pleine largeur ; tous les états du tableau 6.6 inchangés.
+
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24a → T24b → T24c à T24g. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
 
 ## 14. Consignes pour Claude Code
 
