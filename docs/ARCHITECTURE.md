@@ -352,9 +352,9 @@ Contenu :
 
 - `min-height: 100svh`, `gap: 40px`, `padding: 56px 6% 48px`. Le carrousel respecte les mêmes marges que le texte (17 octobre 2026) : ses bords fondus se font à l'intérieur.
 - `h2` « About me », puis deux colonnes (`gap: 32px 72px`) :
-  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche, puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
-  - droite (`flex: 2 1 340px`, `gap: 14px`) : `h3` « Soft Skills » et dix pastilles sans icône. La citation « Imagination rules the world. » a été retirée le 17 octobre 2026.
-- Puis, 64 px plus bas (écart de section de 40 px + `margin-top: 24px`), une ligne avec `h3` « Productions & collaborations that trusted me » à gauche et le bouton pause à droite, puis le carrousel (17 octobre 2026).
+  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche (IBM Plex Sans 24 px, graisse 400, interligne 1,25, `--fg` ; 28 px jusqu'au 21 octobre 2026), puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
+  - droite (`flex: 2 1 340px`, `gap: 14px`) : `h3` « Soft Skills », un filet `--line` dessous (T24f, 20 octobre 2026, comme sous « Stack » et « Certifications »), et neuf pastilles sans icône, trois par ligne. La citation « Imagination rules the world. » a été retirée le 17 octobre 2026.
+- Puis, 64 px plus bas (écart de section de 40 px + `margin-top: 24px`), une ligne avec `h3` « Productions & collaborations » (raccourci le 21 octobre 2026, « that trusted me » retiré, dans les deux langues) à gauche et le bouton pause à droite, puis le carrousel (17 octobre 2026).
 
 Textes (17 octobre 2026 : français écrit par Yoan, anglais traduit par Claude, à valider) :
 
@@ -368,7 +368,13 @@ Textes (17 octobre 2026 : français écrit par Yoan, anglais traduit par Claude,
 >
 > What drives me hasn't changed: **bringing ideas to life.**
 
-Soft skills, dans cet ordre : Adaptability, Prioritization, Autonomy, User understanding, Analytical thinking, Fast learner, Initiative, Product collaboration, Agile methods (Scrum), Debugging. Sur un écran de 1920 px, cet ordre donne deux lignes de quatre puis Agile et Debugging seuls, dans les deux langues. Plus étroit, le retour à la ligne change.
+Soft skills, trois par ligne (décision de Yoan, 21 octobre 2026 ; « User understanding » retiré le même jour) :
+
+1. Adaptability, Prioritization, Product collaboration ;
+2. Fast learner, Initiative, Analytical thinking ;
+3. Agile methods (Scrum), Autonomy, Debugging.
+
+Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows`) : le retour à la ligne automatique ne garantissait pas trois pastilles par ligne à toutes les largeurs. Sur mobile, les pastilles plus petites (10.7) vont à la ligne librement : trois par ligne à partir d'environ 430 px.
 
 **Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu en sens alternés (T23, 17 octobre 2026 : liste tirée du profil LinkedIn de Yoan, diffuseurs, productions, agences et marques mélangés). Une rangée doit être plus large que l'écran, sinon la boucle laisse un vide : 10 tuiles de 176 px (marge comprise) couvrent les 1 690 px du carrousel sur un écran de 1920 px, marges de 6 % déduites.
 
@@ -525,7 +531,7 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | About, accroche | Après dix années dans l'audiovisuel comme assistant réalisateur, (retour à la ligne) j'ai troqué mes feuilles de service contre du code. |
 | About, paragraphes | J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement. / Aujourd'hui, j'applique cette même logique au développement web : comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles. / En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes. / Ce qui m'anime reste inchangé : **donner vie aux idées.** |
 | Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
-| Carrousel | Productions & collaborations qui m'ont fait confiance |
+| Carrousel | Productions & collaborations |
 | Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
 | /projects | Retour · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
@@ -632,10 +638,11 @@ Décisions du 20 octobre 2026 :
 
 ### 10.7 About et références
 
-- Accroche en Cormorant italique 27 px `--accent`, puis les paragraphes et la conclusion de 6.5 (`strong` inchangé), puis Soft Skills.
-- Filet `--line` sous le titre « Soft Skills », comme sous « Stack » et « Certifications » (demande de Yoan, 20 octobre 2026, notée pour T24f). Portée à préciser à T24f : mobile seulement ou aussi bureau.
+- Accroche, paragraphes et conclusion de 6.5, dans le style du bureau (`strong` inchangé), puis Soft Skills. Seule l'accroche change : en Cormorant droit (pas d'italique), 24 px, graisse 500, interligne 1,25 (30 px), couleur `--accent` comme les sous-titres, sans le retour à la ligne du texte (`white-space: normal`, quatre lignes à 390 px). Sur bureau, elle reste en IBM Plex Sans `--fg` mais passe de 28 à 24 px, graisse 400, interligne 30 px (décisions de Yoan, 21 octobre 2026, après essais à 17, 22 et 28 px ; exception à la règle « rendu bureau inchangé » du Lot 7).
+- Pastilles des soft skills réduites : texte 12 px, hauteur 26 px, `padding: 0 8px`, 4 px d'écart entre pastilles et entre lignes. Elles vont à la ligne librement (les listes par ligne de 6.5 passent en `display: contents`) : trois par ligne ne tiennent qu'à partir d'environ 430 px à cette taille. Le 10 px des cartes de projet, qui permettait trois par ligne dès 375 px, a été essayé et jugé illisible (décisions de Yoan, 21 octobre 2026).
+- Filet `--line` sous le titre « Soft Skills », à 14 px, comme sous « Stack » et « Certifications », **sur mobile et sur bureau** : sur bureau, ces deux titres en ont déjà un (bord haut de leur première ligne), « Soft Skills » était le seul sans (décision de Yoan, 20 octobre 2026 ; exception à la règle « rendu bureau inchangé » du Lot 7).
 - Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2).
-- Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px), bords fondus à 15 % au lieu de 7 %. **[PROPOSÉ]** à valider à l'écran à T24f.
+- Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px, 13 px de marge intérieure et entre tuiles, nom de secours en 14 px), bords fondus à 15 % au lieu de 7 % (validé à l'écran par Yoan, 21 octobre 2026). Une rangée (1 410 px) couvre toujours le carrousel : boucle sans vide jusqu'à 767 px.
 
 ### 10.8 Contact et pied de page
 
