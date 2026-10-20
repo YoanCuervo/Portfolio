@@ -9,7 +9,10 @@ const BRIGHT_FACTOR = 2.2; // brighter stretches: REST_OPACITY × 2.2
 const MIN_SPEED = 20; // pixels per second
 const MAX_SPEED = 40;
 
-// Gravitational lens ("black hole") around the pointer.
+// Gravitational lens ("black hole") around the pointer. The three radii are the
+// sizes at 1440 px, where the "o" of the name is 63 px wide: the lens scales with
+// that letter, so it shrinks with the name on smaller screens (spec 10.3).
+const REFERENCE_LETTER_WIDTH = 63;
 const LENS_RADIUS = 180; // the distortion fades out to nothing at this distance
 const FULL_STRENGTH_SHARE = 0.5; // full effect up to half the radius, then a fade to the edge
 const EINSTEIN_RADIUS = 34; // lines bend around this circle (first image outside, second image inside)
@@ -118,6 +121,10 @@ export default function CodeField() {
     const glyphIndex = new Map<string, number>();
     // Letter of the name where the lens rests while the mouse is away.
     const anchor = hero.querySelector("[data-lens-anchor]");
+    // Lens radii at the current size of the resting letter (see REFERENCE_LETTER_WIDTH).
+    let lensRadius = LENS_RADIUS;
+    let einsteinRadius = EINSTEIN_RADIUS;
+    let shadowRadius = SHADOW_RADIUS;
     let pointerClient: Point | null = null; // mouse position in the window
     let pointer: Point | null = null; // mouse position in the canvas
     let lens: Point | null = null; // where the lens is: it follows the mouse with a delay
@@ -157,6 +164,17 @@ export default function CodeField() {
         Number.parseFloat(tokens.getPropertyValue("--code-intensity")) || 1;
 
       charWidth = context.measureText("M").width;
+
+      // Never larger than at 1440 px: the name stops growing at 132 px.
+      const scale = anchor
+        ? Math.min(
+            1,
+            anchor.getBoundingClientRect().width / REFERENCE_LETTER_WIDTH,
+          )
+        : 1;
+      lensRadius = LENS_RADIUS * scale;
+      einsteinRadius = EINSTEIN_RADIUS * scale;
+      shadowRadius = SHADOW_RADIUS * scale;
 
       const strip = createLayer(
         codeGlyphs.length * charWidth,
@@ -233,7 +251,7 @@ export default function CodeField() {
         0,
         center.x,
         center.y,
-        LENS_RADIUS,
+        lensRadius,
       );
       gradient.addColorStop(
         0,
@@ -243,17 +261,17 @@ export default function CodeField() {
       context.fillStyle = gradient;
       lines.forEach((line, index) => {
         const y = index * LINE_HEIGHT;
-        if (Math.abs(y + LINE_HEIGHT / 2 - center.y) < LENS_RADIUS) {
+        if (Math.abs(y + LINE_HEIGHT / 2 - center.y) < lensRadius) {
           context.fillText(line.full, -line.offset, y);
         }
       });
     }
 
     // Share of the lens effect at a given distance from the center: full from
-    // mid-radius inward, then a smooth fade to 0 at LENS_RADIUS, so that the
+    // mid-radius inward, then a smooth fade to 0 at lensRadius, so that the
     // lens joins the rest of the field without a seam.
     function lensWeight(distance: number) {
-      const t = Math.max(0, 1 - distance / LENS_RADIUS);
+      const t = Math.max(0, 1 - distance / lensRadius);
       const fade = Math.min(1, t / (1 - FULL_STRENGTH_SHARE));
       return fade * fade * (3 - 2 * fade) * strength;
     }
@@ -267,7 +285,7 @@ export default function CodeField() {
       const dx = x - center.x;
       const dy = y - center.y;
       const distance = Math.hypot(dx, dy) || 0.001;
-      const root = Math.sqrt(distance * distance + 4 * EINSTEIN_RADIUS ** 2);
+      const root = Math.sqrt(distance * distance + 4 * einsteinRadius ** 2);
       const factor = second
         ? -(root - distance) / 2 / distance
         : (distance +
@@ -336,24 +354,24 @@ export default function CodeField() {
       );
       lines.forEach((line, index) => {
         const y = index * LINE_HEIGHT + LINE_HEIGHT / 2;
-        if (Math.abs(y - center.y) >= LENS_RADIUS) {
+        if (Math.abs(y - center.y) >= lensRadius) {
           return;
         }
         const first = Math.max(
           0,
-          Math.floor((center.x - LENS_RADIUS + line.offset) / charWidth),
+          Math.floor((center.x - lensRadius + line.offset) / charWidth),
         );
         const last = Math.min(
           line.full.length - 1,
-          Math.ceil((center.x + LENS_RADIUS + line.offset) / charWidth),
+          Math.ceil((center.x + lensRadius + line.offset) / charWidth),
         );
         for (let i = first; i <= last; i++) {
           const x = -line.offset + i * charWidth + charWidth / 2;
           const distance = Math.hypot(x - center.x, y - center.y);
-          if (distance >= LENS_RADIUS) {
+          if (distance >= lensRadius) {
             continue;
           }
-          const t = 1 - distance / LENS_RADIUS;
+          const t = 1 - distance / lensRadius;
           const restOpacity =
             line.bright[i] !== " "
               ? REST_OPACITY * BRIGHT_FACTOR
@@ -372,7 +390,7 @@ export default function CodeField() {
           // Only characters close to the center have a second image outside the
           // shadow (farther ones land inside it and are hidden).
           if (
-            distance < 2 * EINSTEIN_RADIUS &&
+            distance < 2 * einsteinRadius &&
             secondOpacity >= MIN_VISIBLE_OPACITY
           ) {
             drawLensedChar(center, line.full[i], x, y, true, secondOpacity);
@@ -384,7 +402,7 @@ export default function CodeField() {
 
       // Opaque shadow, dark in both themes: it also hides the halos.
       context.beginPath();
-      context.arc(center.x, center.y, SHADOW_RADIUS * strength, 0, Math.PI * 2);
+      context.arc(center.x, center.y, shadowRadius * strength, 0, Math.PI * 2);
       context.fillStyle = `rgb(${colors.hole})`;
       context.fill();
 
@@ -418,7 +436,7 @@ export default function CodeField() {
       context.save();
       context.beginPath();
       context.rect(0, 0, width, height);
-      context.arc(lens.x, lens.y, LENS_RADIUS, 0, Math.PI * 2, true);
+      context.arc(lens.x, lens.y, lensRadius, 0, Math.PI * 2, true);
       context.clip();
       drawLines();
       context.restore();

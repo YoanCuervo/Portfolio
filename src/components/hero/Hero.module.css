@@ -97,7 +97,51 @@
   line-height: 1.6;
 }
 
+/* Groups the blurred halos without changing their layout (no box of its own). */
+.halos {
+  display: contents;
+}
+
+/* Mobile (spec 10.3): natural height, the name as far below the header as the
+   titles of the other sections; offset and gold rule as on desktop. The blurred
+   halos, sized in px for desktop, give way to a gradient from the top right
+   corner: dense in the corner, fading out before the text. */
 @media (max-width: 767px) {
+  .hero {
+    --glow-strong: 28%;
+    --glow-mid: 14%;
+    min-height: 0;
+    background: radial-gradient(
+      200px 250px at 100% 0,
+      color-mix(in srgb, var(--halo-amber) var(--glow-strong), transparent),
+      color-mix(in srgb, var(--halo-amber) var(--glow-mid), transparent) 55%,
+      transparent
+    );
+    align-items: flex-start;
+    padding: var(--section-y) var(--gutter) 80px;
+  }
+
+  .icons > :is(a, button),
+  .missing {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Light background: a denser gradient, as the halos are on desktop. */
+  :global([data-theme="light"]) .hero {
+    --glow-strong: 70%;
+    --glow-mid: 23%;
+  }
+
+  .halos {
+    display: none;
+  }
+
+  /* The role sits right under the name. */
+  .column {
+    gap: 0;
+  }
+
   .role {
     font-size: 34px;
     line-height: 1.15;

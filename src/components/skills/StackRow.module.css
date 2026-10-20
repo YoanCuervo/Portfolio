@@ -22,6 +22,84 @@
   list-style: none;
 }
 
+/* Mobile (spec 10.4): the label becomes a title above the pills, no rule between
+   rows. The pills lose their own margin (shared with the other Pill uses) for a
+   gap. */
+@media (max-width: 767px) {
+  /* Title and pills centered in each cell, Learning included. */
+  .row {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  /* Same rule as above the first certification, under the "Stack" subtitle: on
+     the two cells of the first grid line (Languages, Frontend), touching each
+     other, so it reads as one rule. */
+  .row:nth-of-type(-n + 2) {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* 14 px from the grid gap + 8 px: 22 px between grid lines, while the rule
+     stays 14 px under the "Stack" subtitle. */
+  .row:nth-of-type(n + 3) {
+    margin-top: 8px;
+  }
+
+  /* Left column (Languages, Backend): room before the right column, instead of
+     a grid gap that would cut the rule in two. */
+  .row:nth-of-type(odd):not(:last-of-type) {
+    padding-right: 12px;
+  }
+
+  .label {
+    flex: none;
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: var(--w-medium);
+  }
+
+  /* One pill per line in each cell; Learning, across the two columns, keeps
+     its pills side by side. */
+  .pills {
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .row:last-of-type .pills {
+    flex-direction: row;
+    justify-content: center;
+    /* 4 px above and below each pill instead of a row gap: the invisible line
+       break below then adds no extra space. */
+    row-gap: 0;
+    margin-block: -4px;
+  }
+
+  .row:last-of-type .pills > li {
+    margin-block: 4px;
+  }
+
+  /* Learning: LLM starts a new line. A full-width empty item breaks the line;
+     the pills from LLM on are placed after it. */
+  .row:last-of-type .pills::after {
+    content: "";
+    flex-basis: 100%;
+  }
+
+  .row:last-of-type .pills > li:nth-child(n + 4) {
+    order: 1;
+  }
+
+  .pills > li > * {
+    margin: 0;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .row {
     opacity: 0;
