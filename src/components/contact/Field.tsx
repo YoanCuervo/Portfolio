@@ -4,6 +4,7 @@ type FieldProps = {
   id: string;
   name: string;
   label: string;
+  placeholder: string;
   type: "text" | "email" | "textarea";
   autoComplete?: string;
   value: string;
@@ -15,6 +16,7 @@ export default function Field({
   id,
   name,
   label,
+  placeholder,
   type,
   autoComplete,
   value,
@@ -39,6 +41,7 @@ export default function Field({
           name={name}
           rows={6}
           required
+          placeholder={placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           className={`${styles.control} ${styles.textarea}`}
@@ -51,6 +54,7 @@ export default function Field({
           type={type}
           autoComplete={autoComplete}
           required
+          placeholder={placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           className={`${styles.control} ${styles.input}`}

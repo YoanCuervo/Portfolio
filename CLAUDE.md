@@ -65,6 +65,8 @@ Aucune autre dépendance sans accord explicite de Yoan. Pas de framework CSS, pa
 
 ## Méthode de travail
 
+**Aucune liberté.** Ne faire que ce que Yoan demande explicitement. Tout ce qui retire, ajoute ou modifie un élément visible (filet, décalage, effet, champ de code, halo…) sans demande explicite de Yoan se pose d'abord comme une question, avec l'élément nommé. Une ligne du cahier validée en bloc ne vaut pas accord pour retirer un élément visible : le signaler à part avant de l'appliquer. Une branche se crée seulement à la demande de Yoan, depuis la branche de base à jour (récupérée sur GitHub, ticket précédent fusionné). Décision de Yoan, 20 octobre 2026.
+
 1. Un ticket à la fois, dans l'ordre de la section 13. Ne pas déborder du ticket, même pour « améliorer au passage ».
 2. Avant de coder : annoncer en quelques lignes les fichiers créés ou modifiés et l'approche, puis attendre l'accord de Yoan.
 3. Une branche par ticket, créée depuis `develop` : `feat/T08-hero`, `chore/T01-init`, `fix/…`.

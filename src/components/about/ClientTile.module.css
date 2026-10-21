@@ -20,8 +20,15 @@
   transition: transform 250ms ease;
 }
 
-.tile:hover .logo {
-  transform: scale(1.04);
+/* A real pointer only: on touch, a tap would leave the zoom and the tooltip stuck. */
+@media (hover: hover) {
+  .tile:hover .logo {
+    transform: scale(1.04);
+  }
+
+  .tile:hover .tooltip {
+    opacity: 1;
+  }
 }
 
 .tooltip {
@@ -50,10 +57,6 @@
   top: calc(100% + 8px);
 }
 
-.tile:hover .tooltip {
-  opacity: 1;
-}
-
 /* Missing logo (T23): the name stands in for it. */
 .fallback {
   color: var(--tile-fg);
@@ -62,4 +65,23 @@
   font-weight: var(--w-semibold);
   line-height: 1.1;
   text-align: center;
+}
+
+/* Mobile: tiles at 80% (spec 10.7), more of them on a narrow screen. */
+@media (max-width: 767px) {
+  .tile {
+    width: 128px;
+    height: 70px;
+    margin-right: 13px;
+    padding: 0 13px;
+  }
+
+  .logo {
+    width: 96px;
+    height: 45px;
+  }
+
+  .fallback {
+    font-size: 14px;
+  }
 }

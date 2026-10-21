@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import { clientRows } from "../../data/clients";
-import { softSkills } from "../../data/softSkills";
+import { softSkillRows } from "../../data/softSkills";
 import { useReveal } from "../../hooks/useReveal";
 import BlurDecor from "../layout/BlurDecor";
 import Section from "../layout/Section";
@@ -75,13 +75,17 @@ export default function About() {
 
         <div className={styles.softSkills}>
           <SectionSubtitle>{t.about.softSkillsTitle}</SectionSubtitle>
-          <ul className={styles.pills}>
-            {softSkills.map((id) => (
-              <li key={id}>
-                <Pill>{t.about.softSkills[id]}</Pill>
-              </li>
+          <div className={styles.pills}>
+            {softSkillRows.map((row) => (
+              <ul key={row[0]} className={styles.pillRow}>
+                {row.map((id) => (
+                  <li key={id}>
+                    <Pill>{t.about.softSkills[id]}</Pill>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
 

@@ -22,7 +22,7 @@
 .hook {
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: var(--w-regular);
   line-height: 1.25;
   /* The text carries a line break ("\n"): the locale files hold no HTML. */
@@ -50,7 +50,15 @@
   gap: 14px;
 }
 
+/* Rule 14px under the "Soft Skills" title (the column gap), like under "Stack" and
+   "Certifications". One list per line of three pills (data/softSkills.ts). */
 .pills {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+/* Wraps only if three pills no longer fit. */
+.pillRow {
   display: flex;
   flex-wrap: wrap;
   padding: 0;
@@ -93,5 +101,45 @@
   from {
     opacity: 0;
     transform: translateY(24px);
+  }
+}
+
+/* Mobile: natural height, a rule between sections, 22px above the title like the
+   other sections. */
+@media (max-width: 767px) {
+  .about {
+    min-height: 0;
+    padding: 22px var(--gutter) var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+
+  /* Smaller pills (12px, still readable) that flow freely: three per line no
+     longer fit a phone at this size, so the row lists step aside (display:
+     contents) and the pills wrap as one list. 4px apart in both directions. */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .pillRow {
+    display: contents;
+  }
+
+  .pillRow > li > * {
+    height: 26px;
+    margin: 0;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  /* The hook takes the serif and the accent colour of the subtitles, upright and
+     smaller. Its line break becomes a plain space: it flows as one sentence. */
+  .hook {
+    color: var(--accent);
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: var(--w-medium);
+    white-space: normal;
   }
 }

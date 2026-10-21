@@ -37,3 +37,19 @@
 .footer {
   margin: 0 6%;
 }
+
+@media (max-width: 767px) {
+  /* 22px on top like the home page sections. */
+  .main {
+    padding: 22px var(--gutter) var(--section-y);
+  }
+
+  .title {
+    font-size: 48px;
+    line-height: 1.05;
+  }
+
+  .footer {
+    margin: 0 var(--gutter);
+  }
+}

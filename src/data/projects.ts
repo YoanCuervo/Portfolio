@@ -1,3 +1,4 @@
+import pokeGachaTest from "../assets/projects/poke-gacha-test.jpg";
 import type { en } from "../locales/en";
 
 export type Project = {
@@ -29,7 +30,7 @@ export const projects: Project[] = [
     team: "solo",
     liveUrl: null,
     repoUrl: "https://github.com/YoanCuervo/Pokemon_Gacha_BACKEND",
-    screenshot: null,
+    screenshot: pokeGachaTest,
     featured: true,
   },
   {

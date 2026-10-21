@@ -127,6 +127,7 @@ export default function ContactForm() {
               id="contact-name"
               name="name"
               label={t.contact.fields.name}
+              placeholder={t.contact.placeholders.name}
               type="text"
               autoComplete="name"
               value={values.name}
@@ -137,6 +138,7 @@ export default function ContactForm() {
               id="contact-email"
               name="email"
               label={t.contact.fields.email}
+              placeholder={t.contact.placeholders.email}
               type="email"
               autoComplete="email"
               value={values.email}
@@ -147,6 +149,7 @@ export default function ContactForm() {
               id="contact-message"
               name="message"
               label={t.contact.fields.message}
+              placeholder={t.contact.placeholders.message}
               type="textarea"
               value={values.message}
               error={errors.message && t.contact.errors[errors.message]}

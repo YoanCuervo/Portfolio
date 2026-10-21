@@ -56,27 +56,30 @@ export default function Hero() {
 
   return (
     <Section id="home" className={styles.hero}>
-      <BlurDecor
-        color="amber"
-        size={460}
-        right={-80}
-        top={-110}
-        opacity={[0.26, 0.55]}
-      />
-      <BlurDecor
-        color="rose"
-        size={300}
-        right={160}
-        top={70}
-        opacity={[0.22, 0.6]}
-      />
-      <BlurDecor
-        color="gold"
-        size={400}
-        left={-130}
-        bottom={-150}
-        opacity={[0.24, 0.6]}
-      />
+      {/* Hidden on mobile, where a gradient from the corner replaces them (spec 10.3). */}
+      <div className={styles.halos}>
+        <BlurDecor
+          color="amber"
+          size={460}
+          right={-80}
+          top={-110}
+          opacity={[0.26, 0.55]}
+        />
+        <BlurDecor
+          color="rose"
+          size={300}
+          right={160}
+          top={70}
+          opacity={[0.22, 0.6]}
+        />
+        <BlurDecor
+          color="gold"
+          size={400}
+          left={-130}
+          bottom={-150}
+          opacity={[0.24, 0.6]}
+        />
+      </div>
       {/* key: a new theme remounts the field, so it redraws with the new colors even when it is not animated. */}
       <CodeField key={theme} />
 

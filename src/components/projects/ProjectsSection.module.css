@@ -7,7 +7,7 @@
   padding: 48px 6% 40px;
 }
 
-/* Three columns on desktop; cards wrap on narrower screens until the mobile design (T24). */
+/* Three columns on desktop; cards wrap on narrower screens above the breakpoint. */
 .cards {
   flex: 1;
   display: grid;
@@ -41,4 +41,20 @@
   font-size: 24px;
   font-style: italic;
   font-weight: var(--w-medium);
+}
+
+/* Mobile: natural height, a rule between sections. */
+@media (max-width: 767px) {
+  /* 22px above the title, equal to the title-to-cards gap: the carousel and its
+     controls fit the screen on more phones. */
+  .projects {
+    min-height: 0;
+    padding: 22px var(--gutter) var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+
+  /* ProjectCarousel takes over. */
+  .cards {
+    display: none;
+  }
 }

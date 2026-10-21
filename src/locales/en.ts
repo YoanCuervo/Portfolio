@@ -69,6 +69,12 @@ export const en = {
     viewRepo: "View GitHub repo",
     repoShort: "GitHub",
     screenshotPlaceholder: "Project screenshot",
+    carousel: {
+      roleDescription: "carousel",
+      previous: "Previous project",
+      next: "Next project",
+      goTo: "Go to project", // followed by the project number
+    },
     team: {
       team: "Team Project",
       solo: "Solo Project",
@@ -126,20 +132,23 @@ export const en = {
       agile: "Agile methods (Scrum)",
       autonomy: "Autonomy",
       productCollaboration: "Product collaboration",
-      userUnderstanding: "User understanding",
     },
-    clientsTitle: "Productions & collaborations that trusted me",
+    clientsTitle: "Productions & collaborations",
     pauseClients: "Pause the logo carousel",
     playClients: "Play the logo carousel",
   },
   contact: {
     titleQuestion: "What's on your mind?",
-    titleInvite: "Let's talk about it.",
-    intro: "Describe it in a few lines and I'll reply by email.",
+    titleInvite: "Let's talk!",
     fields: {
       name: "Name",
       email: "Email address",
       message: "Project description",
+    },
+    placeholders: {
+      name: "Your name",
+      email: "you@example.com",
+      message: "Describe your project…",
     },
     submit: "Send my request",
     sending: "Sending…",

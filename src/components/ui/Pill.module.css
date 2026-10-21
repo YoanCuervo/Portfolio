@@ -3,7 +3,7 @@
   align-items: center;
   gap: 8px;
   margin: 0 10px 10px 0;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--pill-border);
   border-radius: 999px;
   background: var(--pill-bg);
   color: var(--pill-fg);
@@ -16,7 +16,7 @@
 }
 
 /* Rest and hover swap a dark and a light state (opposite in each theme, see the
-   --pill-* tokens); the gold border stays (devices with a real pointer only). */
+   --pill-* tokens); the border stays (devices with a real pointer only). */
 @media (hover: hover) {
   .pill:hover {
     background: var(--pill-hover-bg);

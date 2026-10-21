@@ -27,6 +27,7 @@
   --scrim: rgba(0, 0, 0, 0.78);
   --pill-bg: #0f0f0f;
   --pill-fg: var(--fg);
+  --pill-border: var(--gold);
   --pill-icon: var(--fg);
   --pill-hover-bg: var(--fg);
   --pill-hover-fg: #0f0f0f;
@@ -43,7 +44,8 @@
   --bg: #e8e4df;
   --fg: #0f0f0f;
   --muted: #5c5751;
-  --accent: #7d4f22;
+  /* The light theme has a single accent: the rose red of the hero code field. */
+  --accent: var(--rose);
   --accent-hover: #0f0f0f;
   --rose: #8f3f4b;
   --gold: #8f7d4f;
@@ -66,8 +68,10 @@
   --scrim: rgba(255, 255, 255, 0.65);
   --pill-bg: #ffffff;
   --pill-fg: #0f0f0f;
-  --pill-icon: var(--icon);
-  --pill-hover-bg: #0f0f0f;
+  /* Pills follow the light theme's rose accent: border, logo, hover background. */
+  --pill-border: var(--rose);
+  --pill-icon: var(--rose);
+  --pill-hover-bg: var(--rose);
   --pill-hover-fg: #e8e4df;
   --pill-hover-icon: #e8e4df;
 
@@ -93,4 +97,14 @@
   --w-semibold: 600;
 
   --nav-height: 72px;
+}
+
+/* Mobile layout (T24, section 10 of the architecture doc): one breakpoint for the whole site. */
+@media (max-width: 767px) {
+  :root {
+    --nav-height: 64px;
+    --gutter: 36px;
+    --section-y: 72px;
+    --tabbar-h: 64px;
+  }
 }
