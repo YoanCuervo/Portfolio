@@ -22,37 +22,28 @@
   list-style: none;
 }
 
-/* Mobile (spec 10.4): the label becomes a title above the pills, no rule between
-   rows. The pills lose their own margin (shared with the other Pill uses) for a
-   gap. */
+/* Mobile (spec 10.4): each group on its own lines, left-aligned: the label as a
+   title, then its pills, no rule between rows. The pills lose their own margin
+   (shared with the other Pill uses) for a gap. */
 @media (max-width: 767px) {
-  /* Title and pills centered in each cell, Learning included. */
   .row {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     padding-top: 0;
     border-top: 0;
   }
 
-  /* Same rule as above the first certification, under the "Stack" subtitle: on
-     the two cells of the first grid line (Languages, Frontend), touching each
-     other, so it reads as one rule. */
-  .row:nth-of-type(-n + 2) {
+  /* Same rule as above the first certification, under the "Stack" subtitle. */
+  .row:first-of-type {
     padding-top: 18px;
     border-top: 1px solid var(--line);
   }
 
-  /* 14 px from the grid gap + 8 px: 22 px between grid lines, while the rule
+  /* 14 px from the stack gap + 8 px: 22 px between groups, while the rule
      stays 14 px under the "Stack" subtitle. */
-  .row:nth-of-type(n + 3) {
+  .row:not(:first-of-type) {
     margin-top: 8px;
-  }
-
-  /* Left column (Languages, Backend): room before the right column, instead of
-     a grid gap that would cut the rule in two. */
-  .row:nth-of-type(odd):not(:last-of-type) {
-    padding-right: 12px;
   }
 
   .label {
@@ -62,41 +53,46 @@
     font-weight: var(--w-medium);
   }
 
-  /* One pill per line in each cell; Learning, across the two columns, keeps
-     its pills side by side. */
   .pills {
     flex: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .row:last-of-type .pills {
-    flex-direction: row;
-    justify-content: center;
     /* 4 px above and below each pill instead of a row gap: the invisible line
-       break below then adds no extra space. */
-    row-gap: 0;
+       break below (from 426px) then adds no extra space. */
+    column-gap: 8px;
     margin-block: -4px;
   }
 
-  .row:last-of-type .pills > li {
+  .pills > li {
     margin-block: 4px;
   }
 
-  /* Learning: LLM starts a new line. A full-width empty item breaks the line;
-     the pills from LLM on are placed after it. */
+  .pills > li > * {
+    margin: 0;
+  }
+}
+
+/* Four pills per line at most: a full-width empty item breaks the line and the
+   pills from the fifth on are placed after it. Only once four pills of the row fit
+   on a line (Learning from 360px, Tools from 440px): below, the pills already wrap
+   earlier and the forced break would leave a pill alone on its line. */
+@media (min-width: 360px) and (max-width: 767px) {
   .row:last-of-type .pills::after {
     content: "";
     flex-basis: 100%;
   }
 
-  .row:last-of-type .pills > li:nth-child(n + 4) {
+  .row:last-of-type .pills > li:nth-child(n + 5) {
     order: 1;
   }
+}
 
-  .pills > li > * {
-    margin: 0;
+@media (min-width: 440px) and (max-width: 767px) {
+  .pills::after {
+    content: "";
+    flex-basis: 100%;
+  }
+
+  .pills > li:nth-child(n + 5) {
+    order: 1;
   }
 }
 

@@ -122,7 +122,10 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--muted` | Texte secondaire, paragraphes | `#9a9590` | `#5c5751` |
 | `--accent` | Liens, sous-titres en italique, contour de focus, onglet actif, accroche d'About, seconde partie du titre de Contact, fond du bouton d'envoi | `#d4a574` | `var(--rose)` (`#8f3f4b`) |
 | `--accent-hover` | Lien survolé | `#e8b4b8` | `#0f0f0f` |
-| `--rose` | Étiquettes (équipe, statut de certification) | `#e8b4b8` | `#8f3f4b` |
+| `--rose` | Rose des étiquettes en thème sombre (via `--tag`), messages d'erreur | `#e8b4b8` | `#8f3f4b` |
+| `--tag` | Bordure des étiquettes (équipe, statut de certification) | `var(--rose)` | `#d4a574` (T25, 22 octobre 2026 : le doré de `--accent` du thème sombre ; rouge rosé avant, `#5f5030` essayé et écarté) |
+| `--tag-bg` / `--tag-fg` | Fond et texte des étiquettes au repos | `transparent` / `var(--rose)` | `#d4a574` / `#0f0f0f` : en texte sur fond clair, ce doré serait illisible (≈ 2:1) ; plein avec texte noir, ≈ 9:1 |
+| `--tag-hover-bg` / `--tag-hover-fg` | Étiquette survolée | `var(--rose)` / `#0f0f0f` | `#0f0f0f` / `#d4a574` |
 | `--gold` | Filet vertical du hero, code au repos en sombre | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
@@ -181,8 +184,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 
 ### 5.3 Espacements et formes
 
-- Marge horizontale de page : `6%` de chaque côté.
-- Largeur maximale du contenu : 1440 px centré **[PROPOSÉ]** (les maquettes s'arrêtent à 1440 px, rien n'est dessiné au-delà).
+- Marge horizontale de page : `--gutter`, sur bureau `max(6%, (100% - 1200px) / 2)` : le contenu est limité à **1200 px et centré**, avec au moins 6 % de marge de chaque côté (61 px à 1024 px, 120 px à 1440 px, 360 px à 1920 px). La `Navbar` suit les mêmes bords. Sous le point de rupture : 16 px (voir 10). Décision de Yoan, 22 octobre 2026, T25 : 6 % sans largeur maximale avant, puis 8 % essayés et écartés ; 1400 px restaient l'alternative.
 - Arrondis : `2px` (cards, champs, boutons rectangulaires), `999px` (pastilles), `50%` (boutons ronds).
 - Zone cliquable minimale : 44 × 44 px (48 × 48 px pour les icônes du hero).
 - Focus clavier : `outline: 2px solid var(--accent); outline-offset: 3px` sur liens, boutons, champs.
@@ -210,7 +212,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
-**Tag (étiquette)** : hauteur 28 px, `padding: 0 12px`, texte 13 px, arrondi 2 px (rectangle, décidé à T15), bordure et texte `--rose`. Variante `dashed` pour « In progress ». Survol (souris seulement) : couleurs inversées en 200 ms, fond `--rose`, texte `--bg`.
+**Tag (étiquette)** : hauteur 28 px, `padding: 0 12px`, texte 13 px, arrondi 2 px (rectangle, décidé à T15), bordure `--tag`, fond `--tag-bg`, texte `--tag-fg` (en thème sombre : contour et texte rose ; en thème clair : doré plein, texte noir). Variante `dashed` pour « In progress », jamais remplie (les pointillés disparaîtraient dans un fond de même couleur) : en thème clair, texte `--fg`. Survol (souris seulement) : couleurs inversées en 200 ms (`--tag-hover-bg`, `--tag-hover-fg`).
 
 **IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, fond plein `--bg` (le champ de code du hero ne doit pas apparaître à travers, T22), arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire. Lien externe avec `href`, bouton avec `onClick`.
 
@@ -222,7 +224,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 6.1 Navigation (`Navbar`) — commune aux deux pages
 
-- `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px 6%`, fond `--bg`, bordure basse `1px solid var(--line)`.
+- `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px var(--gutter)`, fond `--bg`, bordure basse `1px solid var(--line)`.
 - Gauche : « Yoan Cuervo », lien vers le haut de l'accueil. Le monogramme qui le précédait a été retiré le 20 octobre 2026 ; il reste la favicon.
 - Droite, espacés de 28 px : Skills, Projects, About, Contact, puis deux boutons ronds espacés de 8 px.
 - **Lien actif** : souligné (`text-underline-offset: 6px`), transition 150 ms. Sur l'accueil, c'est la section visible (`useActiveSection`). Sur `/projects`, c'est « Projects ».
@@ -232,7 +234,7 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 6.2 Hero (`#home`)
 
-- Hauteur : `min-height: calc(100svh - 72px)` (828 px sur la maquette de 900 px), contenu centré verticalement et horizontalement, `padding: 32px 6%`.
+- Hauteur : `min-height: calc(100svh - 72px)` (828 px sur la maquette de 900 px), contenu centré verticalement et horizontalement, `padding: 32px var(--gutter)`.
 - Une colonne centrée de `max-width: 800px`, dont le contenu est **aligné à gauche**, `gap: 22px`.
 - Dans l'ordre :
   1. `h1` « Yoan Cuervo », fixe (pas d'animation, décidé à T15). Une `span` par lettre, en `aria-hidden="true"`, avec `aria-label="Yoan Cuervo"` sur le `h1` : la dernière lettre porte `data-lens-anchor`, où se pose la lentille du champ de code (T22).
@@ -279,7 +281,7 @@ Le premier paragraphe a un retour à la ligne après « Hello there! ».
 
 ### 6.3 Skills (`#skills`)
 
-- `min-height: 100svh`, contenu centré verticalement, sans espace en haut (17 octobre 2026), `gap: 36px`, `padding: 0 6% 48px`.
+- `min-height: 100svh`, contenu centré verticalement, sans espace en haut (17 octobre 2026), `gap: 36px`, `padding: 0 var(--gutter) 48px`.
 - `h2` « Skills », puis deux colonnes en `flex-wrap` avec `gap: 48px 72px` :
   - **Stack** (`flex: 2 1 560px`) : cinq lignes. Chaque ligne : `border-top: 1px solid var(--line)`, `padding-top: 14px`, un libellé de 140 px de large à gauche et les pastilles à droite (`flex: 1 1 320px`).
   - **Certifications** (`flex: 1 1 340px`) : deux blocs, chacun `border-top: 1px solid var(--line)`, `padding: 18px 0 10px`, `gap: 8px` : titre, détail (15 px, `--muted`), étiquette.
@@ -303,7 +305,7 @@ Certifications :
 
 ### 6.4 Projects (`#projects`)
 
-- `min-height: calc(100svh - var(--nav-height))` : la section tient dans l'écran sous la `Navbar`, lien « View all projects » compris (T19). `gap: 22px`, `padding: 48px 6% 40px`.
+- `min-height: calc(100svh - var(--nav-height))` : la section tient dans l'écran sous la `Navbar`, lien « View all projects » compris (T19). `gap: 22px`, `padding: 48px var(--gutter) 40px`.
 - `h2` « Projects », trois `FeaturedProjectCard` (les projets `featured`) dans une grille `repeat(auto-fit, minmax(320px, 1fr))`, `gap: 24px`, qui prend toute la hauteur restante, puis le lien « View all projects » **calé à droite** (Cormorant italique 500, 24 px, `--accent`) vers `/projects`.
 - Les `ProjectRow` décrites plus bas ne servent plus que sur `/projects` (6.7).
 
@@ -312,13 +314,13 @@ Certifications :
 - La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` (noir à 78 % en thème sombre, blanc à 65 % en thème clair), qui démarre en fondu 80 px au-dessus du texte, garde celui-ci lisible. Le 20 octobre 2026, le blanc est passé de 78 % à 65 % : à 78 % il rendait les photos sombres laiteuses, à 50 % le texte devenait illisible. Un voile « givré » (`backdrop-filter: blur`) a été essayé et écarté le même jour. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
 - Le type et les deux résumés sont en `--fg`, et non en `--muted` comme dans `ProjectRow`, sur toutes les cartes, avec ou sans capture, dans les deux thèmes. Sur le voile, le gris tombait sous 4,5:1 : environ 2,9:1 en clair sur les zones sombres de l'image, 3,9:1 en sombre sur les zones claires ; `--fg` remonte les pires cas à environ 7,9:1 et 9,3:1 (décision de Yoan, 20 octobre 2026, à T24d ; exception à la règle « rendu bureau inchangé » du Lot 7).
 - En haut à droite : l'étiquette « Team Project » ou « Solo Project » (`Tag`), sur un fond `--card` pour rester lisible sur la capture.
-- Le texte est calé en bas de la carte, de haut en bas : titre du projet (`h3`) et type, collé sous le titre sans écart (décision de Yoan, 20 octobre 2026) ; « The project » et « How it was built » (`h4`) côte à côte, séparés par un filet vertical `--line` ; les pastilles de techno, centrées. Le lien GitHub (`ArrowLink`, sans fond, libellé court « GitHub » suivi du nom du projet en texte masqué pour les lecteurs d'écran) est dans le coin bas droit, symétrique de l'étiquette (centres à 28 px des bords).
+- Le texte est calé en bas de la carte, de haut en bas : titre du projet (`h3`) et type, collé sous le titre sans écart (décision de Yoan, 20 octobre 2026) ; « The project » (`h4`) et son résumé, collé dessous sans écart (T25 ; « How it was built » retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; les pastilles de techno, centrées. Plus de lien GitHub sur la carte (retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; la marge basse de 56 px qui lui faisait place est conservée en attendant la décision de Yoan.
 
-- Lien vers le site en ligne : porté par le titre, dont le pseudo-élément `::after` couvre toute la carte (le lien GitHub passe au-dessus avec `z-index`). Un `<a>` ne peut pas en contenir un autre, d'où ce choix. Le contour de focus est reporté sur la carte entière (`:has(:focus-visible)`).
-- Clavier : chaque carte est une étape du Tab (le lien du titre, ou la carte elle-même en `tabIndex={0}` sans site en ligne), suivie de son lien GitHub.
+- Lien vers la rangée du projet sur `/projects` (T25, 22 octobre 2026 ; vers le site en ligne avant) : `Link` interne avec `state: { scrollTo: id }`, la page s'ouvre directement sur la rangée, sans défilement visible (`scroll-margin-top` sous la `Navbar`). La **carte entière** est ce lien : `article` > `Link` qui contient tout (capture, étiquette, texte, pastilles), ce que permet le retrait du lien GitHub (un `<a>` ne peut pas en contenir un autre). Avant, le lien du titre s'étirait par un `::after`, mais ne couvrait que le bloc de texte et masquait le survol des pastilles. Nom accessible : le titre seul (`aria-labelledby`, identifiant par `useId`, chaque carte étant rendue deux fois : grille et carrousel). `draggable={false}` : à la souris, tirer un lien lance le glisser-déposer du navigateur, qui annulait le glissement du carrousel. Le contour de focus est reporté sur la carte entière (`:has(:focus-visible)`).
+- Clavier : chaque carte est une étape du Tab.
 - Survol (souris seulement, tout est coupé en mouvement réduit), 300 ms :
-  - soulèvement, ombre, bordure `--control` et zoom de la capture si la carte est un lien, comme `ProjectCard` (voir plus bas) ;
-  - lueur qui suit le contour de la carte : seconde ombre `0 0 40px`, sans décalage, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair (à 35 %, elle était presque invisible sur le fond clair). Elle n'apparaît que sur la carte survolée ; un halo commun qui glissait de carte en carte a été essayé et écarté (19 octobre 2026) ;
+  - soulèvement, ombre, bordure `--control` et zoom de la capture (toutes les cartes sont des liens depuis T25), comme `ProjectCard` (voir plus bas) ;
+  - lueur qui suit le contour de la carte : seconde ombre `0 0 24px`, sans décalage, `--halo-amber` à 45 % en thème sombre, `--halo-rose` à 70 % en thème clair : elle fait ressortir les bords de la carte (T25, 22 octobre 2026 ; avant : `0 0 40px`, 35 % et 60 % ; `0 0 16px`, 20 % et 35 %, puis `0 0 24px`, 30 % et 50 % essayés, trop faibles). Elle n'apparaît que sur la carte survolée ; un halo commun qui glissait de carte en carte a été essayé et écarté (19 octobre 2026) ;
   - les deux autres cartes reculent : `opacity: 0.6`, `scale: 0.98`. Même effet quand le focus clavier entre dans une carte (`:focus-within`) ;
   - le voile `--scrim` s'allège (`opacity: 0.87` sur le voile, soit environ 68 %) pour laisser voir davantage la capture ;
   - une lumière qui suivait le curseur (dégradé radial `--accent`) a été essayée et retirée le 20 octobre 2026.
@@ -336,6 +338,7 @@ Certifications :
    - deux blocs côte à côte (`flex: 1 1 240px`, `gap: 10px 40px`) :
      - « The project » : résumé, puis **sous le résumé** le lien « View GitHub repo » (`ArrowLink`) ;
      - « How it was built » : résumé.
+   - Jusqu'à 834 px (iPad en portrait, même limite que le carrousel des projets ; T25, 22 octobre 2026), la disposition mobile de 10.6 s'applique : carte et pastilles centrées, étiquette et lien GitHub sur une dernière ligne.
    - Titres de ces blocs : 14 px, graisse 500, `--fg`.
 
 Contenu :
@@ -353,9 +356,9 @@ Contenu :
 
 ### 6.5 About (`#about`)
 
-- `min-height: 100svh`, `gap: 40px`, `padding: 56px 6% 48px`. Le carrousel respecte les mêmes marges que le texte (17 octobre 2026) : ses bords fondus se font à l'intérieur.
-- `h2` « About me », puis deux colonnes (`gap: 32px 72px`) :
-  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche (IBM Plex Sans 24 px, graisse 400, interligne 1,25, `--fg` ; 28 px jusqu'au 21 octobre 2026), puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
+- `min-height: 100svh`, `gap: 40px`, `padding: 56px var(--gutter) 48px`. Le carrousel respecte les mêmes marges que le texte (17 octobre 2026) : ses bords fondus se font à l'intérieur.
+- `h2` « About me », puis deux colonnes (`gap: 32px 102px` ; 72 px entre les colonnes jusqu'au 22 octobre 2026, T25) :
+  - gauche (`flex: 3 1 480px`, `max-width: 600px` sur bureau depuis T25, 22 octobre 2026 : 665 px avant ; `gap: 18px`) : accroche (`text-wrap: pretty`, pour que « du code. » passe à la ligne ensemble ; IBM Plex Sans 24 px, graisse 400, interligne 1,25, `--accent` comme sur mobile (`--fg` jusqu'au 22 octobre 2026, T25) ; 28 px jusqu'au 21 octobre 2026), puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
   - droite (`flex: 2 1 340px`, `gap: 14px`) : `h3` « Soft Skills », un filet `--line` dessous (T24f, 20 octobre 2026, comme sous « Stack » et « Certifications »), et neuf pastilles sans icône, trois par ligne. La citation « Imagination rules the world. » a été retirée le 17 octobre 2026.
 - Puis, 64 px plus bas (écart de section de 40 px + `margin-top: 24px`), une ligne avec `h3` « Productions & collaborations » (raccourci le 21 octobre 2026, « that trusted me » retiré, dans les deux langues) à gauche et le bouton pause à droite, puis le carrousel (17 octobre 2026).
 
@@ -379,7 +382,7 @@ Soft skills, trois par ligne (décision de Yoan, 21 octobre 2026 ; « User under
 
 Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows`) : le retour à la ligne automatique ne garantissait pas trois pastilles par ligne à toutes les largeurs. Sur mobile, les pastilles plus petites (10.7) vont à la ligne librement : trois par ligne à partir d'environ 430 px.
 
-**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu en sens alternés (T23, 17 octobre 2026 : liste tirée du profil LinkedIn de Yoan, diffuseurs, productions, agences et marques mélangés). Une rangée doit être plus large que l'écran, sinon la boucle laisse un vide : 10 tuiles de 176 px (marge comprise) couvrent les 1 690 px du carrousel sur un écran de 1920 px, marges de 6 % déduites.
+**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu en sens alternés (T23, 17 octobre 2026 : liste tirée du profil LinkedIn de Yoan, diffuseurs, productions, agences et marques mélangés). Une rangée doit être plus large que l'écran, sinon la boucle laisse un vide : 10 tuiles de 176 px (marge comprise) couvrent les 1 200 px du carrousel, largeur maximale du contenu.
 
 - Rangée 1, vers la droite : Canal+, Adidas, Publicis, TF1, Microsoft, Iconoclast, Lego, Norma, France Télévisions, BETC (remplace Blue Paris, 17 octobre 2026).
 - Rangée 2, vers la gauche : Eurosport, Buzzman, Lidl, Sony Pictures, Quad, Le Coq Sportif, La Banque Postale, When We Were Kids, Volvic, Société Générale. Ponk et Lenthal retirés par Yoan le 17 octobre 2026.
@@ -393,7 +396,7 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 
 ### 6.6 Contact (`#contact`) et pied de page
 
-- `min-height: 100svh`, colonne centrée, `padding: 48px 6% 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
+- `min-height: 100svh`, colonne centrée, `padding: 48px var(--gutter) 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
 - Bloc central (`gap: 22px`, centré verticalement dans l'espace restant) :
   - `h2` centré : « What's on your mind? » en graisse 600, 60 px (42 px sur mobile), puis **sur la ligne suivante** « Let's talk! » (« Parlons-en ! » en français) en graisse **normale** (400), 32 px, couleur `--accent` (celle des sous-titres), sur bureau et sur mobile (décisions de Yoan, 21 octobre 2026 ; avant : « Let's talk about it. », même ligne, même taille). La seconde partie est un `span` en `display: block`, pas un `<br>` : l'espace reste dans le texte, lu d'une traite. Sur bureau, 14 px séparent les deux lignes (`margin-top`) ; une version sur une seule ligne a été essayée et écartée (21 octobre 2026).
   - Le paragraphe d'introduction (« Describe it in a few lines and I'll reply by email. ») a été retiré le 21 octobre 2026, sur bureau et sur mobile ; les champs ont reçu des textes indicatifs à la place.
@@ -412,8 +415,8 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 
 - Style des champs : hauteur 56 px (`input`), `padding: 0 16px` (`textarea` : `14px 16px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 18 px `--fg` ; messages d'erreur en 16 px. Formulaire agrandi le 21 octobre 2026 pour la lisibilité et le confort au toucher, sur la place libérée par l'introduction (avant : libellés 14 px, champs 48 px et texte 16 px, erreurs 14 px, cadre 28 px, bouton 48 px et 15 px). Sur bureau, Contact et le pied de page tiennent toujours dans 900 px.
 - Bouton « Send my request » : hauteur 56 px, `padding: 0 40px`, sans bordure, arrondi 2 px, 17 px graisse 500. Fond `--accent`, la couleur de « Let's talk! », dans les deux thèmes ; texte `--btn-fg` : noir sur le doré en sombre (≈ 8,5:1), crème sur le rouge rosé en clair (≈ 5,6:1 ; un texte noir n'y atteindrait que 2,7:1) (décisions de Yoan, 21 octobre 2026, après un essai en blanc ; l'accent du thème clair est passé au rouge rosé le même jour, voir 5.1).
-- Survol du bouton (souris seulement, coupé en mouvement réduit, 21 octobre 2026), 250 ms `cubic-bezier(.2,.7,.2,1)` : il monte de 2 px, avec une ombre douce (`0 10px 24px -12px var(--shadow)`) et la lueur des cartes de projet (`0 0 40px`, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair). À l'appui, il revient en place et se réduit à 0,98. Pas de changement de couleur : en thème clair, `--btn-bg` et `--accent-hover` sont tous deux noirs.
-- **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`, aligné à droite (T17 : à gauche, les halos flous passent derrière le texte et Lighthouse y mesure un contraste insuffisant). Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
+- Survol du bouton (souris seulement, coupé en mouvement réduit, 21 octobre 2026), 250 ms `cubic-bezier(.2,.7,.2,1)` : il monte de 2 px, avec une ombre douce (`0 10px 24px -12px var(--shadow)`) et une lueur (`0 0 40px`, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair ; celle des cartes de projet jusqu'à T25, qui l'a réduite sur les cartes seulement). À l'appui, il revient en place et se réduit à 0,98. Pas de changement de couleur : en thème clair, `--btn-bg` et `--accent-hover` sont tous deux noirs.
+- **Pied de page** : filet `1px solid var(--line)` sur **toute la largeur de l'écran**, le texte restant aligné sur le contenu (T25, 22 octobre 2026 : pseudo-élément `::before` qui déborde de `100vw` de chaque côté, recoupé par le `overflow: hidden` de la section Contact et de la page `/projects` ; avant, le filet s'arrêtait aux marges), `padding: 18px 0`, 14 px, `--muted`, aligné à droite (T17 : à gauche, les halos flous passent derrière le texte et Lighthouse y mesure un contraste insuffisant). Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
 États du formulaire (comportement défini dans les notes de maquette, textes **[PROPOSÉ]**) :
 
@@ -436,12 +439,14 @@ Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps J
 ### 6.7 Page `/projects` (`ProjectsPage`)
 
 - Même `Navbar` (« Projects » souligné), page en colonne `min-height: 100svh`.
-- `main` : `padding: 40px 6% 56px`, `gap: 22px` :
-  1. lien « Back » (« Retour » en français, raccourci le 20 octobre 2026) avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px). Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
+- `main` : `padding: 40px var(--gutter) 56px`, `gap: 22px` :
+  1. lien « Back » (« Retour » en français, raccourci le 20 octobre 2026) avec flèche vers la gauche, dans le style de « View all projects » (Cormorant italique 500, 24 px, `--accent` ; IBM Plex Sans 15 px jusqu'au 22 octobre 2026, T25), hauteur minimale 44 px. Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
   2. `h1` « All projects » (76 px) ;
   3. **tous** les projets en `ProjectRow`, même composant que sur l'accueil. La maquette en montre cinq : Wedoo, Poke_Gacha, et trois emplacements vides.
 - Niveaux de titres décalés d'un cran : titre de projet en `h2`, « The project » et « How it was built » en `h3` (sur l'accueil : `h3` et `h4`). `ProjectRow` reçoit donc une prop `headingLevel`.
-- Pied de page identique, avec `margin: 0 6%`.
+- Pied de page identique, avec `margin: 0 var(--gutter)`.
+- Arrivée depuis une carte de l'accueil (T25, 22 octobre 2026) : la page s'ouvre sur la rangée du projet, à 20 px sous la `Navbar` (`scroll-margin-top`), et cette rangée est **sélectionnée**. Sélection (T25, 22 octobre 2026) : une seule rangée à la fois, celle d'arrivée, puis la dernière cliquée ou touchée (`onClick` sur l'`article`) ou atteinte au Tab (`onFocus`, qui remonte depuis ses liens). Ce n'est qu'un effet visuel : la rangée reste un `article` et non un bouton, pour ne pas imbriquer ses liens dans un autre contrôle. Rangée sélectionnée : filet `--accent` sur les quatre côtés, fond `--card`. Toutes les rangées ont en permanence `padding: 20px` et un filet transparent (sauf le haut, en `--line`) : sélectionner ne change que des couleurs, rien ne bouge. Sans arrivée depuis l'accueil, aucune rangée n'est sélectionnée au départ. Le conteneur de la page est en `overflow: clip` et non `hidden` : une boîte `hidden` reste défilable par script, et `scrollIntoView` la décalait de 140 px, coinçant le titre et « Back » sous la `Navbar`.
+- La carte de chaque rangée est déjà un lien vers le site en ligne quand `liveUrl` est renseigné : elle le deviendra à l'arrivée des adresses (T20).
 
 ## 7. Animations
 
@@ -507,7 +512,6 @@ export const en = {
     theProject: 'The project',
     howBuilt: 'How it was built',
     viewRepo: 'View GitHub repo',
-    repoShort: 'GitHub', // home page cards (T19)
     team: { team: 'Team Project', solo: 'Solo Project' },
     items: {
       wedoo: { type: 'Web app', summary: '…', build: '…' },
@@ -534,7 +538,7 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | Wedoo, sa construction | J'ai développé tout le système de signalement, du formulaire utilisateur au traitement par l'administrateur, côté front et back. |
 | Poke_Gacha, le projet | Jeu web de collection Pokémon : joueurs, collection, équipes, objets et évolutions. |
 | Poke_Gacha, sa construction | Base conçue en MCD Merise, puis schéma MySQL avec contraintes d'intégrité. API Express et interface React, en TypeScript. |
-| About, accroche | Après dix années dans l'audiovisuel comme assistant réalisateur, (retour à la ligne) j'ai troqué mes feuilles de service contre du code. |
+| About, accroche | Après dix années dans l'audiovisuel comme assistant réalisateur, j'ai troqué mes feuilles de service contre du code. (retour à la ligne retiré le 22 octobre 2026, T25) |
 | About, paragraphes | J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement. / Aujourd'hui, j'applique cette même logique au développement web : comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles. / En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes. / Ce qui m'anime reste inchangé : **donner vie aux idées.** |
 | Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
 | Carrousel | Productions & collaborations |
@@ -575,7 +579,7 @@ Le bureau est maquetté en 1440 × 900 par section. La version mobile est maquet
 
 Décisions du 20 octobre 2026 :
 
-- **Un seul point de rupture : `@media (max-width: 767px)`**. La note dit 428 px, mais les iPhone Pro Max et Plus font 430 px et la navigation bureau ne tient pas en dessous d'environ 900 px. Au-dessus de 767 px, le rendu bureau ne change pas.
+- **Un seul point de rupture : `@media (max-width: 767px)`**, avec une exception : le carrousel des projets (10.5) apparaît jusqu'à 834 px, pour les iPad en portrait (décision de Yoan, 22 octobre 2026, T25). La note dit 428 px, mais les iPhone Pro Max et Plus font 430 px et la navigation bureau ne tient pas en dessous d'environ 900 px. Au-dessus de 767 px, le rendu bureau ne change pas.
 - **Couleurs** : uniquement les tokens de 5.1, dans les deux thèmes. Les filets translucides de la maquette (opacité 0,08 et 0,10) deviennent `--line`, ses bordures translucides (0,18 à 0,28) `--control`. Le thème clair n'est pas dessiné : mêmes tokens que sur bureau, rendu à valider à l'écran.
 - **Formes** : angles droits comme sur bureau (boutons, champs, blocs) ; les pastilles et les ronds gardent leur forme du bureau. Les arrondis de la maquette ne sont pas repris.
 - **Textes** : ceux de `src/locales/`, identiques sur bureau et sur mobile. Les variantes de la maquette (paragraphes du hero, « En apprentissage », étiquettes des certifications, « Scrum », titre des références) ne sont pas reprises.
@@ -586,7 +590,7 @@ Décisions du 20 octobre 2026 :
 
 ### 10.1 Socle
 
-- Variables, sous le point de rupture : `--gutter: 36px` (marges latérales des sections, de l'en-tête et du pied de page), `--section-y: 72px` (marge verticale des sections), `--tabbar-h: 64px`, et `--nav-height` passe à 64 px (le `scroll-margin-top` des sections suit).
+- Variables, sous le point de rupture : `--gutter: 16px` (marges latérales des sections, de l'en-tête et du pied de page ; 36 px jusqu'au 22 octobre 2026, T25), `--section-y: 72px` (marge verticale des sections), `--tabbar-h: 64px`, et `--nav-height` passe à 64 px (le `scroll-margin-top` des sections suit).
 - Les sections perdent leur `min-height` plein écran : hauteur naturelle, `padding: 22px var(--gutter) var(--section-y)` (Contact : 0 en bas, le pied de page suit), filet haut `1px solid var(--line)` (sauf le hero). La marge haute de 22 px, d'abord réglée sur Projects à T24d, s'applique à Skills, Projects, About et Contact (décision de Yoan, 20 octobre 2026) : le titre arrive vite sous le filet et l'écran montre plus de contenu.
 - Balise `viewport` de `index.html` : ajouter `viewport-fit=cover`, sinon `env(safe-area-inset-bottom)` vaut 0.
 - Tailles : `h1` du hero 48 px (`line-height: 1.05`) ; rôle 34 px ; `h2` de section 42 px (`line-height: 1.1`) ; `h1` de `/projects` 48 px.
@@ -616,38 +620,38 @@ Décisions du 20 octobre 2026 :
 
 ### 10.4 Skills
 
-- Groupes en grille de deux colonnes (décision de Yoan, 20 octobre 2026) : Languages et Frontend sur la première ligne, Backend et Tools sur la deuxième, Learning sur toute la largeur ; 22 px entre les lignes. Dans chaque case, les pastilles sont empilées une par ligne ; celles de Learning restent côte à côte, LLM commençant une nouvelle ligne (Python, CI/CD, MLOps puis LLM, RAG, Agentic AI ; à 320 px, MLOps passe seul à la ligne faute de place). Titre et pastilles sont centrés dans chaque case, Learning compris. Le filet sous « Stack » court sur toute la largeur, à 14 px du titre. Le libellé de chaque ligne devient un titre au-dessus des pastilles (Cormorant 24 px, graisse 500, `--accent`), 8 px entre les pastilles. Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
+- Sans grille (T25, 22 octobre 2026 ; grille de deux colonnes avant) : chaque groupe sur toute la largeur, aligné à gauche, 22 px entre les groupes. Le libellé devient un titre (Cormorant 24 px, graisse 500, `--accent`), ses pastilles à la ligne dessous, avec retour à la ligne naturel et 4 pastilles au plus par ligne (8 px entre les pastilles). Le passage forcé après la quatrième ne joue qu'une fois quatre pastilles de la rangée tenues sur une ligne (Learning dès 360 px, Tools dès 440 px) : plus étroit, les pastilles passent déjà à la ligne plus tôt et la coupure laisserait une pastille seule. Le filet sous « Stack » court sur toute la largeur, à 14 px du titre. Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
 - Certifications : les deux blocs empilés, contenu et étiquettes de 6.3.
 
 ### 10.5 Projects (accueil) : carrousel
 
-- Sous le point de rupture, `ProjectCarousel` remplace la grille de trois cartes, avec les trois projets `featured` : la carte active au centre, les deux autres derrière elle, une de chaque côté (décision de Yoan, 20 octobre 2026). Le passage au mobile ne change que les positions, pas le design des cartes.
-- Disposition : les trois cartes sont superposées dans la même case d'une grille CSS (le conteneur prend la hauteur de la plus haute). Chacune reçoit une position selon la carte active : au centre (taille normale, devant), à droite (la suivante) ou à gauche (la précédente). Les cartes de fond sont à `scale(0.9)` et `opacity: 0.6` (le recul des cartes du bureau), décalées de `calc(5% + 60px)` : elles dépassent de 60 px de chaque côté de la carte du centre à toutes les largeurs, remplissent la marge latérale de 36 px et débordent de l'écran, coupées par le `overflow: hidden` de la section, sans défilement horizontal (décision de Yoan, 20 octobre 2026). Avec trois projets, il y a toujours une carte de chaque côté.
+- Jusqu'à 834 px (`@media (max-width: 834px)`, au-delà du point de rupture du site depuis T25 : les iPad en portrait, 768 à 834 px, l'ont aussi ; le reste de la section et du site y garde la version bureau ; la section y garde la hauteur d'un écran, et le carrousel et « View all projects » sont centrés verticalement sous le titre par deux marges `auto`), `ProjectCarousel` remplace la grille de trois cartes, avec les trois projets `featured` : la carte active au centre, les deux autres derrière elle, une de chaque côté (décision de Yoan, 20 octobre 2026). Le passage au mobile ne change que les positions, pas le design des cartes.
+- Disposition : les trois cartes sont superposées dans la même case d'une grille CSS (le conteneur prend la hauteur de la plus haute). Chacune reçoit une position selon la carte active : au centre (taille normale, devant), à droite (la suivante) ou à gauche (la précédente). Les cartes de fond sont à `scale(0.9)` et `opacity: 0.6` (le recul des cartes du bureau), décalées de `calc(5% + 60px)` : elles dépassent de 60 px de chaque côté de la carte du centre à toutes les largeurs, remplissent la marge latérale et débordent de l'écran, coupées par le `overflow: hidden` de la section, sans défilement horizontal (décision de Yoan, 20 octobre 2026). Avec trois projets, il y a toujours une carte de chaque côté.
+- Un glissement ne doit pas ouvrir la carte, qui est un lien : un clic qui suit un glissement est annulé en phase de capture (`onClickCapture` + `preventDefault`), drapeau remis à zéro à chaque appui (T25).
 - Changement de carte : les cartes glissent à leur nouvelle position en 300 ms `cubic-bezier(.2,.7,.2,1)` ; en mouvement réduit, sans transition.
 - Glissement au doigt sans bibliothèque, par les événements `pointer` : au-delà de 40 px horizontaux entre l'appui et le relâchement, carte suivante (vers la gauche) ou précédente (vers la droite). `touch-action: pan-y` laisse le défilement vertical de la page au navigateur. La carte ne suit pas le doigt pendant le geste. Le défilement natif (`scroll-snap`) a été écarté le 20 octobre 2026 : il ne peut pas montrer une carte de chaque côté de la première et de la dernière.
 - Sous les cartes, à 7 px : boutons Précédent et Suivant (ronds de 44 px, `aria-label` traduits) aux deux bords, et au centre trois points cliquables (zone de 32 × 44 px, `aria-label` traduits) au-dessus d'un compteur « 1 / 3 » (12 px, `--muted`). Point actif : 24 × 6 px `--accent` ; inactifs : 6 × 6 px `--muted`. La navigation boucle (après le dernier, le premier). Boutons, points, compteur et glissement mettent à jour la même carte active.
 - Accessibilité : conteneur en `<section>` nommée (rôle « region »), `aria-roledescription` traduit (« carousel » / « carrousel »), `aria-label` = titre de la section. Le compteur est en `aria-live="polite"`. Les cartes de fond sont `inert` : visibles, mais le Tab, le toucher et les lecteurs d'écran ne passent que par la carte du centre.
-- Carte : même `FeaturedProjectCard`, même design que sur bureau (capture sur toute la carte, voile `--scrim`, texte calé en bas, étiquette en haut à droite, lien GitHub dans le coin bas droit, titre en lien vers le site en ligne). Différences sous le point de rupture (décisions de Yoan, 20 octobre 2026) :
-  - « The project » et « How it was built » **empilés**, le second sous un filet `--line` avec 16 px de marge (plus de filet vertical) ;
-  - pastilles de techno réduites : texte 10 px, hauteur 22 px, `padding: 0 6px`, 4 px d'écart. Les cinq de Wedoo tiennent sur une ligne dès 390 px ; à 375 et 320 px, elles passent sur deux lignes ;
-  - marge haute de 113 px au lieu de 56 : les 51 px libérés par les pastilles et les 6 px de l'écart titre–type restent dans la carte, qui garde sa hauteur (540 px à 390, 519 px à 430) et montre plus de capture. Une marge de 168 px a été essayée et écartée : la carte et ses contrôles dépassaient l'espace visible entre l'en-tête et la barre d'onglets.
+- Carte : même `FeaturedProjectCard`, même design que sur bureau (capture sur toute la carte, voile `--scrim`, texte calé en bas, étiquette en haut à droite, carte entière en lien vers la rangée du projet sur `/projects`). Différences sous le point de rupture (décisions de Yoan, 20 octobre 2026) :
+  - mêmes pastilles de techno que sur bureau (28 px, texte 13 px ; réduites à 22 px jusqu'au 22 octobre 2026, T25) : les cinq de Wedoo passent sur deux lignes ;
+  - hauteur minimale de 540 px : depuis le retrait de « How it was built » (T25), la carte garde sa hauteur d'avant à 390 px et montre plus de capture.
 - Lisibilité : même règle que sur bureau (6.4), le type et les résumés en `--fg` sur toutes les cartes, dans les deux thèmes.
 - « View all projects » calé à droite, comme sur bureau.
 - Marge haute de la section : 22 px (10.1), soit l'écart entre le titre et les cartes. À l'œil, le filet de l'en-tête est aussi loin du haut des lettres de « Projects » que leur ligne de base l'est des cartes (32 px). Objectif : faire tenir le titre, la carte et les contrôles sur plus de téléphones (décision de Yoan, 20 octobre 2026).
 
 ### 10.6 Page `/projects`
 
-- Les `ProjectRow` gardent leur design du bureau (6.4), réagencé en une colonne : pas le style de la carte de l'accueil (décision de Yoan, 20 octobre 2026 : sur mobile, on change les positions, pas le design). De haut en bas : `ProjectCard` en pleine largeur (capture, ou zone en pointillés, sur toute la largeur et 200 px de haut, puis titre et type dessous), les pastilles, « The project » et son résumé, « How it was built » et son résumé, puis une dernière ligne avec l'étiquette « Team Project » ou « Solo Project » à gauche et « View GitHub repo » à droite (décision de Yoan, 20 octobre 2026). L'étiquette et le lien sont rendus une seconde fois en bas de la rangée et le CSS affiche la bonne copie selon le point de rupture : l'ordre lu et l'ordre du Tab suivent l'ordre affiché, ce qu'un réordonnancement en CSS ne garantit pas. Pas de carrousel. Niveaux de titres inchangés.
-- Pas de filet entre les deux blocs (il n'existe pas dans `ProjectRow` sur bureau). Pastilles réduites et centrées comme sur les cartes de l'accueil (10.5) : texte 10 px, hauteur 22 px, `padding: 0 6px`, 4 px d'écart (décision de Yoan, 20 octobre 2026). Le reste de la rangée reste aligné à gauche.
+- Les `ProjectRow` gardent leur design du bureau (6.4), réagencé en une colonne : pas le style de la carte de l'accueil (décision de Yoan, 20 octobre 2026 : sur mobile, on change les positions, pas le design). De haut en bas : `ProjectCard` en pleine largeur (capture, ou zone en pointillés, sur toute la largeur et 200 px de haut, puis titre et type dessous), les pastilles, « The project » et son résumé, « How it was built » et son résumé, puis une dernière ligne avec l'étiquette « Team Project » ou « Solo Project » à gauche et « View GitHub repo » à droite (décision de Yoan, 20 octobre 2026). L'étiquette et le lien sont rendus une seconde fois en bas de la rangée et le CSS affiche la bonne copie selon la largeur (jusqu'à 834 px depuis T25, pour les iPad en portrait) : l'ordre lu et l'ordre du Tab suivent l'ordre affiché, ce qu'un réordonnancement en CSS ne garantit pas. Entre 768 et 834 px, la carte garde sa largeur de bureau et est centrée, comme les pastilles. Pas de carrousel. Niveaux de titres inchangés.
+- Pas de filet entre les deux blocs (il n'existe pas dans `ProjectRow` sur bureau). Pastilles centrées, à la taille du bureau comme sur les cartes de l'accueil (10.5) : 28 px, texte 13 px (T25, 22 octobre 2026 ; réduites à 22 px et 10 px avant). Le reste de la rangée reste aligné à gauche.
 - `main` : marge haute de 22 px au-dessus de « Back », comme les sections de l'accueil (10.1) ; marges latérales `--gutter`, marge basse `--section-y`.
 - Barre d'onglets présente, Projects actif.
 
 ### 10.7 About et références
 
-- Accroche, paragraphes et conclusion de 6.5, dans le style du bureau (`strong` inchangé), puis Soft Skills. Seule l'accroche change : en Cormorant droit (pas d'italique), 24 px, graisse 500, interligne 1,25 (30 px), couleur `--accent` comme les sous-titres, sans le retour à la ligne du texte (`white-space: normal`, quatre lignes à 390 px). Sur bureau, elle reste en IBM Plex Sans `--fg` mais passe de 28 à 24 px, graisse 400, interligne 30 px (décisions de Yoan, 21 octobre 2026, après essais à 17, 22 et 28 px ; exception à la règle « rendu bureau inchangé » du Lot 7).
-- Pastilles des soft skills réduites : texte 12 px, hauteur 26 px, `padding: 0 8px`, 4 px d'écart entre pastilles et entre lignes. Elles vont à la ligne librement (les listes par ligne de 6.5 passent en `display: contents`) : trois par ligne ne tiennent qu'à partir d'environ 430 px à cette taille. Le 10 px des cartes de projet, qui permettait trois par ligne dès 375 px, a été essayé et jugé illisible (décisions de Yoan, 21 octobre 2026).
+- Accroche, paragraphes et conclusion de 6.5, dans le style du bureau (`strong` inchangé), puis Soft Skills. Seule l'accroche change : en Cormorant droit (pas d'italique), 24 px, graisse 500, interligne 1,25 (30 px), couleur `--accent` comme les sous-titres, d'une seule traite (quatre lignes à 390 px ; en anglais, espace insécable entre « I » et « traded » pour que « I » ne finisse jamais une ligne seul ; le texte n'a plus de retour à la ligne depuis T25, sur bureau non plus). Sur bureau, elle reste en IBM Plex Sans (`--accent` depuis T25) mais passe de 28 à 24 px, graisse 400, interligne 30 px (décisions de Yoan, 21 octobre 2026, après essais à 17, 22 et 28 px ; exception à la règle « rendu bureau inchangé » du Lot 7).
+- Pastilles des soft skills réduites, à la taille de celles des cartes de projet (T25, 22 octobre 2026 ; 26 px et 12 px avant) : texte 13 px, hauteur 28 px, `padding: 0 12px`, 4 px d'écart entre pastilles et entre lignes. Elles vont à la ligne librement (les listes par ligne de 6.5 passent en `display: contents`) : trois par ligne ne tiennent qu'à partir d'environ 430 px à cette taille. Le 10 px des cartes de projet, qui permettait trois par ligne dès 375 px, a été essayé et jugé illisible (décisions de Yoan, 21 octobre 2026).
 - Filet `--line` sous le titre « Soft Skills », à 14 px, comme sous « Stack » et « Certifications », **sur mobile et sur bureau** : sur bureau, ces deux titres en ont déjà un (bord haut de leur première ligne), « Soft Skills » était le seul sans (décision de Yoan, 20 octobre 2026 ; exception à la règle « rendu bureau inchangé » du Lot 7).
-- Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2).
+- Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2). Depuis T25 (22 octobre 2026), le titre ne se coupe pas à partir de 360 px (`white-space: nowrap`, 292 px) : le bouton passe à un rond de 32 px, avec une zone de toucher de 44 px conservée par un `::before` invisible. En dessous de 360 px, le titre ne tient pas sur une ligne même sans bouton : il passe à la ligne.
 - Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px, 13 px de marge intérieure et entre tuiles, nom de secours en 14 px), bords fondus à 15 % au lieu de 7 % (validé à l'écran par Yoan, 21 octobre 2026). Une rangée (1 410 px) couvre toujours le carrousel : boucle sans vide jusqu'à 767 px.
 
 ### 10.8 Contact et pied de page
@@ -726,7 +730,7 @@ Critères : ordre des pastilles identique au tableau ; ligne Learning en pointil
 
 **T10 · Projects** — dépend de T07 · spécification 6.4
 `ProjectCard`, `ProjectRow` (prop `headingLevel`), `ProjectsSection`, `data/projects.ts`.
-Critères : la card entière est un lien externe ; pas de lien si `liveUrl` est `null` ; pas de lien GitHub si `repoUrl` est `null` ; l'accueil n'affiche que les projets `featured` ; « View all projects » est à droite.
+Critères : la card entière est un lien externe (sur l'accueil, lien vers `/projects` depuis T25) ; pas de lien si `liveUrl` est `null` ; pas de lien GitHub si `repoUrl` est `null` ; l'accueil n'affiche que les projets `featured` ; « View all projects » est à droite.
 
 **T11 · About et carrousel** — dépend de T07 · spécification 6.5
 Critères : deux rangées en sens opposés, sans saut visible à la boucle ; pause au survol ; à l'arrêt en mouvement réduit ; la copie dupliquée est ignorée des lecteurs d'écran.
@@ -811,7 +815,13 @@ Critères : boucle du carrousel sans vide à toutes les largeurs listées ; bout
 **T24g · Contact mobile** — dépend de T24a · spécification 10.8
 Critères : pas de zoom au focus sur iOS ; bouton en pleine largeur ; tous les états du tableau 6.6 inchangés.
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24a → T24b → T24c à T24g. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
+### Lot 8 — Corrections
+
+**T25 · Corrections d'interface** — dépend du lot 7 (ajouté le 22 octobre 2026)
+Marges `--gutter` (contenu limité à 1200 px et centré, 6 % au moins sur bureau ; 16 px sur mobile) ; Skills mobile sans grille ; cartes de l'accueil sans « How it was built » ni lien GitHub, carte entière en lien, lueur réduite puis renforcée, « The project » collé à son résumé, pastilles mobiles à la taille du bureau, clic vers la rangée du projet sur `/projects` ; étiquettes dorées en thème clair (`--tag*`, doré plein `#d4a574`, texte noir) ; accroche d'About en `--accent` sur bureau, sans retour à la ligne ; colonne de texte d'About limitée à 600 px ; « Back » de `/projects` dans le style de « View all projects » ; pastilles de `/projects` et des Soft Skills à la taille des cartes sur mobile ; titre « Productions & collaborations » sur une ligne dès 360 px, bouton pause de 32 px ; carrousel des projets jusqu'à 834 px (iPad en portrait) ; sur `/projects`, disposition mobile des rangées jusqu'à 834 px (carte et pastilles centrées, étiquette en bas à gauche, GitHub à droite), bureau inchangé au-delà.
+Critères : aucun défilement horizontal de 320 à 767 px ; sur `/projects` ouverte depuis une carte, rangée encadrée et haut de page accessible ; le cadre passe à la rangée cliquée, touchée ou atteinte au Tab ; Skills mobile à 4 pastilles au plus par ligne, sans pastille seule ; la section Projects tient dans l'écran sous la `Navbar` à 1440 × 900 ; un clic sur une carte ouvre `/projects` sur la rangée du projet, sous l'en-tête ; « Back » toujours fonctionnel ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
+
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24a → T24b → T24c à T24g → T25. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
 
 ## 14. Consignes pour Claude Code
 

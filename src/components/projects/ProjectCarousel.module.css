@@ -1,9 +1,10 @@
-/* Shown below the breakpoint only, in place of the grid. */
+/* Shown up to 834px only, in place of the grid: past the site breakpoint (767px),
+   so iPads in portrait get it too (T25). */
 .carousel {
   display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 834px) {
   .carousel {
     display: flex;
     flex-direction: column;
@@ -34,7 +35,7 @@
 
 /* Background cards: smaller and faded like the desktop cards stepping back. The
    5% offsets the scale, so each one sticks out 60px past the centre card at any
-   width: it fills the 36px side margin and runs off the screen (the section's
+   width: it fills the side margin and runs off the screen (the section's
    overflow: hidden cuts it, no horizontal scroll). */
 .left,
 .right {

@@ -67,7 +67,6 @@ export const en = {
     theProject: "The project",
     howBuilt: "How it was built",
     viewRepo: "View GitHub repo",
-    repoShort: "GitHub",
     screenshotPlaceholder: "Project screenshot",
     carousel: {
       roleDescription: "carousel",
@@ -113,7 +112,8 @@ export const en = {
   },
   about: {
     title: "About me",
-    hook: "After ten years in the audiovisual industry as an assistant director,\nI traded my call sheets for code.",
+    // Non-breaking space: "I" never ends a line on its own.
+    hook: "After ten years in the audiovisual industry as an assistant director, I\u00a0traded my call sheets for code.",
     paragraphs: [
       "There I learned to turn a vision into reality, to coordinate teams with diverse expertise and to carry ambitious projects through to completion.",
       "Today I apply the same logic to web development: understanding a need, designing a solution and solving problems to bring functional, accessible applications to life.",

@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 36px;
-  padding: 0 6% 48px;
+  padding: 0 var(--gutter) 48px;
 }
 
 .columns {
@@ -34,18 +34,5 @@
     min-height: 0;
     padding: 22px var(--gutter) var(--section-y);
     border-top: 1px solid var(--line);
-  }
-
-  /* The stack groups in two columns; the "Stack" subtitle and Learning (last
-     group) span both. */
-  .stack {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 0;
-  }
-
-  .stack > :first-child,
-  .stack > :last-child {
-    grid-column: 1 / -1;
   }
 }

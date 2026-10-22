@@ -1,4 +1,4 @@
-import { type PointerEvent, useRef, useState } from "react";
+import { type MouseEvent, type PointerEvent, useRef, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import type { Project } from "../../data/projects";
 import { useReveal } from "../../hooks/useReveal";
@@ -43,6 +43,8 @@ export default function ProjectCarousel({ projects }: ProjectCarouselProps) {
   const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const swipeStartX = useRef<number | null>(null);
+  // The whole card is a link: the click that ends a swipe must not open it.
+  const swiped = useRef(false);
   // The carousel enters as a whole: the desktop fan of the cards doesn't exist on mobile.
   const { ref, revealed } = useReveal<HTMLElement>("projects");
 
@@ -63,6 +65,8 @@ export default function ProjectCarousel({ projects }: ProjectCarouselProps) {
 
   function handlePointerDown(event: PointerEvent) {
     swipeStartX.current = event.clientX;
+    // A touch swipe may end without a click: the flag must not cancel the next tap.
+    swiped.current = false;
   }
 
   function handlePointerUp(event: PointerEvent) {
@@ -72,8 +76,17 @@ export default function ProjectCarousel({ projects }: ProjectCarouselProps) {
     const distance = event.clientX - swipeStartX.current;
     swipeStartX.current = null;
     if (Math.abs(distance) > SWIPE_THRESHOLD) {
+      swiped.current = true;
       // Swiping to the left brings the next card, like turning a page.
       goTo(distance < 0 ? active + 1 : active - 1);
+    }
+  }
+
+  // Runs before the card link's own click (capture phase): a cancelled click
+  // does not navigate.
+  function handleClickCapture(event: MouseEvent) {
+    if (swiped.current) {
+      event.preventDefault();
     }
   }
 
@@ -97,6 +110,7 @@ export default function ProjectCarousel({ projects }: ProjectCarouselProps) {
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
+        onClickCapture={handleClickCapture}
       >
         {projects.map((project, index) => (
           // The background cards are inert: Tab, touch and screen readers skip them.

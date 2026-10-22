@@ -3,9 +3,10 @@
   align-items: center;
   height: 28px;
   padding: 0 12px;
-  border: 1px solid var(--rose);
+  border: 1px solid var(--tag);
   border-radius: 2px;
-  color: var(--rose);
+  background: var(--tag-bg);
+  color: var(--tag-fg);
   font-size: 13px;
   font-weight: var(--w-regular);
   white-space: nowrap;
@@ -17,11 +18,18 @@
 /* Colors swap on hover, like the pills (devices with a real pointer only). */
 @media (hover: hover) {
   .tag:hover {
-    background: var(--rose);
-    color: var(--bg);
+    background: var(--tag-hover-bg);
+    color: var(--tag-hover-fg);
   }
 }
 
+/* Never filled: the dashes would vanish into a background of the same colour. */
 .dashed {
   border-style: dashed;
+  background: transparent;
+}
+
+/* :not(:hover): this rule must not beat the hover colours (black background). */
+:global([data-theme="light"]) .dashed:not(:hover) {
+  color: var(--fg);
 }

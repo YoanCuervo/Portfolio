@@ -70,7 +70,6 @@ export const fr: typeof en = {
     theProject: "Le projet",
     howBuilt: "Sa construction",
     viewRepo: "Voir le dépôt GitHub",
-    repoShort: "GitHub",
     screenshotPlaceholder: "Capture d'écran du projet",
     carousel: {
       roleDescription: "carrousel",
@@ -116,7 +115,7 @@ export const fr: typeof en = {
   },
   about: {
     title: "À propos de moi",
-    hook: "Après dix années dans l'audiovisuel comme assistant réalisateur,\nj'ai troqué mes feuilles de service contre du code.",
+    hook: "Après dix années dans l'audiovisuel comme assistant réalisateur, j'ai troqué mes feuilles de service contre du code.",
     paragraphs: [
       "J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement.",
       "Aujourd'hui, j'applique cette même logique au développement web\u00a0: comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles.",
