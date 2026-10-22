@@ -1,7 +1,9 @@
-/* Same containment as Section: the halos stay behind the content and inside the page. */
+/* Same containment as Section: the halos stay behind the content and inside the page.
+   clip, not hidden: a hidden box can still be scrolled by script, and the
+   scrollIntoView to a project row scrolled it out of reach, under the Navbar. */
 .page {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   isolation: isolate;
   min-height: calc(100svh - var(--nav-height));
   display: flex;
@@ -13,7 +15,7 @@
   display: flex;
   flex-direction: column;
   gap: 22px;
-  padding: 40px 6% 56px;
+  padding: 40px var(--gutter) 56px;
 }
 
 .back {
@@ -22,8 +24,12 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
+  /* Same type as "View all projects" on the home page, its counterpart. */
   color: var(--accent);
-  font-size: 15px;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: var(--w-medium);
 }
 
 .title {
@@ -35,7 +41,7 @@
 }
 
 .footer {
-  margin: 0 6%;
+  margin: 0 var(--gutter);
 }
 
 @media (max-width: 767px) {

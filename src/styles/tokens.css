@@ -10,6 +10,11 @@
   --rose: #e8b4b8;
   --gold: #c9b896;
   --icon: #c9b896;
+  --tag: var(--rose);
+  --tag-bg: transparent;
+  --tag-fg: var(--rose);
+  --tag-hover-bg: var(--rose);
+  --tag-hover-fg: #0f0f0f;
   --line: #34302c;
   --card: #181716;
   --form-bg: #0f0f0f;
@@ -50,6 +55,14 @@
   --rose: #8f3f4b;
   --gold: #8f7d4f;
   --icon: #5f5030;
+  /* The gold of the dark theme accent. As text on a light background it would be
+     unreadable (about 2:1): the tag is filled with it, the text is black (about
+     9:1). Colours swap on hover. */
+  --tag: #d4a574;
+  --tag-bg: #d4a574;
+  --tag-fg: #0f0f0f;
+  --tag-hover-bg: #0f0f0f;
+  --tag-hover-fg: #d4a574;
   --line: #c9c2b8;
   --card: #f4f1ed;
   --form-bg: #f4f1ed;
@@ -97,13 +110,17 @@
   --w-semibold: 600;
 
   --nav-height: 72px;
+  /* Content capped at 1200px and centred: the side margin is 6% or whatever
+     centres 1200px, whichever is larger. 100% is the width of the element that
+     uses the variable (sections and Navbar span the whole window). */
+  --gutter: max(6%, (100% - 1200px) / 2);
 }
 
 /* Mobile layout (T24, section 10 of the architecture doc): one breakpoint for the whole site. */
 @media (max-width: 767px) {
   :root {
     --nav-height: 64px;
-    --gutter: 36px;
+    --gutter: 16px;
     --section-y: 72px;
     --tabbar-h: 64px;
   }

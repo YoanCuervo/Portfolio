@@ -3,7 +3,7 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding: 48px 6% 0;
+  padding: 48px var(--gutter) 0;
 }
 
 .center {

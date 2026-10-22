@@ -1,10 +1,7 @@
 .card {
-  --glow: color-mix(in srgb, var(--halo-amber) 35%, transparent);
+  --glow: color-mix(in srgb, var(--halo-amber) 45%, transparent);
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-top: 56px; /* keeps the text clear of the team tag */
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--card);
@@ -17,21 +14,21 @@
 }
 
 :global([data-theme="light"]) .card {
-  --glow: color-mix(in srgb, var(--halo-rose) 60%, transparent);
+  --glow: color-mix(in srgb, var(--halo-rose) 70%, transparent);
 }
 
-/* The card lifts slightly on hover (real pointer, motion allowed), with a glow that
-   follows its outline: the second shadow has no offset. */
+/* The card lifts slightly on hover (real pointer, motion allowed), with a faint glow
+   that brings out its outline: the second shadow has no offset. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card:hover {
     border-color: var(--control);
     box-shadow:
       0 18px 40px -18px var(--shadow),
-      0 0 40px var(--glow);
+      0 0 24px var(--glow);
     transform: translateY(-4px) scale(1.02);
   }
 
-  .linked:hover .screenshot {
+  .card:hover .screenshot {
     transform: scale(1.03);
   }
 
@@ -39,6 +36,27 @@
   .card:hover .body::before {
     opacity: 0.87;
   }
+}
+
+/* The whole card is one link to the project's row on /projects. */
+.link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 56px; /* keeps the text clear of the team tag */
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The focus outline goes around the card: on the link, overflow: hidden would cut it. */
+.card:has(.link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.link:focus-visible {
+  outline: none;
 }
 
 /* The screenshot fills the whole card, behind the text. */
@@ -80,7 +98,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 28px 28px 56px; /* bottom: room for the GitHub link */
+  padding: 28px 28px 56px;
 }
 
 /* A translucent veil (dark or light with the theme) behind the text: the text stays
@@ -101,27 +119,6 @@
   line-height: 1.1;
 }
 
-.titleLink {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Stretches the title link over the whole card. */
-.titleLink::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-.card:has(.titleLink:focus-visible) {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.titleLink:focus-visible {
-  outline: none;
-}
-
 /* Cancels the body's 14px gap: the type sits right under the title. */
 .type {
   margin-top: -14px;
@@ -129,21 +126,9 @@
   font-size: 14px;
 }
 
-.blocks {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
 .block {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.block + .block {
-  padding-left: 24px;
-  border-left: 1px solid var(--line);
 }
 
 .blockTitle {
@@ -169,46 +154,12 @@
   list-style: none;
 }
 
-/* Mirrors the team tag in the opposite corner: the 44px link box sits 8px lower than
-   the 28px tag so their centres are both 28px from the card edge. z-index keeps it
-   above the stretched title link. */
-.repo {
-  position: absolute;
-  right: 14px;
-  bottom: 6px;
-  z-index: 1;
-}
-
-/* Mobile: same card, the two blocks are stacked and the pills are smaller, so five
-   of them fit on one line from 390px. The space the pills (51px) and the title
-   gap (6px) free up goes to the top padding: the card keeps its height and more of
-   the screenshot shows. */
-@media (max-width: 767px) {
+/* In the carousel (up to 834px): same card and pills as on desktop. The card
+   keeps the height it had with the "How it was built" block (removed at T25):
+   the text sits at the bottom and more of the screenshot shows above it. */
+@media (max-width: 834px) {
   .card {
-    padding-top: 113px;
-  }
-
-  .stack {
-    gap: 4px;
-  }
-
-  .stack > li > * {
-    height: 22px;
-    margin: 0;
-    padding: 0 6px;
-    font-size: 10px;
-  }
-
-  .blocks {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .block + .block {
-    padding-top: 16px;
-    padding-left: 0;
-    border-top: 1px solid var(--line);
-    border-left: 0;
+    min-height: 540px;
   }
 }
 
@@ -224,8 +175,8 @@
   }
 }
 
-/* Mobile: ProjectCarousel enters as a whole, the cards have no entrance of their own. */
-@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+/* In the carousel: ProjectCarousel enters as a whole, the cards have no entrance of their own. */
+@media (max-width: 834px) and (prefers-reduced-motion: no-preference) {
   .card,
   .card.revealed {
     opacity: 1;

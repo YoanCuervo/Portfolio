@@ -3,30 +3,31 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 56px 6% 48px;
+  padding: 56px var(--gutter) 48px;
 }
 
 .columns {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px 72px;
+  gap: 32px 102px;
 }
 
 .story {
   flex: 3 1 480px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
 .hook {
-  color: var(--fg);
+  color: var(--accent);
   font-family: var(--font-sans);
   font-size: 24px;
   font-weight: var(--w-regular);
   line-height: 1.25;
-  /* The text carries a line break ("\n"): the locale files hold no HTML. */
-  white-space: pre-line;
+  /* No word left alone on the last line ("code."). */
+  text-wrap: pretty;
 }
 
 .paragraph {
@@ -79,6 +80,29 @@
   justify-content: space-between;
 }
 
+/* Mobile: a 32px round instead of 44px, so the title fits on one line from
+   360px (it is 292px wide). The invisible ::before keeps a 44px touch target. */
+@media (max-width: 767px) {
+  .carouselControl > * {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+
+  .carouselControl > *::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+}
+
+/* Below 360px the title can't fit on one line even without the button. */
+@media (min-width: 360px) and (max-width: 767px) {
+  .clientsHeader > :first-child {
+    white-space: nowrap;
+  }
+}
+
 /* The carousel does not move in reduced motion: nothing to pause. */
 @media (prefers-reduced-motion: reduce) {
   .carouselControl {
@@ -113,9 +137,14 @@
     border-top: 1px solid var(--line);
   }
 
-  /* Smaller pills (12px, still readable) that flow freely: three per line no
-     longer fit a phone at this size, so the row lists step aside (display:
-     contents) and the pills wrap as one list. 4px apart in both directions. */
+  .story {
+    max-width: none;
+  }
+
+  /* Smaller pills, the size of the project card pills (28px, 13px text), that
+     flow freely: three per line no longer fit a phone, so the row lists step
+     aside (display: contents) and the pills wrap as one list. 4px apart in both
+     directions. */
   .pills {
     display: flex;
     flex-wrap: wrap;
@@ -127,19 +156,16 @@
   }
 
   .pillRow > li > * {
-    height: 26px;
+    height: 28px;
     margin: 0;
-    padding: 0 8px;
-    font-size: 12px;
+    padding: 0 12px;
+    font-size: 13px;
   }
 
-  /* The hook takes the serif and the accent colour of the subtitles, upright and
-     smaller. Its line break becomes a plain space: it flows as one sentence. */
+  /* The hook takes the serif of the subtitles, upright and smaller. */
   .hook {
-    color: var(--accent);
     font-family: var(--font-serif);
     font-size: 24px;
     font-weight: var(--w-medium);
-    white-space: normal;
   }
 }

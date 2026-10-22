@@ -1,11 +1,22 @@
 /* Right-aligned: on the left, the blurred halos of Contact and /projects sit
    behind the text and its muted color would lose contrast. */
 .footer {
+  position: relative;
   padding: 18px 0;
   text-align: right;
-  border-top: 1px solid var(--line);
   font-size: 14px;
   color: var(--muted);
+}
+
+/* The rule spans the whole window while the text stays aligned with the content:
+   it overflows on both sides and the parent (Contact section, /projects page,
+   both overflow: hidden) cuts it at the window edges. */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: -100vw;
+  border-top: 1px solid var(--line);
 }
 
 /* Mobile: room above the rule (the form button sits right before it), and the

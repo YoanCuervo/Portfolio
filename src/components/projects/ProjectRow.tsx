@@ -13,12 +13,16 @@ type ProjectRowProps = {
   // 3 on the home page (under the "Projects" h2), 2 on /projects (under the page h1).
   headingLevel: 2 | 3;
   index: number; // position in the entrance cascade
+  selected: boolean;
+  onSelect: () => void;
 };
 
 export default function ProjectRow({
   project,
   headingLevel,
   index,
+  selected,
+  onSelect,
 }: ProjectRowProps) {
   const { t } = useLanguage();
   const { ref, revealed } = useReveal<HTMLElement>("projects");
@@ -26,10 +30,23 @@ export default function ProjectRow({
   const text = t.projects.items[project.id];
 
   return (
+    // The selection is only a visual frame, not an action: the row stays an
+    // article, not a button, so its links are not nested in another control.
+    // Keyboard users select it by tabbing into it (onFocus bubbles in React).
+    // biome-ignore lint/a11y/useKeyWithClickEvents: onFocus is the keyboard equivalent
     <article
+      id={project.id}
       ref={ref}
-      className={revealed ? `${styles.row} ${styles.revealed}` : styles.row}
+      className={[
+        styles.row,
+        revealed && styles.revealed,
+        selected && styles.selected,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       style={{ "--i": index } as CSSProperties}
+      onClick={onSelect}
+      onFocus={onSelect}
     >
       <ProjectCard project={project} headingLevel={headingLevel} />
 
@@ -73,8 +90,8 @@ export default function ProjectRow({
           </div>
         </div>
 
-        {/* Mobile: the tag and the GitHub link move below the two blocks. A second copy
-            rather than CSS reordering, so screen readers and Tab follow the visual order. */}
+        {/* Up to 834px, the tag and the GitHub link move below the two blocks. A second
+            copy rather than CSS reordering, so screen readers and Tab follow the visual order. */}
         {(project.team || project.repoUrl) && (
           <div className={styles.footer}>
             {project.team && <Tag>{t.projects.team[project.team]}</Tag>}

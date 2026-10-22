@@ -2,8 +2,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: 18px 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
+  /* Every row has the padding and the (transparent) frame of the selected one:
+     selecting a row only changes colours, nothing moves. */
+  padding: 20px;
+  border: 1px solid transparent;
+  border-top-color: var(--line);
+  /* Opened from a home page card, the row starts 20px under the Navbar. */
+  scroll-margin-top: calc(var(--nav-height) + 20px);
+}
+
+/* The selected row is framed: the one opened from a home page card, then the
+   last one clicked or reached with Tab. */
+.selected {
+  border-color: var(--accent);
+  background: var(--card);
 }
 
 .details {
@@ -52,8 +64,8 @@
   line-height: 1.5;
 }
 
-/* Mobile only: tag on the left, GitHub link on the right (the link stays right even
-   without a tag). */
+/* Up to 834px only: tag on the left, GitHub link on the right (the link stays
+   right even without a tag). */
 .footer {
   display: none;
 }
@@ -62,24 +74,22 @@
   margin-left: auto;
 }
 
-@media (max-width: 767px) {
+/* Mobile and iPads in portrait (up to 834px, like the projects carousel): the
+   card and the pills are centred, the tag and the GitHub link sit in the last
+   line (.footer) instead of their desktop places. */
+@media (max-width: 834px) {
+  .row {
+    justify-content: center;
+  }
+
   .desktopOnly {
     display: none;
   }
 
-  /* Same small, centred pills as the home page cards on mobile. The stack takes the
-     whole width of .meta, whose only visible child it is. */
+  /* The stack takes the whole width of .meta, whose only visible child it is. */
   .stack {
     flex: 1;
     justify-content: center;
-    gap: 4px;
-  }
-
-  .stack > li > * {
-    height: 22px;
-    margin: 0;
-    padding: 0 6px;
-    font-size: 10px;
   }
 
   .footer {

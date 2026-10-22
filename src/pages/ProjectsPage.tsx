@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Link } from "react-router";
+import { useLayoutEffect, useState } from "react";
+import { Link, useLocation } from "react-router";
 import BlurDecor from "../components/layout/BlurDecor";
 import Footer from "../components/layout/Footer";
 import ProjectRow from "../components/projects/ProjectRow";
@@ -9,12 +9,23 @@ import styles from "./ProjectsPage.module.css";
 
 export default function ProjectsPage() {
   const { t } = useLanguage();
+  const location = useLocation();
+  const target = (location.state as { scrollTo?: string } | null)?.scrollTo;
+  // The framed row: the one opened from a home page card, then the one clicked.
+  const [selectedId, setSelectedId] = useState(target);
 
-  // HashRouter keeps the previous scroll position: coming from the bottom of the
-  // home page, this page would open already scrolled. "instant" skips the smooth scroll.
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+  // A home page card passes its project id in the navigation state: the page opens
+  // on that row. Otherwise it opens at the top, because HashRouter keeps the
+  // previous scroll position. "instant" skips the smooth scroll; useLayoutEffect
+  // runs before the first paint, so the top of the page never flashes.
+  useLayoutEffect(() => {
+    const row = target ? document.getElementById(target) : null;
+    if (row) {
+      row.scrollIntoView({ behavior: "instant" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [target]);
 
   return (
     <div className={styles.page}>
@@ -59,6 +70,8 @@ export default function ProjectsPage() {
             project={project}
             headingLevel={2}
             index={index}
+            selected={project.id === selectedId}
+            onSelect={() => setSelectedId(project.id)}
           />
         ))}
       </main>
