@@ -1,3 +1,4 @@
+import atroposScreenshot from "../assets/projects/atropos.png";
 import pokeGachaTest from "../assets/projects/poke-gacha-test.jpg";
 import type { en } from "../locales/en";
 
@@ -34,13 +35,13 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "project3",
-    title: "[Project 3]",
-    stack: [],
-    team: null,
+    id: "atropos",
+    title: "Atropos",
+    stack: ["Electron", "React", "JavaScript", "SQLite", "Vitest"],
+    team: "solo",
     liveUrl: null,
-    repoUrl: null,
-    screenshot: null,
+    repoUrl: "https://github.com/YoanCuervo/Atropos",
+    screenshot: atroposScreenshot,
     featured: true,
   },
   {

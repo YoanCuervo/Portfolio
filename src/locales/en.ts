@@ -93,10 +93,12 @@ export const en = {
         build:
           "Database designed as a Merise conceptual model, then a MySQL schema with integrity constraints. Express API and React interface, in TypeScript.",
       },
-      project3: {
-        type: "[Project 3 type]",
-        summary: "[Project 3 summary]",
-        build: "[Project 3 build]",
+      atropos: {
+        type: "Windows desktop app and Claude Code mod",
+        summary:
+          "Tracks Claude Code usage limits live, the 5-hour window and the weekly limit, with a band above the prompt and a 12-month history.",
+        build:
+          "Electron, React and SQLite, with pure logic kept apart from side effects and covered by 230 tests. Data stays on the computer; RGAA and GDPR audits with their fixes.",
       },
       project4: {
         type: "[Project 4 type]",
