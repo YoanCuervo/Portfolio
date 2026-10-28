@@ -493,7 +493,7 @@ Exemple de découpage :
 ```ts
 // data/projects.ts
 export type Project = {
-  id: 'wedoo' | 'pokeGacha' | 'project3';
+  id: 'wedoo' | 'pokeGacha' | 'atropos';
   title: string;                 // nom propre, non traduit
   stack: string[];
   team: 'team' | 'solo';

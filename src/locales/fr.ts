@@ -96,10 +96,12 @@ export const fr: typeof en = {
         build:
           "Base conçue en MCD Merise, puis schéma MySQL avec contraintes d'intégrité. API Express et interface React, en TypeScript.",
       },
-      project3: {
-        type: "[Type du projet 3]",
-        summary: "[Résumé du projet 3]",
-        build: "[Construction du projet 3]",
+      atropos: {
+        type: "Application de bureau Windows et mod Claude Code",
+        summary:
+          "Suit en direct les limites d'usage de Claude Code, fenêtre de 5 heures et limite hebdomadaire, avec un bandeau au-dessus de la saisie et un historique sur 12 mois.",
+        build:
+          "Electron, React et SQLite, avec une logique pure séparée des effets de bord et couverte par 230 tests. Les données restent sur le poste ; audits RGAA et RGPD avec leurs corrections.",
       },
       project4: {
         type: "[Type du projet 4]",
