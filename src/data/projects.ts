@@ -15,13 +15,13 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: "wedoo",
-    title: "Wedoo",
-    stack: ["React", "TypeScript", "Node.js", "Express", "MySQL"],
-    team: "team",
+    id: "atropos",
+    title: "Atropos",
+    stack: ["Electron", "React", "JavaScript", "SQLite"],
+    team: "solo",
     liveUrl: null,
-    repoUrl: "https://github.com/YoanCuervo/WEDOO",
-    screenshot: null,
+    repoUrl: "https://github.com/YoanCuervo/Atropos",
+    screenshot: atroposIllustration,
     featured: true,
   },
   {
@@ -35,13 +35,13 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "atropos",
-    title: "Atropos",
-    stack: ["Electron", "React", "JavaScript", "SQLite", "Vitest"],
-    team: "solo",
+    id: "wedoo",
+    title: "Wedoo",
+    stack: ["React", "TypeScript", "Node.js", "Express", "MySQL"],
+    team: "team",
     liveUrl: null,
-    repoUrl: "https://github.com/YoanCuervo/Atropos",
-    screenshot: atroposIllustration,
+    repoUrl: "https://github.com/YoanCuervo/WEDOO",
+    screenshot: null,
     featured: true,
   },
   {
