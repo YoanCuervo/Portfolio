@@ -1,4 +1,4 @@
-import atroposScreenshot from "../assets/projects/atropos.png";
+import atroposIllustration from "../assets/projects/atropos.jpg";
 import pokeGachaTest from "../assets/projects/poke-gacha-test.jpg";
 import type { en } from "../locales/en";
 
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     team: "solo",
     liveUrl: null,
     repoUrl: "https://github.com/YoanCuervo/Atropos",
-    screenshot: atroposScreenshot,
+    screenshot: atroposIllustration,
     featured: true,
   },
   {
