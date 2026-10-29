@@ -19,7 +19,7 @@ export const projects: Project[] = [
     title: "Atropos",
     stack: ["Electron", "React", "JavaScript", "SQLite"],
     team: "solo",
-    liveUrl: null,
+    liveUrl: "https://yoancuervo.github.io/Atropos/",
     repoUrl: "https://github.com/YoanCuervo/Atropos",
     screenshot: atroposIllustration,
     featured: true,
