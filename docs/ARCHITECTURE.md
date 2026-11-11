@@ -142,7 +142,8 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--code` | Code au repos du champ de code (20 octobre 2026 : en clair, même rose que la lentille au lieu de `--gold`) | `var(--gold)` | `var(--lens)` |
 | `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
 | `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
-| `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
+| `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.75)` | `rgba(0, 0, 0, 0.75)` |
+| `--on-scrim` | Texte posé sur le voile `--scrim`, graisse `--w-on-scrim` (300) dans les deux thèmes | `#e8e4df` | `#e8e4df` |
 | `--pill-bg` | Pastille au repos, fond (T15) | `#0f0f0f` | `#ffffff` |
 | `--pill-fg` | Pastille au repos, texte | `var(--fg)` | `#0f0f0f` |
 | `--pill-border` | Bordure des pastilles (21 octobre 2026) | `var(--gold)` | `var(--rose)` |
@@ -311,7 +312,7 @@ Certifications :
 
 **`FeaturedProjectCard`** (T19, 19 octobre 2026, d'après la maquette de Yoan) : `article`, fond `--card`, bordure `1px solid var(--line)`. Les polices, tailles et couleurs sont celles de `ProjectRow` et `ProjectCard` ; seule la disposition change.
 
-- La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` (noir à 78 % en thème sombre, blanc à 65 % en thème clair), qui démarre en fondu 80 px au-dessus du texte, garde celui-ci lisible. Le 20 octobre 2026, le blanc est passé de 78 % à 65 % : à 78 % il rendait les photos sombres laiteuses, à 50 % le texte devenait illisible. Un voile « givré » (`backdrop-filter: blur`) a été essayé et écarté le même jour. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
+- La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` garde celui-ci lisible. Au repos, il est affiché à 90 % (`opacity: 0.9`), soit environ 68 % de noir, dans les deux thèmes ; il démarre en haut du bloc de texte et finit son fondu à la hauteur du titre (28 px). Le 11 novembre 2026, il a été allégé de 13 % au repos et descendu au niveau du titre (il démarrait 80 px au-dessus du texte). Le même jour, le voile blanc du thème clair a été abandonné : il rendait les captures laiteuses ou laissait le texte illisible. Les cartes avec capture gardent en thème clair le voile noir et le texte clair (`--on-scrim`, graisse 300) du thème sombre ; étiquette et pastilles suivent le thème. Le 20 octobre 2026, le blanc est passé de 78 % à 65 % : à 78 % il rendait les photos sombres laiteuses, à 50 % le texte devenait illisible. Un voile « givré » (`backdrop-filter: blur`) a été essayé et écarté le même jour. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
 - Le type et les deux résumés sont en `--fg`, et non en `--muted` comme dans `ProjectRow`, sur toutes les cartes, avec ou sans capture, dans les deux thèmes. Sur le voile, le gris tombait sous 4,5:1 : environ 2,9:1 en clair sur les zones sombres de l'image, 3,9:1 en sombre sur les zones claires ; `--fg` remonte les pires cas à environ 7,9:1 et 9,3:1 (décision de Yoan, 20 octobre 2026, à T24d ; exception à la règle « rendu bureau inchangé » du Lot 7).
 - En haut à droite : l'étiquette « Team Project » ou « Solo Project » (`Tag`), sur un fond `--card` pour rester lisible sur la capture.
 - Le texte est calé en bas de la carte, de haut en bas : titre du projet (`h3`) et type, collé sous le titre sans écart (décision de Yoan, 20 octobre 2026) ; « The project » (`h4`) et son résumé, collé dessous sans écart (T25 ; « How it was built » retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; les pastilles de techno, centrées. Plus de lien GitHub sur la carte (retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; la marge basse de 56 px qui lui faisait place est conservée en attendant la décision de Yoan.
@@ -322,7 +323,7 @@ Certifications :
   - soulèvement, ombre, bordure `--control` et zoom de la capture (toutes les cartes sont des liens depuis T25), comme `ProjectCard` (voir plus bas) ;
   - lueur qui suit le contour de la carte : seconde ombre `0 0 24px`, sans décalage, `--halo-amber` à 45 % en thème sombre, `--halo-rose` à 70 % en thème clair : elle fait ressortir les bords de la carte (T25, 22 octobre 2026 ; avant : `0 0 40px`, 35 % et 60 % ; `0 0 16px`, 20 % et 35 %, puis `0 0 24px`, 30 % et 50 % essayés, trop faibles). Elle n'apparaît que sur la carte survolée ; un halo commun qui glissait de carte en carte a été essayé et écarté (19 octobre 2026) ;
   - les deux autres cartes reculent : `opacity: 0.6`, `scale: 0.98`. Même effet quand le focus clavier entre dans une carte (`:focus-within`) ;
-  - le voile `--scrim` s'allège (`opacity: 0.87` sur le voile, soit environ 68 %) pour laisser voir davantage la capture ;
+  - le voile `--scrim` fonce de 10 % (`opacity: 1`, soit 75 % de noir) pour rendre le texte plus lisible (11 novembre 2026 ; il s'allégeait avant) ;
   - une lumière qui suivait le curseur (dégradé radial `--accent`) a été essayée et retirée le 20 octobre 2026.
 
 **`ProjectRow`** (`article`, `flex-wrap`, `gap: 18px 40px`, `padding-top: 20px`, `border-top: 1px solid var(--line)`) :

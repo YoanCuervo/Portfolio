@@ -32,9 +32,9 @@
     transform: scale(1.03);
   }
 
-  /* Lighter veil on hover: more of the screenshot shows through. */
+  /* Full veil on hover: the text gets easier to read. */
   .card:hover .body::before {
-    opacity: 0.87;
+    opacity: 1;
   }
 }
 
@@ -101,16 +101,25 @@
   padding: 28px 28px 56px;
 }
 
-/* A translucent veil (dark or light with the theme) behind the text: the text stays
-   readable and the whole screenshot stays visible. */
+/* A translucent dark veil behind the text, in both themes: the text stays
+   readable and the whole screenshot stays visible. It fades in over the body's top
+   padding, so it is full from the title down. At rest it is 90% of --scrim; the
+   hover brings it to full strength. */
 .card:has(.screenshot) .body::before {
   content: "";
   position: absolute;
-  inset: -80px 0 0;
+  inset: 0;
   z-index: -1;
-  background: linear-gradient(to bottom, transparent, var(--scrim) 80px);
+  background: linear-gradient(to bottom, transparent, var(--scrim) 28px);
+  opacity: 0.9;
   transition: opacity 300ms;
 }
+
+.card:has(.screenshot) .body {
+  --fg: var(--on-scrim);
+  --w-body: var(--w-on-scrim);
+}
+
 .title {
   color: var(--fg);
   font-family: var(--font-serif);
@@ -124,6 +133,7 @@
   margin-top: -14px;
   color: var(--fg);
   font-size: 14px;
+  font-weight: var(--w-body);
 }
 
 .block {
