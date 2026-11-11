@@ -1,6 +1,5 @@
 import atroposIllustration from "../assets/projects/atropos.jpg";
-import brickBlasterMenu from "../assets/projects/brick-blaster.jpg";
-import brickBlasterThumb from "../assets/projects/brick-blaster-thumb.jpg";
+import brickBlasterLevel from "../assets/projects/brick-blaster.webp";
 import pokeGachaTest from "../assets/projects/poke-gacha-test.jpg";
 import wegatherScreenshot from "../assets/projects/wegather.jpg";
 import type { en } from "../locales/en";
@@ -41,8 +40,8 @@ export const projects: Project[] = [
     liveUrl: null,
     repoUrl: "https://github.com/YoanCuervo/Brick-Blaster-Remastered",
     deployed: null,
-    screenshot: brickBlasterMenu,
-    thumbnail: brickBlasterThumb,
+    screenshot: brickBlasterLevel,
+    thumbnail: null,
     featured: true,
   },
   {
