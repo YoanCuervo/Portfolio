@@ -87,6 +87,7 @@ export default function ProjectRow({
             </BlockTitle>
             <p className={styles.summary}>
               {text.summary}
+              {"summaryMore" in text && ` ${text.summaryMore}`}
               {project.deployed && (
                 <>
                   {" "}
