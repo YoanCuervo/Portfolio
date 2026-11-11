@@ -116,11 +116,6 @@ export const fr: typeof en = {
         build:
           "Moteur déterministe en TypeScript et Canvas 2D, sans moteur de jeu, avec un décodeur d'animations FLC écrit pour le projet. Outils d'analyse en Python, plus de 570 tests Vitest et une version Windows empaquetée avec Electron.",
       },
-      project5: {
-        type: "[Type du projet 5]",
-        summary: "[Résumé du projet 5]",
-        build: "[Construction du projet 5]",
-      },
     },
   },
   about: {

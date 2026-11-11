@@ -73,16 +73,4 @@ export const projects: Project[] = [
     thumbnail: null,
     featured: false,
   },
-  {
-    id: "project5",
-    title: "[Project 5]",
-    stack: [],
-    team: null,
-    liveUrl: null,
-    repoUrl: null,
-    deployed: null,
-    screenshot: null,
-    thumbnail: null,
-    featured: false,
-  },
 ];

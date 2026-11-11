@@ -672,16 +672,14 @@ Décisions du 20 octobre 2026 :
 
 ## 12. Contenus manquants
 
-État au 20 octobre 2026 : il ne manque plus que les contenus des projets. Yoan les fournira une fois les projets déployés (décision du 16 octobre 2026) ; d'ici là, ils restent entre crochets ou en pointillés.
+État au 11 novembre 2026 : il ne manque plus que la version en ligne de Poke_Gacha. Yoan la fournira une fois le projet déployé (décision du 16 octobre 2026).
 
 | Élément | Où |
 |---|---|
-| URL du site en ligne de Wedoo et de Poke_Gacha (les dépôts GitHub sont renseignés) | Projets |
-| Captures d'écran de Wedoo et de Poke_Gacha | Projets |
-| **Dette technique** : la capture de Poke_Gacha est une image de test (`src/assets/projects/poke-gacha-test.jpg`, une aquarelle d'un illustrateur tiers, gardée pour juger le voile des cartes, décision de Yoan du 20 octobre 2026). À remplacer par la vraie capture au moment de mettre le projet en ligne, puis supprimer le fichier. Le dépôt étant public, elle reste dans l'historique Git. | Projets |
-| Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
+| URL du site en ligne et vraie capture d'écran de Poke_Gacha (le dépôt GitHub est renseigné) | Projets |
+| **Dette technique** : la capture de Poke_Gacha est une image de test (`src/assets/projects/poke-gacha-test.jpg`, une aquarelle d'un illustrateur tiers, gardée pour juger le voile des cartes, décision de Yoan du 20 octobre 2026). À remplacer par la vraie capture au moment de mettre le projet en ligne, puis supprimer le fichier. Yoan a choisi de la garder pour la première mise en ligne du portfolio (11 novembre 2026). Le dépôt étant public, elle reste dans l'historique Git. | Projets |
 
-Réglés depuis : carrousel complet avec ses 20 logos (T23), textes français validés par Yoan (20 octobre 2026), nom du dépôt (`Portfolio`), service de formulaire (Web3Forms, clé fournie par la CI, T13), liens GitHub, LinkedIn et Discord, formule « first assistant director in the audiovisual industry ».
+Réglés depuis : Atropos, Brick Blaster Remastered et Wedoo (version en ligne weGather) complets ; l'emplacement vide « projet 5 » retiré avant la mise en ligne (11 novembre 2026) ; carrousel complet avec ses 20 logos (T23), textes français validés par Yoan (20 octobre 2026), nom du dépôt (`Portfolio`), service de formulaire (Web3Forms, clé fournie par la CI, T13), liens GitHub, LinkedIn et Discord, formule « first assistant director in the audiovisual industry ».
 
 ## 13. Backlog
 

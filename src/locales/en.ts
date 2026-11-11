@@ -114,11 +114,6 @@ export const en = {
         build:
           "Deterministic engine in TypeScript and Canvas 2D, with no game engine, plus an FLC animation decoder written for the project. Analysis tools in Python, over 570 Vitest tests and a Windows version packaged with Electron.",
       },
-      project5: {
-        type: "[Project 5 type]",
-        summary: "[Project 5 summary]",
-        build: "[Project 5 build]",
-      },
     },
   },
   about: {
