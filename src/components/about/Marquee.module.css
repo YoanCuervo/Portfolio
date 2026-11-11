@@ -41,7 +41,11 @@
 .track {
   display: flex;
   width: max-content;
-  animation: 40s linear infinite;
+  /* Longhands, not the shorthand: without a name, the build minifier rewrites
+     "animation: 40s linear infinite" as "animation: none" and drops the duration. */
+  animation-duration: 40s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .right {
