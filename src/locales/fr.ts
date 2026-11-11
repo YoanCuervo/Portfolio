@@ -70,6 +70,9 @@ export const fr: typeof en = {
     theProject: "Le projet",
     howBuilt: "Sa construction",
     viewRepo: "Voir le dépôt GitHub",
+    viewDeployedRepo: (name: string) => `Voir le dépôt ${name}`,
+    deployedAs: "Mise en ligne sous le nom",
+    deployedBy: "une version déployée et améliorée par le développeur",
     screenshotPlaceholder: "Capture d'écran du projet",
     carousel: {
       roleDescription: "carrousel",

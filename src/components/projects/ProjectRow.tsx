@@ -29,6 +29,18 @@ export default function ProjectRow({
   const BlockTitle = headingLevel === 2 ? "h3" : "h4";
   const text = t.projects.items[project.id];
 
+  // Rendered twice (desktop place and mobile footer), see the footer comment below.
+  const repoLinks = project.repoUrl && (
+    <div className={styles.repos}>
+      <ArrowLink href={project.repoUrl}>{t.projects.viewRepo}</ArrowLink>
+      {project.deployed && (
+        <ArrowLink href={project.deployed.repoUrl}>
+          {t.projects.viewDeployedRepo(project.deployed.name)}
+        </ArrowLink>
+      )}
+    </div>
+  );
+
   return (
     // The selection is only a visual frame, not an action: the row stays an
     // article, not a button, so its links are not nested in another control.
@@ -73,13 +85,21 @@ export default function ProjectRow({
             <BlockTitle className={styles.blockTitle}>
               {t.projects.theProject}
             </BlockTitle>
-            <p className={styles.summary}>{text.summary}</p>
+            <p className={styles.summary}>
+              {text.summary}
+              {project.deployed && (
+                <>
+                  {" "}
+                  {t.projects.deployedAs}{" "}
+                  <strong className={styles.highlight}>
+                    {project.deployed.name}
+                  </strong>
+                  , {t.projects.deployedBy} {project.deployed.author}.
+                </>
+              )}
+            </p>
             {project.repoUrl && (
-              <div className={styles.desktopOnly}>
-                <ArrowLink href={project.repoUrl}>
-                  {t.projects.viewRepo}
-                </ArrowLink>
-              </div>
+              <div className={styles.desktopOnly}>{repoLinks}</div>
             )}
           </div>
           <div className={styles.block}>
@@ -96,11 +116,7 @@ export default function ProjectRow({
           <div className={styles.footer}>
             {project.team && <Tag>{t.projects.team[project.team]}</Tag>}
             {project.repoUrl && (
-              <div className={styles.footerRepo}>
-                <ArrowLink href={project.repoUrl}>
-                  {t.projects.viewRepo}
-                </ArrowLink>
-              </div>
+              <div className={styles.footerRepo}>{repoLinks}</div>
             )}
           </div>
         )}
