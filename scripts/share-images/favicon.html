@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+  Source of public/favicon.png (180 x 180, also used as the iPhone home screen icon).
+  Regenerate from the repository root (Git Bash):
+  "/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --headless=new --hide-scrollbars --force-device-scale-factor=1 --virtual-time-budget=3000 --allow-file-access-from-files --window-size=180,180 --screenshot="$(pwd -W)/public/favicon.png" "file:///$(pwd -W)/scripts/share-images/favicon.html"
+  pwd -W gives the Windows form of the path (C:/...), which Edge needs.
+  monogram.webp is Yoan's black on white monogram; the page recolors it with the
+  dark and light colors of src/styles/tokens.css.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 180px;
+        height: 180px;
+        overflow: hidden;
+      }
+
+      .tile {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        overflow: hidden;
+        background: #0f0f0f;
+      }
+
+      /* Cropped so the letters fill the tile with a small margin. lighten turns the
+         black of the source into #0f0f0f; the tint then turns its white into #e8e4df. */
+      .tile img {
+        position: absolute;
+        width: 232px;
+        left: -26px;
+        top: -29px;
+        mix-blend-mode: lighten;
+      }
+
+      .tint {
+        position: absolute;
+        inset: 0;
+        background: #e8e4df;
+        mix-blend-mode: multiply;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tile">
+      <img src="monogram.webp" alt="" />
+      <div class="tint"></div>
+    </div>
+  </body>
+</html>

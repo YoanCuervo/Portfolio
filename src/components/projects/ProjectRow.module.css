@@ -1,0 +1,130 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 40px;
+  /* Every row has the padding and the (transparent) frame of the selected one:
+     selecting a row only changes colours, nothing moves. */
+  padding: 20px;
+  border: 1px solid transparent;
+  border-top-color: var(--line);
+  /* Opened from a home page card, the row starts 20px under the Navbar. */
+  scroll-margin-top: calc(var(--nav-height) + 20px);
+}
+
+/* The selected row is framed: the one opened from a home page card, then the
+   last one clicked or reached with Tab. */
+.selected {
+  border-color: var(--accent);
+  background: var(--card);
+}
+
+.details {
+  flex: 1 1 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 40px;
+}
+
+.block {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.blockTitle {
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: var(--w-medium);
+}
+
+.summary {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: var(--w-body);
+  line-height: 1.5;
+}
+
+/* Up to 834px only: tag on the left, GitHub link on the right (the link stays
+   right even without a tag). */
+.footer {
+  display: none;
+}
+
+.highlight {
+  font-weight: var(--w-medium);
+}
+
+.repos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.footerRepo {
+  margin-left: auto;
+}
+
+/* Mobile and iPads in portrait (up to 834px, like the projects carousel): the
+   card and the pills are centred, the tag and the GitHub link sit in the last
+   line (.footer) instead of their desktop places. */
+@media (max-width: 834px) {
+  .row {
+    justify-content: center;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  /* The stack takes the whole width of .meta, whose only visible child it is. */
+  .stack {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    opacity: 0;
+  }
+
+  .row.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+    animation-delay: calc(var(--i) * 75ms);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}

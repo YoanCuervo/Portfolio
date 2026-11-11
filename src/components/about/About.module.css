@@ -1,0 +1,171 @@
+.about {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 56px var(--gutter) 48px;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 102px;
+}
+
+.story {
+  flex: 3 1 480px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hook {
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: var(--w-regular);
+  line-height: 1.25;
+  /* No word left alone on the last line ("code."). */
+  text-wrap: pretty;
+}
+
+.paragraph {
+  max-width: 40em;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: var(--w-body);
+  line-height: 1.6;
+}
+
+/* IBM Plex Sans is only loaded up to 500: an explicit weight avoids a faux bold. */
+.emphasis {
+  color: var(--fg);
+  font-weight: var(--w-medium);
+}
+
+.softSkills {
+  flex: 2 1 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Rule 14px under the "Soft Skills" title (the column gap), like under "Stack" and
+   "Certifications". One list per line of three pills (data/softSkills.ts). */
+.pills {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+/* Wraps only if three pills no longer fit. */
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+/* Added to the section gap (40px): 64px between the text and the carousel. */
+.clients {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.clientsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Mobile: a 32px round instead of 44px, so the title fits on one line from
+   360px (it is 292px wide). The invisible ::before keeps a 44px touch target. */
+@media (max-width: 767px) {
+  .carouselControl > * {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+
+  .carouselControl > *::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+}
+
+/* Below 360px the title can't fit on one line even without the button. */
+@media (min-width: 360px) and (max-width: 767px) {
+  .clientsHeader > :first-child {
+    white-space: nowrap;
+  }
+}
+
+/* The carousel does not move in reduced motion: nothing to pause. */
+@media (prefers-reduced-motion: reduce) {
+  .carouselControl {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .story {
+    opacity: 0;
+  }
+
+  .story.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Mobile: natural height, a rule between sections, 22px above the title like the
+   other sections. */
+@media (max-width: 767px) {
+  .about {
+    min-height: 0;
+    padding: 22px var(--gutter) var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+
+  .story {
+    max-width: none;
+  }
+
+  /* Smaller pills, the size of the project card pills (28px, 13px text), that
+     flow freely: three per line no longer fit a phone, so the row lists step
+     aside (display: contents) and the pills wrap as one list. 4px apart in both
+     directions. */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .pillRow {
+    display: contents;
+  }
+
+  .pillRow > li > * {
+    height: 28px;
+    margin: 0;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  /* The hook takes the serif of the subtitles, upright and smaller. */
+  .hook {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: var(--w-medium);
+  }
+}

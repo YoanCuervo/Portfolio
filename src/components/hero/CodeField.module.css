@@ -1,0 +1,14 @@
+/* Behind the hero content (z-index -1 inside the isolated Section), above the halos (later in the DOM). */
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

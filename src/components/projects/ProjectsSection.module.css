@@ -1,0 +1,76 @@
+/* Fits the screen below the fixed Navbar, "View all projects" included. */
+.projects {
+  min-height: calc(100svh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 48px var(--gutter) 40px;
+}
+
+/* Three columns on desktop; cards wrap on narrower screens above the breakpoint. */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* Keyboard users get the same focus as the mouse. */
+@media (prefers-reduced-motion: no-preference) {
+  .cards:has(> article:focus-within) > article:not(:focus-within) {
+    opacity: 0.6;
+    scale: 0.98;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* The hovered card stands out: the other two step back. */
+  .cards:has(> article:hover) > article:not(:hover) {
+    opacity: 0.6;
+    scale: 0.98;
+  }
+}
+
+.viewAll {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: var(--w-medium);
+}
+
+/* Mobile: natural height, a rule between sections. */
+@media (max-width: 767px) {
+  /* 22px above the title, equal to the title-to-cards gap: the carousel and its
+     controls fit the screen on more phones. */
+  .projects {
+    min-height: 0;
+    padding: 22px var(--gutter) var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* ProjectCarousel takes over up to 834px, past the site breakpoint, so iPads in
+   portrait get it too (T25). */
+@media (max-width: 834px) {
+  .cards {
+    display: none;
+  }
+}
+
+/* iPads in portrait: the section keeps the desktop screen height but the carousel
+   is much shorter than the grid. The two auto margins centre the carousel and
+   "View all projects" in the space below the title. */
+@media (min-width: 768px) and (max-width: 834px) {
+  .cards + * {
+    margin-top: auto;
+  }
+
+  .viewAll {
+    margin-bottom: auto;
+  }
+}

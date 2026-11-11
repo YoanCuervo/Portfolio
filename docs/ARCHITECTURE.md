@@ -25,7 +25,7 @@ Objectif : qu'un recruteur comprenne en moins d'une minute qui est Yoan, ce qu'i
 | Hébergement | GitHub Pages, site 100 % statique **[FIGÉ]** |
 | Backend | Aucun **[FIGÉ]** |
 | Routage | React Router en `HashRouter` **[FIGÉ]** (pas de configuration serveur possible sur GitHub Pages) |
-| Formulaire de contact | Service de formulaire tiers qui relaie vers la boîte mail de Yoan **[FIGÉ]**. Service : Web3Forms via `fetch` **[PROPOSÉ]** (pas de dépendance, cohérent avec l'apprentissage de `fetch`). Vérifier le quota gratuit au moment du ticket. |
+| Formulaire de contact | Service de formulaire tiers qui relaie vers la boîte mail de Yoan **[FIGÉ]**. Service : Web3Forms via `fetch` (validé à T13 ; pas de dépendance, cohérent avec l'apprentissage de `fetch`). |
 | Langues | Anglais et français, un fichier de textes par langue **[FIGÉ]** |
 | Thèmes | Sombre (Dark Botanical) et clair, bouton de bascule dans la navigation **[FIGÉ]** |
 | Langage | TypeScript **[PROPOSÉ]** (déjà affiché dans la stack et utilisé sur Wedoo et Poke_Gacha) |
@@ -48,25 +48,27 @@ Hors périmètre : page de détail par projet (`/projects/:slug`), téléchargem
 
 Avec `HashRouter`, le `#` de l'URL sert déjà au routage. Un lien `<a href="#skills">` casserait la route. Donc :
 
-- Les liens de navigation appellent une fonction `scrollToSection(id)` qui fait `document.getElementById(id)?.scrollIntoView()`.
+- Les liens de navigation appellent une fonction `scrollToSection(id)` qui fait `document.getElementById(id)?.scrollIntoView()`. Avant de défiler, elle envoie l'événement `section-navigate` (avec l'`id`) : la section visée rejoue son animation d'entrée (`useReveal(id)`, voir 7).
 - Depuis `/projects`, un clic sur Skills, About ou Contact fait `navigate('/', { state: { scrollTo: id } })`. `HomePage` lit cet état dans un `useEffect` et défile vers la section.
-- Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation).
+- Chaque section a `scroll-margin-top: 72px` (hauteur de la navigation) : à l'arrivée sur une section, son haut se cale sous la barre. L'espace du haut des sections ne compte donc pas la barre (17 octobre 2026) : 48 px pour Projects et Contact, 56 px pour About, 0 pour Skills, dont le contenu est centré.
 - Le défilement est doux (`scroll-behavior: smooth`), sauf si `prefers-reduced-motion: reduce`.
+- Au rechargement, la page repart toujours en haut : la restauration du défilement du navigateur est désactivée (`history.scrollRestoration = "manual"` dans `main.tsx`).
 
 ## 4. Arborescence cible
 
 ```
 portfolio/
 ├── .github/workflows/deploy.yml
-├── public/
-│   └── favicon.svg                 [À FOURNIR] ou [PROPOSÉ] : initiales YC en Cormorant
+├── public/                         servi tel quel (balises de index.html)
+│   ├── favicon.png                 monogramme YC de Yoan, noir sur blanc cassé, 180 px (T18)
+│   └── og-image.png                image d'aperçu de lien, 1200 × 630 (T18)
+├── scripts/share-images/           sources HTML des deux images ci-dessus et monogramme d'origine
 ├── src/
 │   ├── main.tsx
 │   ├── App.tsx                     HashRouter + providers + routes
 │   ├── styles/
 │   │   ├── tokens.css              variables des deux thèmes
-│   │   ├── base.css                reset, typographie, focus, reduced-motion
-│   │   └── animations.css          keyframes partagées
+│   │   └── base.css                reset, typographie, focus, reduced-motion
 │   ├── context/
 │   │   ├── ThemeContext.tsx
 │   │   └── LanguageContext.tsx
@@ -81,23 +83,26 @@ portfolio/
 │   │   ├── certifications.ts
 │   │   ├── projects.ts
 │   │   ├── softSkills.ts
-│   │   └── clients.ts
+│   │   ├── clients.ts
+│   │   └── codeGlyphs.ts           caractères du champ de code du hero (T22)
 │   ├── assets/
 │   │   ├── icons/                  SVG en `currentColor` (source : paquet simple-icons)
 │   │   ├── flags/                  fr.svg, gb.svg
 │   │   ├── projects/               captures d'écran [À FOURNIR]
 │   │   └── logos/                  logos productions/clients [À FOURNIR]
 │   ├── components/
-│   │   ├── layout/   Navbar, Footer, Section, BlurDecor
-│   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon
-│   │   ├── hero/     Hero, AnimatedName
+│   │   ├── layout/   Navbar, TabBar, Footer, Section, BlurDecor, SkipLink
+│   │   ├── ui/       Pill, Tag, IconLink, ArrowLink, TechIcon, TabIcon
+│   │   ├── hero/     Hero, AnimatedName, AnimatedRole, CodeField
 │   │   ├── skills/   Skills, StackRow, CertificationItem
-│   │   ├── projects/ ProjectsSection, ProjectRow, ProjectCard
+│   │   ├── projects/ ProjectsSection, ProjectCarousel, FeaturedProjectCard, ProjectRow, ProjectCard
 │   │   ├── about/    About, Marquee, ClientTile
 │   │   └── contact/  Contact, ContactForm, Field
-│   └── pages/
-│       ├── HomePage.tsx
-│       └── ProjectsPage.tsx
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   └── ProjectsPage.tsx
+│   └── utils/
+│       └── scrollToSection.ts     défilement vers une section (le HashRouter interdit les ancres)
 ├── index.html                      script anti-flash du thème, balises meta
 ├── vite.config.ts                  `base` = nom du dépôt
 ├── biome.json
@@ -115,21 +120,41 @@ Règle de nommage : code, noms de fichiers, identifiants de section et clés de 
 | `--bg` | Fond de page et de navigation | `#0f0f0f` | `#e8e4df` |
 | `--fg` | Texte principal, titres | `#e8e4df` | `#0f0f0f` |
 | `--muted` | Texte secondaire, paragraphes | `#9a9590` | `#5c5751` |
-| `--accent` | Liens, sous-titres en italique, contour de focus | `#d4a574` | `#7d4f22` |
+| `--accent` | Liens, sous-titres en italique, contour de focus, onglet actif, accroche d'About, seconde partie du titre de Contact, fond du bouton d'envoi | `#d4a574` | `var(--rose)` (`#8f3f4b`) |
 | `--accent-hover` | Lien survolé | `#e8b4b8` | `#0f0f0f` |
-| `--rose` | Étiquettes (équipe, statut de certification), citation | `#e8b4b8` | `#8f3f4b` |
-| `--gold` | Bordure des pastilles, filet vertical du hero | `#c9b896` | `#8f7d4f` |
+| `--rose` | Rose des étiquettes en thème sombre (via `--tag`), messages d'erreur | `#e8b4b8` | `#8f3f4b` |
+| `--tag` | Bordure des étiquettes (équipe, statut de certification) | `var(--rose)` | `#d4a574` (T25, 22 octobre 2026 : le doré de `--accent` du thème sombre ; rouge rosé avant, `#5f5030` essayé et écarté) |
+| `--tag-bg` / `--tag-fg` | Fond et texte des étiquettes au repos | `transparent` / `var(--rose)` | `#d4a574` / `#0f0f0f` : en texte sur fond clair, ce doré serait illisible (≈ 2:1) ; plein avec texte noir, ≈ 9:1 |
+| `--tag-hover-bg` / `--tag-hover-fg` | Étiquette survolée | `var(--rose)` / `#0f0f0f` | `#0f0f0f` / `#d4a574` |
+| `--gold` | Filet vertical du hero, code au repos en sombre | `#c9b896` | `#8f7d4f` |
 | `--icon` | Teinte des icônes de techno et de réseaux | `#c9b896` | `#5f5030` |
 | `--line` | Séparateurs, bordure des cards | `#34302c` | `#c9c2b8` |
-| `--card` | Fond des cards projet, du cadre du formulaire, des champs | `#181716` | `#f4f1ed` |
+| `--card` | Fond des cards projet | `#181716` | `#f4f1ed` |
+| `--form-bg` | Fond du cadre du formulaire et des champs (noir des pastilles en sombre, 16 octobre 2026) | `#0f0f0f` | `#f4f1ed` |
 | `--control` | Bordure des boutons ronds, champs, zones en pointillés | `#6e6558` | `#7d746a` |
-| `--tile-bg` | Fond des tuiles du carrousel | transparent | `#f4f1ed` |
+| `--tile-bg` | Fond des tuiles du carrousel, blanc du site en sombre (T23) | `var(--fg)` | `#f4f1ed` |
+| `--tile-fg` | Nom dans une tuile sans logo (T23) | `#0f0f0f` | `var(--fg)` |
 | `--tile-border` | Bordure des tuiles du carrousel | `#34302c` | `#b5ada1` |
-| `--btn-bg` | Bouton d'envoi, fond | `#d4a574` | `#0f0f0f` |
-| `--btn-fg` | Bouton d'envoi, texte | `#0f0f0f` | `#e8e4df` |
+| `--btn-bg` | Fond du lien d'évitement (le bouton d'envoi prend `--accent` depuis le 21 octobre 2026) | `#d4a574` | `#0f0f0f` |
+| `--btn-fg` | Texte du bouton d'envoi et du lien d'évitement | `#0f0f0f` | `#e8e4df` |
+| `--hole` | Ombre du trou noir du champ de code (T22) | `#0f0f0f` | `var(--bg)` |
+| `--lens` | Code aspiré par la lentille et anneau (T22) | `var(--accent)` | `var(--rose)` |
+| `--code` | Code au repos du champ de code (20 octobre 2026 : en clair, même rose que la lentille au lieu de `--gold`) | `var(--gold)` | `var(--lens)` |
+| `--code-intensity` | Multiplie toutes les opacités du champ de code (T22) : un texte foncé sur fond clair se perçoit beaucoup moins bien | 1 | 4 |
+| `--shadow` | Ombre d'une card projet soulevée au survol (T15) | `rgba(0, 0, 0, 0.55)` | `rgba(15, 15, 15, 0.16)` |
+| `--scrim` | Voile derrière le texte d'une `FeaturedProjectCard` posée sur sa capture (T19) | `rgba(0, 0, 0, 0.78)` | `rgba(255, 255, 255, 0.65)` |
+| `--pill-bg` | Pastille au repos, fond (T15) | `#0f0f0f` | `#ffffff` |
+| `--pill-fg` | Pastille au repos, texte | `var(--fg)` | `#0f0f0f` |
+| `--pill-border` | Bordure des pastilles (21 octobre 2026) | `var(--gold)` | `var(--rose)` |
+| `--pill-icon` | Pastille au repos, logo | `var(--fg)` (blanc) | `var(--rose)` (21 octobre 2026 ; doré `var(--icon)` avant) |
+| `--pill-hover-bg` | Pastille survolée, fond | `var(--fg)` | `var(--rose)` (21 octobre 2026 ; noir avant) |
+| `--pill-hover-fg` | Pastille survolée, texte | `#0f0f0f` | `#e8e4df` |
+| `--pill-hover-icon` | Pastille survolée, logo | `#8f7d4f` (doré) | `#e8e4df` (blanc) |
 | `--w-body` | Graisse du texte courant | 300 | 400 |
-| `--w-lead` | Graisse des paragraphes du hero | 400 | 500 |
-| `--w-italic` | Graisse de « Web Developer » et de la citation | 400 | 500 |
+| `--w-lead` | Graisse des paragraphes du hero : identique dans les deux thèmes, pour que le texte passe à la ligne aux mêmes endroits et que le nom ne bouge pas au changement de thème | 400 | 400 |
+| `--w-italic` | Graisse de « Web Developer » | 400 | 500 |
+
+Depuis le 21 octobre 2026 (décision de Yoan, à T24g), le thème clair n'a plus qu'une couleur d'accent : `--accent` pointe sur `--rose` (`#8f3f4b`, le rouge rosé du code du hero) au lieu du brun `#7d4f22`. Contraste sur `--bg` : environ 5,6:1 (5,5:1 pour l'ancien brun). Les pastilles suivent le même jour (`--pill-border`, `--pill-icon`, `--pill-hover-bg` en rouge rosé : logo sur blanc ≈ 7:1, texte crème sur rosé au survol ≈ 5,6:1). Le thème sombre garde le doré.
 
 Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes : `#d4a574`, `#e8b4b8`, `#c9b896`. Seule leur opacité change (voir 5.4).
 
@@ -137,6 +162,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 
 - Titres : **Cormorant** (serif). Graisses utilisées : 400, 600, italique 400, italique 500.
 - Texte : **IBM Plex Sans**. Graisses utilisées : 300, 400, 500.
+- Champ de code du hero (T22) : police à chasse fixe du système, `--font-mono: ui-monospace, Consolas, monospace` (aucune police chargée).
 - Taille de base : 16 px.
 
 | Élément | Police | Taille | Graisse | Interligne | Couleur |
@@ -150,8 +176,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 | Libellé de ligne de stack (`h4`) | Cormorant | 22 px | 600 | | `--fg` |
 | Titre de certification | Cormorant | 27 px | 600 | 1.15 | `--fg` |
 | Titre de projet | Cormorant | 30 px | 600 | 1.1 | `--fg` |
-| Accroche d'About | Cormorant | 31 px | 400 | 1.25 | `--fg` |
-| Citation | Cormorant italique | 30 px | `--w-italic` | 1.2 | `--rose` |
+| Accroche d'About | Plex Sans, comme les paragraphes (17 octobre 2026) | 28 px | 400 | 1.25 | `--fg` |
 | Paragraphe courant (About, Contact) | Plex Sans | 17 px | `--w-body` | 1.6 | `--muted` |
 | Résumés de projet | Plex Sans | 14 px | `--w-body` | 1.5 | `--muted` |
 | Liens de navigation | Plex Sans | 15 px | 400 | | `--fg` |
@@ -159,8 +184,7 @@ Les trois couleurs des halos décoratifs sont identiques dans les deux thèmes :
 
 ### 5.3 Espacements et formes
 
-- Marge horizontale de page : `6%` de chaque côté.
-- Largeur maximale du contenu : 1440 px centré **[PROPOSÉ]** (les maquettes s'arrêtent à 1440 px, rien n'est dessiné au-delà).
+- Marge horizontale de page : `--gutter`, sur bureau `max(6%, (100% - 1200px) / 2)` : le contenu est limité à **1200 px et centré**, avec au moins 6 % de marge de chaque côté (61 px à 1024 px, 120 px à 1440 px, 360 px à 1920 px). La `Navbar` suit les mêmes bords. Sous le point de rupture : 16 px (voir 10). Décision de Yoan, 22 octobre 2026, T25 : 6 % sans largeur maximale avant, puis 8 % essayés et écartés ; 1400 px restaient l'alternative.
 - Arrondis : `2px` (cards, champs, boutons rectangulaires), `999px` (pastilles), `50%` (boutons ronds).
 - Zone cliquable minimale : 44 × 44 px (48 × 48 px pour les icônes du hero).
 - Focus clavier : `outline: 2px solid var(--accent); outline-offset: 3px` sur liens, boutons, champs.
@@ -184,13 +208,13 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 5.5 Composants d'interface
 
-**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--gold)`, arrondi 999 px, texte 14 px graisse 400 `--fg`, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ».
+**Pill (pastille de compétence)** : `inline-flex`, hauteur 36 px, `padding: 0 14px`, `gap: 8px`, bordure `1px solid var(--pill-border)`, arrondi 999 px, texte 14 px graisse 400, marge `0 10px 10px 0`. Icône optionnelle 18 × 18 px devant le texte. Variante `dashed` (bordure en pointillés) pour la ligne « Learning ». Couleurs (T15, tokens `--pill-*` de 5.1) : un état clair et un état sombre qui s'échangent au survol, en 200 ms, la bordure restant visible dans les deux. Thème clair (depuis le 21 octobre 2026) : bordure rouge rosé, blanc avec logo rouge rosé au repos, rouge rosé avec texte et logo crème au survol (avant : bordure dorée, blanc avec logo doré, noir avec logo blanc). Thème sombre : l'inverse, noir avec logo blanc au repos, blanc cassé avec logo doré au survol (échange inversé le 16 octobre 2026). Survol réservé aux appareils avec une souris (`hover: hover`).
 
 **Pill petite (techno d'un projet)** : même forme, hauteur 28 px, `padding: 0 12px`, texte 13 px, sans icône.
 
-**Tag (étiquette)** : forme de la petite pastille, bordure et texte `--rose`. Variante `dashed` pour « In progress ».
+**Tag (étiquette)** : hauteur 28 px, `padding: 0 12px`, texte 13 px, arrondi 2 px (rectangle, décidé à T15), bordure `--tag`, fond `--tag-bg`, texte `--tag-fg` (en thème sombre : contour et texte rose ; en thème clair : doré plein, texte noir). Variante `dashed` pour « In progress », jamais remplie (les pointillés disparaîtraient dans un fond de même couleur) : en thème clair, texte `--fg`. Survol (souris seulement) : couleurs inversées en 200 ms (`--tag-hover-bg`, `--tag-hover-fg`).
 
-**IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire.
+**IconLink (bouton rond)** : 44 × 44 px (navigation) ou 48 × 48 px (hero), bordure `1px solid var(--control)`, fond plein `--bg` (le champ de code du hero ne doit pas apparaître à travers, T22), arrondi 50 %, icône 20 × 20 px centrée, `aria-label` obligatoire. Lien externe avec `href`, bouton avec `onClick`.
 
 **ArrowLink (« View GitHub repo »)** : `inline-flex`, `gap: 8px`, hauteur minimale 44 px, texte 14 px graisse 500 `--accent`, souligné (`text-underline-offset: 4px`). Icône GitHub 16 px devant, flèche diagonale 16 px derrière (`path d="M7 17 17 7M9 7h8v8"`, trait 1.8).
 
@@ -200,8 +224,8 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 6.1 Navigation (`Navbar`) — commune aux deux pages
 
-- `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px 6%`, fond `--bg`, bordure basse `1px solid var(--line)`.
-- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil.
+- `position: sticky; top: 0; z-index: 20`, hauteur minimale 72 px, `padding: 8px var(--gutter)`, fond `--bg`, bordure basse `1px solid var(--line)`.
+- Gauche : « Yoan Cuervo », lien vers le haut de l'accueil. Le monogramme qui le précédait a été retiré le 20 octobre 2026 ; il reste la favicon.
 - Droite, espacés de 28 px : Skills, Projects, About, Contact, puis deux boutons ronds espacés de 8 px.
 - **Lien actif** : souligné (`text-underline-offset: 6px`), transition 150 ms. Sur l'accueil, c'est la section visible (`useActiveSection`). Sur `/projects`, c'est « Projects ».
 - **Bouton thème** : en sombre il montre un soleil (`aria-label="Switch to light theme"`), en clair une lune (`aria-label="Switch to dark theme"`).
@@ -210,14 +234,14 @@ Cercles flous en position absolue, `border-radius: 50%`, `filter: blur(70px)`, `
 
 ### 6.2 Hero (`#home`)
 
-- Hauteur : `min-height: calc(100svh - 72px)` (828 px sur la maquette de 900 px), contenu centré verticalement et horizontalement, `padding: 32px 6%`.
+- Hauteur : `min-height: calc(100svh - 72px)` (828 px sur la maquette de 900 px), contenu centré verticalement et horizontalement, `padding: 32px var(--gutter)`.
 - Une colonne centrée de `max-width: 800px`, dont le contenu est **aligné à gauche**, `gap: 22px`.
 - Dans l'ordre :
-  1. `h1` « Yoan Cuervo », une `span` par lettre pour l'animation, `aria-label="Yoan Cuervo"` sur le `h1` et `aria-hidden="true"` sur chaque lettre. `overflow: hidden` et `padding: 0.06em 0 0.1em` pour masquer les lettres avant leur montée.
+  1. `h1` « Yoan Cuervo », fixe (pas d'animation, décidé à T15). Une `span` par lettre, en `aria-hidden="true"`, avec `aria-label="Yoan Cuervo"` sur le `h1` : la dernière lettre porte `data-lens-anchor`, où se pose la lentille du champ de code (T22).
   2. Un bloc décalé de `padding-left: 40px` qui contient :
-     - « Web Developer » (voir typographie) ;
+     - « Web Developer » (voir typographie), seul élément animé du hero : composant `AnimatedRole`, texte complet masqué visuellement pour les lecteurs d'écran et une lettre par `span` en `aria-hidden` pour l'animation (voir 7) ;
      - un groupe avec filet vertical : `margin-left: -32px; padding: 6px 0 6px 30px; border-left: 2px solid var(--gold)`, `gap: 22px`, qui contient :
-       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`) ;
+       - quatre boutons ronds de 48 px espacés de 12 px : GitHub, LinkedIn, Discord (liens externes), enveloppe (défile vers Contact, `aria-label="Email me, go to the contact form"`). Au survol (souris) et au focus clavier (`:focus-visible`, le contour `--accent` restant visible), les quatre inversent leurs couleurs dans les deux thèmes : fond `--fg`, icône `--bg`, bordure `--fg`, 200 ms, sans transition en mouvement réduit (20 octobre 2026). Les autres `IconLink` (navigation, carrousel) ne changent pas ;
        - trois paragraphes, `max-width: 760px`, `gap: 10px`.
 
 Textes (anglais, validés) :
@@ -231,9 +255,33 @@ Textes (anglais, validés) :
 
 Le premier paragraphe a un retour à la ligne après « Hello there! ».
 
+**Champ de code (`CodeField`, T22)** — ajouté le 15 octobre 2026, inspiré du fond de Claude Code, réglé à l'écran avec Yoan. Toutes les valeurs sont des constantes en haut de `CodeField.tsx`.
+
+*Le champ au repos*
+
+- Un `<canvas>` dans une `div` en `aria-hidden="true"` et `pointer-events: none` couvre tout le hero, au-dessus des halos et sous le contenu.
+- Lignes de caractères en `--font-mono`, 11 px, une ligne tous les 16 px. Caractères tirés au hasard dans `data/codeGlyphs.ts` : `A–Z a–z 0–9 / + = . ; ~` (aspect de jetons, d'empreintes, de données encodées).
+- Chaque ligne glisse vers la gauche à sa propre vitesse, entre 20 et 40 px/s.
+- Chaque ligne est découpée en tronçons de 3 à 20 caractères : invisibles (25 %), pâles (60 %, `--code` à 0,035), plus marqués (15 %, × 2,2). Toutes les opacités sont multipliées par `--code-intensity`.
+
+*La lentille (trou noir)*
+
+- Lentille gravitationnelle : un point du fond à la distance d du centre est vu à (d + √(d² + 4E²)) / 2 (première image, repoussée vers l'extérieur : les lignes s'arquent au-dessus et en dessous du trou, comme le disque d'Interstellar) et, retourné, à (√(d² + 4E²) − d) / 2 (seconde image, en arcs serrés contre l'ombre). E = 34 px.
+- Ombre opaque de 24 px de rayon (48 px de diamètre, comme les ronds du hero), couleur `--hole`, avec un fin anneau `--lens` à 0,18.
+- Effet plein jusqu'à mi-rayon, puis fondu jusqu'à 180 px. Caractères orientés le long de la courbe, étirés le long du cercle (jusqu'à × 3), éclaircis jusqu'à 0,22 en `--lens` près du trou ; seconde image à 60 %.
+- La lentille suit la souris de près (90 % de l'écart rattrapé à chaque image).
+- Souris hors du hero (et au chargement) : la lentille se pose sur la dernière lettre du nom (le « o » de « Cuervo », marqué `data-lens-anchor` dans `AnimatedName`), un peu sous le milieu de sa boîte (centre optique). Retour en 1,4 s, départ et arrivée en douceur (ease-in-out), même durée sur tous les écrans.
+
+*Accessibilité et performance*
+
+- Tactile : pas de suivi, la lentille reste posée sur le « o ».
+- `prefers-reduced-motion: reduce` : ni défilement ni lentille ; à la place, un révélateur simple (dégradé circulaire jusqu'à 0,35 autour du curseur).
+- Animation suspendue quand le hero sort de l'écran (IntersectionObserver) ; taille du canvas suivie par un ResizeObserver (le hero change de taille sans que la fenêtre bouge, par exemple au changement de langue). Un changement de thème remonte le composant (`key={theme}`) pour relire les couleurs.
+- Performance : chaque ligne est dessinée une fois dans une image hors écran puis recopiée ; la lentille recopie chaque caractère depuis une planche de glyphes (`drawImage` + `setTransform`, opacité par `globalAlpha`) ; couleurs lues une seule fois ; caractères quasi invisibles sautés. Environ 2,4 ms par image avec la lentille, 1,4 ms sans (mesuré à 1024 × 768).
+
 ### 6.3 Skills (`#skills`)
 
-- `min-height: 100svh`, contenu centré verticalement, `gap: 36px`, `padding: 104px 6% 48px`.
+- `min-height: 100svh`, contenu centré verticalement, sans espace en haut (17 octobre 2026), `gap: 36px`, `padding: 0 var(--gutter) 48px`.
 - `h2` « Skills », puis deux colonnes en `flex-wrap` avec `gap: 48px 72px` :
   - **Stack** (`flex: 2 1 560px`) : cinq lignes. Chaque ligne : `border-top: 1px solid var(--line)`, `padding-top: 14px`, un libellé de 140 px de large à gauche et les pastilles à droite (`flex: 1 1 320px`).
   - **Certifications** (`flex: 1 1 340px`) : deux blocs, chacun `border-top: 1px solid var(--line)`, `padding: 18px 0 10px`, `gap: 8px` : titre, détail (15 px, `--muted`), étiquette.
@@ -257,8 +305,25 @@ Certifications :
 
 ### 6.4 Projects (`#projects`)
 
-- `min-height: 100svh`, `gap: 22px`, `padding: 100px 6% 40px`.
-- `h2` « Projects », trois `ProjectRow` (les projets `featured`), puis le lien « View all projects » **calé à droite** (Cormorant italique 500, 24 px, `--accent`) vers `/projects`.
+- `min-height: calc(100svh - var(--nav-height))` : la section tient dans l'écran sous la `Navbar`, lien « View all projects » compris (T19). `gap: 22px`, `padding: 48px var(--gutter) 40px`.
+- `h2` « Projects », trois `FeaturedProjectCard` (les projets `featured`) dans une grille `repeat(auto-fit, minmax(320px, 1fr))`, `gap: 24px`, qui prend toute la hauteur restante, puis le lien « View all projects » **calé à droite** (Cormorant italique 500, 24 px, `--accent`) vers `/projects`.
+- Les `ProjectRow` décrites plus bas ne servent plus que sur `/projects` (6.7).
+
+**`FeaturedProjectCard`** (T19, 19 octobre 2026, d'après la maquette de Yoan) : `article`, fond `--card`, bordure `1px solid var(--line)`. Les polices, tailles et couleurs sont celles de `ProjectRow` et `ProjectCard` ; seule la disposition change.
+
+- La capture couvre **toute la carte** et reste entièrement visible. Derrière le texte, un voile translucide `--scrim` (noir à 78 % en thème sombre, blanc à 65 % en thème clair), qui démarre en fondu 80 px au-dessus du texte, garde celui-ci lisible. Le 20 octobre 2026, le blanc est passé de 78 % à 65 % : à 78 % il rendait les photos sombres laiteuses, à 50 % le texte devenait illisible. Un voile « givré » (`backdrop-filter: blur`) a été essayé et écarté le même jour. Tant qu'elle manque : la zone en pointillés « Project screenshot » sur toute la carte, libellé dans le haut.
+- Le type et les deux résumés sont en `--fg`, et non en `--muted` comme dans `ProjectRow`, sur toutes les cartes, avec ou sans capture, dans les deux thèmes. Sur le voile, le gris tombait sous 4,5:1 : environ 2,9:1 en clair sur les zones sombres de l'image, 3,9:1 en sombre sur les zones claires ; `--fg` remonte les pires cas à environ 7,9:1 et 9,3:1 (décision de Yoan, 20 octobre 2026, à T24d ; exception à la règle « rendu bureau inchangé » du Lot 7).
+- En haut à droite : l'étiquette « Team Project » ou « Solo Project » (`Tag`), sur un fond `--card` pour rester lisible sur la capture.
+- Le texte est calé en bas de la carte, de haut en bas : titre du projet (`h3`) et type, collé sous le titre sans écart (décision de Yoan, 20 octobre 2026) ; « The project » (`h4`) et son résumé, collé dessous sans écart (T25 ; « How it was built » retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; les pastilles de techno, centrées. Plus de lien GitHub sur la carte (retiré le 22 octobre 2026, T25 : il reste sur `/projects`) ; la marge basse de 56 px qui lui faisait place est conservée en attendant la décision de Yoan.
+
+- Lien vers la rangée du projet sur `/projects` (T25, 22 octobre 2026 ; vers le site en ligne avant) : `Link` interne avec `state: { scrollTo: id }`, la page s'ouvre directement sur la rangée, sans défilement visible (`scroll-margin-top` sous la `Navbar`). La **carte entière** est ce lien : `article` > `Link` qui contient tout (capture, étiquette, texte, pastilles), ce que permet le retrait du lien GitHub (un `<a>` ne peut pas en contenir un autre). Avant, le lien du titre s'étirait par un `::after`, mais ne couvrait que le bloc de texte et masquait le survol des pastilles. Nom accessible : le titre seul (`aria-labelledby`, identifiant par `useId`, chaque carte étant rendue deux fois : grille et carrousel). `draggable={false}` : à la souris, tirer un lien lance le glisser-déposer du navigateur, qui annulait le glissement du carrousel. Le contour de focus est reporté sur la carte entière (`:has(:focus-visible)`).
+- Clavier : chaque carte est une étape du Tab.
+- Survol (souris seulement, tout est coupé en mouvement réduit), 300 ms :
+  - soulèvement, ombre, bordure `--control` et zoom de la capture (toutes les cartes sont des liens depuis T25), comme `ProjectCard` (voir plus bas) ;
+  - lueur qui suit le contour de la carte : seconde ombre `0 0 24px`, sans décalage, `--halo-amber` à 45 % en thème sombre, `--halo-rose` à 70 % en thème clair : elle fait ressortir les bords de la carte (T25, 22 octobre 2026 ; avant : `0 0 40px`, 35 % et 60 % ; `0 0 16px`, 20 % et 35 %, puis `0 0 24px`, 30 % et 50 % essayés, trop faibles). Elle n'apparaît que sur la carte survolée ; un halo commun qui glissait de carte en carte a été essayé et écarté (19 octobre 2026) ;
+  - les deux autres cartes reculent : `opacity: 0.6`, `scale: 0.98`. Même effet quand le focus clavier entre dans une carte (`:focus-within`) ;
+  - le voile `--scrim` s'allège (`opacity: 0.87` sur le voile, soit environ 68 %) pour laisser voir davantage la capture ;
+  - une lumière qui suivait le curseur (dégradé radial `--accent`) a été essayée et retirée le 20 octobre 2026.
 
 **`ProjectRow`** (`article`, `flex-wrap`, `gap: 18px 40px`, `padding-top: 20px`, `border-top: 1px solid var(--line)`) :
 
@@ -266,13 +331,14 @@ Certifications :
    - la capture d'écran, `flex: 0 0 150px`, hauteur minimale 124 px (tant qu'elle manque : zone en pointillés `1px dashed var(--control)` avec le texte « Project screenshot ») ;
    - le titre du projet et son type (14 px, `--muted`).
    - Il n'y a **pas** de libellé « View site » : il a été retiré.
-   - Survol : la capture zoome à `scale(1.03)` en 200 ms.
-   - Si le projet n'a pas de site en ligne : **[PROPOSÉ]** la card est rendue en `div`, sans lien ni effet de survol.
+   - Survol (T15, souris seulement, coupé en mouvement réduit) : la card se soulève, `translateY(-4px) scale(1.02)`, ombre `0 18px 40px -18px var(--shadow)`, bordure `--control`, 300 ms `cubic-bezier(.2,.7,.2,1)`. Si la card est un lien, la capture zoome en plus à `scale(1.03)` en 200 ms, rognée par son cadre.
+   - Si le projet n'a pas de site en ligne : **[PROPOSÉ]** la card est rendue en `div`, sans lien ni effet de survol, mais atteignable au clavier (`tabIndex={0}`, focus visible) : à la demande de Yoan (T17), chaque card reste une étape du parcours au Tab.
 2. **Colonne de droite**, `flex: 1 1 520px`, `gap: 12px` :
    - petites pastilles de techno, puis l'étiquette « Team Project » ou « Solo Project » ;
    - deux blocs côte à côte (`flex: 1 1 240px`, `gap: 10px 40px`) :
      - « The project » : résumé, puis **sous le résumé** le lien « View GitHub repo » (`ArrowLink`) ;
      - « How it was built » : résumé.
+   - Jusqu'à 834 px (iPad en portrait, même limite que le carrousel des projets ; T25, 22 octobre 2026), la disposition mobile de 10.6 s'applique : carte et pastilles centrées, étiquette et lien GitHub sur une dernière ligne.
    - Titres de ces blocs : 14 px, graisse 500, `--fg`.
 
 Contenu :
@@ -290,51 +356,67 @@ Contenu :
 
 ### 6.5 About (`#about`)
 
-- `min-height: 100svh`, `gap: 40px`, `padding: 104px 0 48px` (pas de marge latérale sur la section : le carrousel va d'un bord à l'autre ; les blocs de texte ont leur propre `padding: 0 6%`).
-- `h2` « About me », puis deux colonnes (`gap: 32px 72px`) :
-  - gauche (`flex: 3 1 480px`, `gap: 18px`) : accroche, paragraphe (`max-width: 40em`), citation (`blockquote`) ;
-  - droite (`flex: 2 1 340px`) : `h3` « Soft Skills » et dix pastilles sans icône.
-- Puis `h3` « Productions, clients and agencies » et le carrousel.
+- `min-height: 100svh`, `gap: 40px`, `padding: 56px var(--gutter) 48px`. Le carrousel respecte les mêmes marges que le texte (17 octobre 2026) : ses bords fondus se font à l'intérieur.
+- `h2` « About me », puis deux colonnes (`gap: 32px 102px` ; 72 px entre les colonnes jusqu'au 22 octobre 2026, T25) :
+  - gauche (`flex: 3 1 480px`, `max-width: 600px` sur bureau depuis T25, 22 octobre 2026 : 665 px avant ; `gap: 18px`) : accroche (`text-wrap: pretty`, pour que « du code. » passe à la ligne ensemble ; IBM Plex Sans 24 px, graisse 400, interligne 1,25, `--accent` comme sur mobile (`--fg` jusqu'au 22 octobre 2026, T25) ; 28 px jusqu'au 21 octobre 2026), puis un bloc sans espace entre ses paragraphes (17 octobre 2026) : trois paragraphes et une phrase de conclusion dont la fin est en `strong` (IBM Plex Sans 500, couleur `--fg` comme les titres), tous en `max-width: 40em` ;
+  - droite (`flex: 2 1 340px`, `gap: 14px`) : `h3` « Soft Skills », un filet `--line` dessous (T24f, 20 octobre 2026, comme sous « Stack » et « Certifications »), et neuf pastilles sans icône, trois par ligne. La citation « Imagination rules the world. » a été retirée le 17 octobre 2026.
+- Puis, 64 px plus bas (écart de section de 40 px + `margin-top: 24px`), une ligne avec `h3` « Productions & collaborations » (raccourci le 21 octobre 2026, « that trusted me » retiré, dans les deux langues) à gauche et le bouton pause à droite, puis le carrousel (17 octobre 2026).
 
-Textes :
+Textes (17 octobre 2026 : français écrit par Yoan, anglais traduit par Claude, à valider) :
 
-> After ten years in the audiovisual industry as a first assistant director, I traded my call sheets for code.
+> After ten years in the audiovisual industry as an assistant director, I traded my call sheets for code.
 
-> From 2014 to 2025, I organized shoots for fiction, commercials and live broadcasts, coordinated crews and met deadlines under heavy constraints. Today I build complete web applications and I am training in AI integration.
+> There I learned to turn a vision into reality, to coordinate teams with diverse expertise and to carry ambitious projects through to completion.
+>
+> Today I apply the same logic to web development: understanding a need, designing a solution and solving problems to bring functional, accessible applications to life.
+>
+> Alongside this, I am deepening my skills in artificial intelligence, eager to bring its possibilities into the development of useful, relevant applications.
+>
+> What drives me hasn't changed: **bringing ideas to life.**
 
-> “Imagination rules the world.”
+Soft skills, trois par ligne (décision de Yoan, 21 octobre 2026 ; « User understanding » retiré le même jour) :
 
-Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast learner, Initiative, Agile methods (Scrum), Autonomy, Product collaboration, User understanding.
+1. Adaptability, Prioritization, Product collaboration ;
+2. Fast learner, Initiative, Analytical thinking ;
+3. Agile methods (Scrum), Autonomy, Debugging.
 
-**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu.
+Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows`) : le retour à la ligne automatique ne garantissait pas trois pastilles par ligne à toutes les largeurs. Sur mobile, les pastilles plus petites (10.7) vont à la ligne librement : trois par ligne à partir d'environ 430 px.
 
-- Rangée 1, vers la droite : Canal+, Eurosport, France Télévisions, When We Were Kids, Studio Bagel, [À FOURNIR].
-- Rangée 2, vers la gauche : Les Guignols, Kayenta, Darjeeling, 48 Hour Film Project, [À FOURNIR], [À FOURNIR].
-- Tuile (`ClientTile`) : hauteur 88 px, `padding: 0 26px 0 14px`, `gap: 14px`, `margin-right: 16px`, fond `--tile-bg`, bordure `1px solid var(--tile-border)`, arrondi 2 px. Logo 58 × 58 px (tant qu'il manque : carré en pointillés « Logo »), nom en Cormorant 600, 24 px.
-- Technique : chaque rangée contient la liste **deux fois** (la seconde copie en `aria-hidden="true"`), `width: max-content; white-space: nowrap`, animation de `translateX(-50%)` à `0` (rangée 1) ou de `0` à `-50%` (rangée 2), 40 s, linéaire, infinie.
+**Carrousel (`Marquee`)** : deux rangées espacées de 14 px, défilement continu en sens alternés (T23, 17 octobre 2026 : liste tirée du profil LinkedIn de Yoan, diffuseurs, productions, agences et marques mélangés). Une rangée doit être plus large que l'écran, sinon la boucle laisse un vide : 10 tuiles de 176 px (marge comprise) couvrent les 1 200 px du carrousel, largeur maximale du contenu.
+
+- Rangée 1, vers la droite : Canal+, Adidas, Publicis, TF1, Microsoft, Iconoclast, Lego, Norma, France Télévisions, BETC (remplace Blue Paris, 17 octobre 2026).
+- Rangée 2, vers la gauche : Eurosport, Buzzman, Lidl, Sony Pictures, Quad, Le Coq Sportif, La Banque Postale, When We Were Kids, Volvic, Société Générale. Ponk et Lenthal retirés par Yoan le 17 octobre 2026.
+- **[À FOURNIR]** : liste définitive par Yoan, orthographe de « Norma » à confirmer.
+- Tuile (`ClientTile`) : 160 × 88 px, `padding: 0 16px`, `margin-right: 16px`, fond `--tile-bg`, bordure `1px solid var(--tile-border)`, arrondi 2 px. Logo seul, sans nom affiché, dans une case de 120 × 56 px. Les tuiles sont claires dans les deux thèmes : les logos, en couleurs d'origine, y gardent la même taille (la plaque claire du thème sombre a été retirée le 17 octobre 2026). Tant qu'un logo manque, la tuile affiche le nom en Cormorant 600, 18 px, couleur `--tile-fg`. En thème sombre, la tuile est blanche (`--fg`) et le texte noir (17 octobre 2026).
+- Survol d'une tuile : le logo, toujours en couleurs d'origine et à pleine opacité, grossit à 1,04 (250 ms). Une infobulle donne le nom : fond `--fg`, texte `--bg`, IBM Plex Sans 500, 13 px, `padding: 6px 10px`, arrondi 4 px, fondu de 200 ms. Elle sort du côté extérieur de la rangée (au-dessus de la rangée 1, en dessous de la rangée 2) pour ne jamais couvrir l'autre. Le conteneur, qui coupe ce qui dépasse, est agrandi de 44 px de ce côté (marge négative pour ne rien décaler) et laisse passer les clics hors des tuiles. Le nom reste lu par les lecteurs d'écran, le logo a un `alt` vide.
+- Technique : chaque rangée contient la liste **deux fois** (la seconde copie en `aria-hidden="true"`), `width: max-content; white-space: nowrap`, animation de `translateX(-50%)` à `0` (rangées impaires) ou de `0` à `-50%` (rangées paires), 40 s, linéaire, infinie.
 - Bords fondus : `mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)` sur le conteneur.
 - Pause au survol. Arrêt complet si `prefers-reduced-motion: reduce`.
+- Bouton pause / lecture (T17, WCAG 2.2.2 : le survol ne couvre ni le clavier ni le tactile) : `IconLink` rond de 44 px aligné à droite sur la ligne du titre, au-dessus des rangées (17 octobre 2026), qui les arrête ou les relance toutes à la fois. Son `aria-label` change avec l'état (« Pause the logo carousel » / « Play the logo carousel »). Masqué en mouvement réduit, où le carrousel est déjà à l'arrêt. Absent des maquettes, validé par Yoan le 16 octobre 2026.
 
 ### 6.6 Contact (`#contact`) et pied de page
 
-- `min-height: 100svh`, colonne centrée, `padding: 104px 6% 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
+- `min-height: 100svh`, colonne centrée, `padding: 48px var(--gutter) 0`. Le pied de page est **dans** cette section, collé en bas : contact + pied de page tiennent ensemble dans un écran.
 - Bloc central (`gap: 22px`, centré verticalement dans l'espace restant) :
-  - `h2` centré : « What's on your mind? » en graisse 600, suivi de « Let's talk about it. » en graisse **normale** (400), sur la même ligne, 60 px.
-  - Paragraphe centré : « Describe it in a few lines and I'll reply by email. » (17 px, `max-width: 34em`).
-  - Formulaire, `max-width: 620px`, `gap: 18px` :
-    - un **cadre** qui contient les trois champs : `padding: 28px`, fond `--card`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
+  - `h2` centré : « What's on your mind? » en graisse 600, 60 px (42 px sur mobile), puis **sur la ligne suivante** « Let's talk! » (« Parlons-en ! » en français) en graisse **normale** (400), 32 px, couleur `--accent` (celle des sous-titres), sur bureau et sur mobile (décisions de Yoan, 21 octobre 2026 ; avant : « Let's talk about it. », même ligne, même taille). La seconde partie est un `span` en `display: block`, pas un `<br>` : l'espace reste dans le texte, lu d'une traite. Sur bureau, 14 px séparent les deux lignes (`margin-top`) ; une version sur une seule ligne a été essayée et écartée (21 octobre 2026).
+  - Le paragraphe d'introduction (« Describe it in a few lines and I'll reply by email. ») a été retiré le 21 octobre 2026, sur bureau et sur mobile ; les champs ont reçu des textes indicatifs à la place.
+  - Formulaire, `max-width: 720px` (620 px jusqu'au 21 octobre 2026), `gap: 18px` :
+    - un **cadre** qui contient les trois champs : `padding: 32px`, fond `--form-bg`, bordure `1px solid var(--line)`, arrondi 2 px, `gap: 18px` ;
     - le bouton d'envoi **hors du cadre**, centré dessous.
-- Champs (libellé au-dessus, 14 px graisse 500, `gap: 6px`) :
+- Champs (libellé au-dessus, 16 px graisse 500, `gap: 6px`) :
 
-| Libellé | Balise | Attributs |
-|---|---|---|
-| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis |
-| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis |
-| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` |
+| Libellé | Balise | Attributs | Texte indicatif EN | Texte indicatif FR |
+|---|---|---|---|---|
+| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis | Your name | Ton nom |
+| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis | you@example.com | toi@exemple.fr |
+| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` | Describe your project… | Décris ton projet… |
 
-- Style des champs : hauteur 48 px (`input`), `padding: 0 14px` (`textarea` : `12px 14px`, interligne 1.5), fond `--card`, bordure `1px solid var(--control)`, arrondi 2 px, texte 16 px `--fg`.
-- Bouton « Send my request » : hauteur 48 px, `padding: 0 32px`, sans bordure, arrondi 2 px, fond `--btn-bg`, texte `--btn-fg`, 15 px graisse 500.
-- **Pied de page** : `border-top: 1px solid var(--line)`, `padding: 18px 0`, 14 px, `--muted`. Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
+- Textes indicatifs (`placeholder`, 21 octobre 2026) en `--muted` : ils complètent les libellés, qui restent au-dessus des champs. Le français tutoie dans toute la section Contact (décision de Yoan, 21 octobre 2026, une fois l'introduction au vouvoiement retirée).
+
+- Style des champs : hauteur 56 px (`input`), `padding: 0 16px` (`textarea` : `14px 16px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 18 px `--fg` ; messages d'erreur en 16 px. Formulaire agrandi le 21 octobre 2026 pour la lisibilité et le confort au toucher, sur la place libérée par l'introduction (avant : libellés 14 px, champs 48 px et texte 16 px, erreurs 14 px, cadre 28 px, bouton 48 px et 15 px). Sur bureau, Contact et le pied de page tiennent toujours dans 900 px.
+- Bouton « Send my request » : hauteur 56 px, `padding: 0 40px`, sans bordure, arrondi 2 px, 17 px graisse 500. Fond `--accent`, la couleur de « Let's talk! », dans les deux thèmes ; texte `--btn-fg` : noir sur le doré en sombre (≈ 8,5:1), crème sur le rouge rosé en clair (≈ 5,6:1 ; un texte noir n'y atteindrait que 2,7:1) (décisions de Yoan, 21 octobre 2026, après un essai en blanc ; l'accent du thème clair est passé au rouge rosé le même jour, voir 5.1).
+- Survol du bouton (souris seulement, coupé en mouvement réduit, 21 octobre 2026), 250 ms `cubic-bezier(.2,.7,.2,1)` : il monte de 2 px, avec une ombre douce (`0 10px 24px -12px var(--shadow)`) et une lueur (`0 0 40px`, `--halo-amber` à 35 % en thème sombre, `--halo-rose` à 60 % en thème clair ; celle des cartes de projet jusqu'à T25, qui l'a réduite sur les cartes seulement). À l'appui, il revient en place et se réduit à 0,98. Pas de changement de couleur : en thème clair, `--btn-bg` et `--accent-hover` sont tous deux noirs.
+- **Pied de page** : filet `1px solid var(--line)` sur **toute la largeur de l'écran**, le texte restant aligné sur le contenu (T25, 22 octobre 2026 : pseudo-élément `::before` qui déborde de `100vw` de chaque côté, recoupé par le `overflow: hidden` de la section Contact et de la page `/projects` ; avant, le filet s'arrêtait aux marges), `padding: 18px 0`, 14 px, `--muted`, aligné à droite (T17 : à gauche, les halos flous passent derrière le texte et Lighthouse y mesure un contraste insuffisant). Texte unique : « © 2026 Yoan Cuervo » (année calculée avec `new Date().getFullYear()`). La mention « Designed and built by me » a été retirée.
 
 États du formulaire (comportement défini dans les notes de maquette, textes **[PROPOSÉ]**) :
 
@@ -342,42 +424,52 @@ Soft skills : Adaptability, Analytical thinking, Prioritization, Debugging, Fast
 |---|---|---|---|
 | Champ actif | Bordure `--accent`, transition 150 ms | | |
 | Champ vide à l'envoi | Message sous le champ, relié par `aria-describedby`, `aria-invalid="true"` | This field is required. | Ce champ est obligatoire. |
-| E-mail invalide | idem | Enter a valid email address. | Saisissez une adresse e-mail valide. |
+| E-mail invalide | idem | Enter a valid email address. | Saisis une adresse e-mail valide. |
 | Envoi | Bouton désactivé, texte changé | Sending… | Envoi en cours… |
-| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je vous réponds par e-mail. |
-| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessayez dans un instant. |
+| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je te réponds par e-mail. |
+| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessaie dans un instant. |
 
-Envoi : `fetch` en `POST` vers le service de formulaire, corps JSON `{ name, email, message }`. Ajouter un champ leurre caché (anti-robots). La clé du service va dans une variable `VITE_…` ; elle est publique par nature (visible dans le code livré), l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
+Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps JSON `{ access_key, name, email, message, botcheck }`. La clé est dans `VITE_WEB3FORMS_KEY` : `.env.local` en local (ignoré par git), variable du dépôt GitHub pour la mise en ligne. Elle est publique par nature (visible dans le code livré) ; l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
+
+- Validation à l'envoi (`noValidate`, messages traduits) ; focus sur le premier champ en erreur ; une erreur disparaît dès que le champ est corrigé. Messages d'erreur et d'échec en `--rose`.
+- Champ leurre : case `botcheck` hors écran, `tabIndex={-1}`, `aria-hidden`. Cochée, rien n'est envoyé mais la confirmation s'affiche (le robot ne sait pas qu'il est repéré).
+- Succès : la zone `role="status"` est toujours présente (pour être annoncée) et reçoit le focus quand le formulaire disparaît.
+- Sans clé (par exemple en local sans `.env.local`), l'envoi échoue proprement.
 
 ### 6.7 Page `/projects` (`ProjectsPage`)
 
 - Même `Navbar` (« Projects » souligné), page en colonne `min-height: 100svh`.
-- `main` : `padding: 40px 6% 56px`, `gap: 22px` :
-  1. lien « Back to home » avec flèche vers la gauche (15 px, `--accent`, hauteur minimale 44 px) ;
+- `main` : `padding: 40px var(--gutter) 56px`, `gap: 22px` :
+  1. lien « Back » (« Retour » en français, raccourci le 20 octobre 2026) avec flèche vers la gauche, dans le style de « View all projects » (Cormorant italique 500, 24 px, `--accent` ; IBM Plex Sans 15 px jusqu'au 22 octobre 2026, T25), hauteur minimale 44 px. Il ramène sur la section Projects de l'accueil, pas en haut (20 octobre 2026). Le bouton retour du navigateur fait de même : au clic sur « View all projects », la section est enregistrée dans l'entrée d'historique courante (`replace`), et `HomePage` la lit au retour. Le saut est instantané et fait avant l'affichage (`useLayoutEffect`, `behavior: "instant"`) : la page s'ouvre directement sur la section, sans passer par le haut ;
   2. `h1` « All projects » (76 px) ;
   3. **tous** les projets en `ProjectRow`, même composant que sur l'accueil. La maquette en montre cinq : Wedoo, Poke_Gacha, et trois emplacements vides.
 - Niveaux de titres décalés d'un cran : titre de projet en `h2`, « The project » et « How it was built » en `h3` (sur l'accueil : `h3` et `h4`). `ProjectRow` reçoit donc une prop `headingLevel`.
-- Pied de page identique, avec `margin: 0 6%`.
+- Pied de page identique, avec `margin: 0 var(--gutter)`.
+- Arrivée depuis une carte de l'accueil (T25, 22 octobre 2026) : la page s'ouvre sur la rangée du projet, à 20 px sous la `Navbar` (`scroll-margin-top`), et cette rangée est **sélectionnée**. Sélection (T25, 22 octobre 2026) : une seule rangée à la fois, celle d'arrivée, puis la dernière cliquée ou touchée (`onClick` sur l'`article`) ou atteinte au Tab (`onFocus`, qui remonte depuis ses liens). Ce n'est qu'un effet visuel : la rangée reste un `article` et non un bouton, pour ne pas imbriquer ses liens dans un autre contrôle. Rangée sélectionnée : filet `--accent` sur les quatre côtés, fond `--card`. Toutes les rangées ont en permanence `padding: 20px` et un filet transparent (sauf le haut, en `--line`) : sélectionner ne change que des couleurs, rien ne bouge. Sans arrivée depuis l'accueil, aucune rangée n'est sélectionnée au départ. Le conteneur de la page est en `overflow: clip` et non `hidden` : une boîte `hidden` reste défilable par script, et `scrollIntoView` la décalait de 140 px, coinçant le titre et « Back » sous la `Navbar`.
+- La carte de chaque rangée est déjà un lien vers le site en ligne quand `liveUrl` est renseigné : elle le deviendra à l'arrivée des adresses (T20).
 
 ## 7. Animations
 
-Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée ne se jouent qu'une fois ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt.
+Règles communes : aucune animation au-delà de 500 ms sauf le carrousel ; les animations d'entrée se jouent une fois au défilement, et à nouveau à chaque navigation volontaire par la `Navbar` vers la section concernée (décidé après T15) ; avec `prefers-reduced-motion: reduce`, tout est coupé et le carrousel reste à l'arrêt. Les animations d'entrée utilisent `--ease-out-slow: cubic-bezier(0, 0, 0.3, 1)` (`tokens.css`) : départ vif, long freinage, effet « pop » inspiré de mustsociete.com (16 octobre 2026).
 
 | Zone | Déclencheur | Effet |
 |---|---|---|
-| Hero, nom | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace entre prénom et nom compte pour un cran : Y 0, o 40, a 80, n 120, C 200, u 240, e 280, r 320, v 360, o 400 ms) |
-| Hero, reste | Chargement | Fondu 300 ms `ease-out`, lancé à 550 ms. Tout est en place en moins de 1,2 s |
-| Skills | Entrée dans l'écran | Pastilles ligne par ligne : fondu 200 ms, décalage de 60 ms par ligne |
-| Pastille | Survol | Bordure accentuée, 150 ms |
-| Projects | Entrée dans l'écran | Les rangées montent de 16 px en fondu, 250 ms, décalage de 80 ms |
-| Card projet | Survol | Capture à `scale(1.03)`, 200 ms |
-| About, texte | Entrée dans l'écran | Fondu 250 ms |
+| Hero, rôle (« Web Developer ») | Chargement de la page | Chaque lettre monte depuis `translateY(115%)`, 500 ms, `cubic-bezier(.2,.7,.2,1)`, décalage de 40 ms par lettre (l'espace compte pour un cran). En place en moins de 1,1 s. Le nom et le reste du hero sont affichés d'emblée, sans animation (décidé à T15). |
+| Skills | Entrée dans l'écran | Lignes de la stack puis blocs de certification, dans la même cascade : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms |
+| Pastille, étiquette | Survol | Échange des états clair et sombre (pastille) ou remplissage `--rose` (étiquette), 200 ms (voir 5.5) |
+| Projects, accueil | Entrée dans l'écran | En éventail (T19) : la carte du milieu monte de 32 px en fondu, puis 100 ms plus tard les deux autres arrivent depuis le centre (décalage horizontal de 60 px en plus de la montée). 500 ms par carte, `--ease-out-slow` |
+| Projects, `/projects` | Entrée dans l'écran | Chaque rangée monte de 32 px en fondu quand elle entre à l'écran, 500 ms, `--ease-out-slow`, décalage de 75 ms. Une version liée au défilement (`animation-timeline: view()`, façon apple.com) a été essayée le 16 octobre 2026 et écartée : l'effet ne se voyait pas sur des rangées |
+| Card projet | Survol | Soulèvement et ombre, 300 ms ; zoom de la capture si la card est un lien (voir 6.4) |
+| Carte projet de l'accueil | Survol | En plus : lueur au contour, recul des deux autres cartes, voile allégé (voir 6.4) |
+| About, texte | Entrée dans l'écran | Montée de 24 px en fondu, 500 ms, `--ease-out-slow` |
+| Contact | Entrée dans l'écran | Titre, introduction puis formulaire : montée de 24 px en fondu, 500 ms, `--ease-out-slow`, décalage de 75 ms (16 octobre 2026 : Contact suit le reste de la page) |
 | Carrousel | Permanent | Voir 6.5 |
+| Hero, champ de code | Permanent + survol | Lignes qui glissent vers la gauche ; lentille gravitationnelle qui suit le curseur, retour en 1,4 s sur le « o » de « Cuervo ». Voir 6.2 (T22) |
 | Navigation | Changement de section | Soulignement du lien actif, 150 ms |
 | Thème | Clic | Transition des couleurs 200 ms |
 | Champ de formulaire | Focus | Bordure accentuée, 150 ms |
 
-Implémentation : un hook `useReveal` (IntersectionObserver, se déconnecte après le premier déclenchement) qui pose une classe ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 60ms)`.
+Implémentation : un hook `useReveal(sectionId)` (IntersectionObserver, seuil 20 %, se déconnecte après le premier déclenchement) qui pose une classe ; à l'événement `section-navigate` de sa section, il retire la classe et observe à nouveau, pour rejouer l'animation à l'arrivée (le rôle du hero l'utilise aussi, avec `home`) ; les décalages passent par une variable CSS `--i` et `animation-delay: calc(var(--i) * 75ms)` (Contact : `:nth-child`). L'état masqué avant l'apparition n'est déclaré que sous `prefers-reduced-motion: no-preference`, pour que tout reste visible en mouvement réduit. Les CSS Modules renomment toujours les noms d'animation (et `:global` y casse le build) : chaque module déclare ses propres `@keyframes`, il n'y a pas de fichier de keyframes partagées.
 
 ## 8. Thème et langue
 
@@ -385,7 +477,7 @@ Implémentation : un hook `useReveal` (IntersectionObserver, se déconnecte apr�
 
 - Attribut `data-theme="dark" | "light"` sur `<html>`.
 - Mémorisé dans `localStorage` (clé `theme`), lecture et écriture dans un `try/catch`.
-- Première visite : préférence du système (`prefers-color-scheme`), sombre par défaut **[PROPOSÉ]**.
+- Première visite : thème sombre, quelle que soit la préférence du système (décision de Yoan, 11 novembre 2026).
 - Un petit script en ligne dans `index.html` pose `data-theme` **avant** le chargement de React, pour éviter un flash de mauvais thème.
 
 **Langue**
@@ -401,7 +493,7 @@ Exemple de découpage :
 ```ts
 // data/projects.ts
 export type Project = {
-  id: 'wedoo' | 'pokeGacha' | 'project3';
+  id: 'wedoo' | 'pokeGacha' | 'atropos';
   title: string;                 // nom propre, non traduit
   stack: string[];
   team: 'team' | 'solo';
@@ -446,13 +538,12 @@ Textes d'origine des maquettes avant leur passage en anglais (validés à l'épo
 | Wedoo, sa construction | J'ai développé tout le système de signalement, du formulaire utilisateur au traitement par l'administrateur, côté front et back. |
 | Poke_Gacha, le projet | Jeu web de collection Pokémon : joueurs, collection, équipes, objets et évolutions. |
 | Poke_Gacha, sa construction | Base conçue en MCD Merise, puis schéma MySQL avec contraintes d'intégrité. API Express et interface React, en TypeScript. |
-| About, accroche | Après dix années dans l'audiovisuel comme premier assistant réalisateur, j'ai troqué mes feuilles de service contre du code. |
-| About, paragraphe | De 2014 à 2025, j'ai organisé des tournages de fiction, de publicité et de direct, coordonné des équipes et tenu des délais sous forte contrainte. Je développe aujourd'hui des applications web complètes et je me forme à l'intégration de l'IA. |
-| Citation | « L'imagination gouverne le monde. » |
-| Soft skills | Adaptabilité, Esprit analytique, Gestion des priorités, Debugging, Apprentissage rapide, Prise d'initiative, Méthodes agiles (Scrum), Autonomie, Collaboration produit, Compréhension des utilisateurs |
-| Carrousel | Productions, clients et agences |
-| Contact | Un projet en tête ? Parlons-en. · Décrivez-le en quelques lignes, je vous réponds par e-mail. · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
-| /projects | Retour à l'accueil · Tous les projets |
+| About, accroche | Après dix années dans l'audiovisuel comme assistant réalisateur, j'ai troqué mes feuilles de service contre du code. (retour à la ligne retiré le 22 octobre 2026, T25) |
+| About, paragraphes | J'y ai appris à transformer une vision en réalité, à coordonner des équipes aux expertises variées et à mener des projets ambitieux jusqu'à leur aboutissement. / Aujourd'hui, j'applique cette même logique au développement web : comprendre un besoin, concevoir une solution et résoudre les problèmes pour donner naissance à des applications fonctionnelles et accessibles. / En parallèle, j'approfondis actuellement mes compétences en intelligence artificielle, avec l'envie d'intégrer ses possibilités au développement d'applications utiles et pertinentes. / Ce qui m'anime reste inchangé : **donner vie aux idées.** |
+| Soft skills | Adaptabilité, Gestion des priorités, Autonomie, Compréhension des utilisateurs, Esprit analytique, Apprentissage rapide, Prise d'initiative, Collaboration produit, Méthodes agiles (Scrum), Debugging |
+| Carrousel | Productions & collaborations |
+| Contact | Un projet en tête ? Parlons-en ! · Nom · Adresse e-mail · Description du projet · Envoyer ma demande |
+| /projects | Retour · Tous les projets |
 | Libellés d'accessibilité | Navigation principale · Passer au thème clair · Passer au thème sombre · Passer le site en anglais · M'écrire, vers le formulaire de contact |
 
 Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
@@ -470,11 +561,11 @@ Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
 ## 9. Accessibilité (exigences, pas options)
 
 - Structure : un seul `h1` par page, niveaux de titres sans saut, balises `header`, `nav`, `main`, `footer`, une `section` par partie avec `aria-labelledby`.
-- Lien d'évitement « Skip to content » en premier élément focusable **[PROPOSÉ]** (absent des maquettes).
+- Lien d'évitement « Skip to content » / « Aller au contenu » en premier élément focusable (validé à T17, absent des maquettes) : `SkipLink`, hors écran jusqu'au focus, puis en haut à gauche au-dessus de la `Navbar`, fond `--btn-bg`. C'est un `button` et non un lien : avec `HashRouter`, `href="#main"` changerait la route. Il donne le focus à `<main id="main" tabIndex={-1}>`.
 - Tout est utilisable au clavier, focus toujours visible.
 - Zones cliquables d'au moins 44 × 44 px.
 - Icônes décoratives : `aria-hidden="true"` ou `alt=""`. Boutons sans texte : `aria-label` traduit.
-- Liens externes : nouvel onglet avec `rel="noopener noreferrer"`.
+- Liens externes : nouvel onglet avec `rel="noopener noreferrer"`, annoncé aux lecteurs d'écran (« (opens in a new tab) », clé `a11y.newTab`, dans un `span.visually-hidden` ou dans l'`aria-label`).
 - Champs reliés à leur `label` par `for` / `id`, erreurs reliées par `aria-describedby`.
 - `prefers-reduced-motion` respecté partout.
 - Contrastes : les couleurs du thème clair ont été choisies plus sombres que leurs équivalents du thème sombre pour rester lisibles sur fond clair. Ne pas réutiliser `#d4a574`, `#e8b4b8` ou `#c9b896` pour du texte en thème clair.
@@ -482,40 +573,113 @@ Textes français qui n'ont jamais existé **[PROPOSÉ]**, à valider :
 
 ## 10. Responsive
 
-Seul le bureau (1440 × 900 par section) est maquetté. **La version mobile n'est pas dessinée** : elle fera l'objet d'une maquette, puis d'un lot de tickets.
+Le bureau est maquetté en 1440 × 900 par section. La version mobile est maquettée depuis le 20 octobre 2026 : `docs/maquette-mobile/Main.dc.html` (page complète en 428 px), `Ecran.dc.html` (un écran de 428 × 926 avec la barre d'onglets) et leur note `specs-mobile-428.md`.
 
-En attendant, coder de façon à ne rien bloquer :
+**La maquette mobile est un guide visuel, pas une source de contenu** (décision de Yoan, 20 octobre 2026). En cas d'écart (textes, ordre, couleurs, contenus, comportements), ce cahier fait foi. Ses fichiers sont ceux d'un outil de maquette : styles en ligne, balises `<sc-if>` et `<sc-for>`, ne rien en copier.
 
-- garder les `flex-wrap` et les `flex-basis` indiqués plus haut : les colonnes passent déjà l'une sous l'autre quand la largeur manque ;
-- le nom du hero est déjà fluide (`clamp`) ;
-- aucune largeur fixe en pixels sur un conteneur, seulement des `max-width` ;
-- unités `svh` pour les hauteurs plein écran ;
-- ne pas inventer de menu mobile : il sera dessiné.
+Décisions du 20 octobre 2026 :
+
+- **Un seul point de rupture : `@media (max-width: 767px)`**, avec une exception : le carrousel des projets (10.5) apparaît jusqu'à 834 px, pour les iPad en portrait (décision de Yoan, 22 octobre 2026, T25). La note dit 428 px, mais les iPhone Pro Max et Plus font 430 px et la navigation bureau ne tient pas en dessous d'environ 900 px. Au-dessus de 767 px, le rendu bureau ne change pas.
+- **Couleurs** : uniquement les tokens de 5.1, dans les deux thèmes. Les filets translucides de la maquette (opacité 0,08 et 0,10) deviennent `--line`, ses bordures translucides (0,18 à 0,28) `--control`. Le thème clair n'est pas dessiné : mêmes tokens que sur bureau, rendu à valider à l'écran.
+- **Formes** : angles droits comme sur bureau (boutons, champs, blocs) ; les pastilles et les ronds gardent leur forme du bureau. Les arrondis de la maquette ne sont pas repris.
+- **Textes** : ceux de `src/locales/`, identiques sur bureau et sur mobile. Les variantes de la maquette (paragraphes du hero, « En apprentissage », étiquettes des certifications, « Scrum », titre des références) ne sont pas reprises.
+- **Survols** : toutes les règles `:hover` sont placées sous `@media (hover: hover)`. Au toucher, rien ne les remplace.
+- **Animations** : les apparitions (section 7) sont gardées. L'éventail des cartes de l'accueil n'existe pas sur mobile. En mouvement réduit, rien ne bouge et le carrousel des projets change de carte sans glissement.
+- **Cibles tactiles** : 44 × 44 px au moins.
+- Toujours valables : `flex-wrap` et `flex-basis`, aucune largeur fixe sur un conteneur, `svh` pour les hauteurs plein écran.
+
+### 10.1 Socle
+
+- Variables, sous le point de rupture : `--gutter: 16px` (marges latérales des sections, de l'en-tête et du pied de page ; 36 px jusqu'au 22 octobre 2026, T25), `--section-y: 72px` (marge verticale des sections), `--tabbar-h: 64px`, et `--nav-height` passe à 64 px (le `scroll-margin-top` des sections suit).
+- Les sections perdent leur `min-height` plein écran : hauteur naturelle, `padding: 22px var(--gutter) var(--section-y)` (Contact : 0 en bas, le pied de page suit), filet haut `1px solid var(--line)` (sauf le hero). La marge haute de 22 px, d'abord réglée sur Projects à T24d, s'applique à Skills, Projects, About et Contact (décision de Yoan, 20 octobre 2026) : le titre arrive vite sous le filet et l'écran montre plus de contenu.
+- Balise `viewport` de `index.html` : ajouter `viewport-fit=cover`, sinon `env(safe-area-inset-bottom)` vaut 0.
+- Tailles : `h1` du hero 48 px (`line-height: 1.05`) ; rôle 34 px ; `h2` de section 42 px (`line-height: 1.1`) ; `h1` de `/projects` 48 px.
+- Aucun défilement horizontal, à aucune largeur. À 435 px, la page mesurait 564 px de large le 20 octobre 2026 : trouver l'élément responsable avant tout le reste.
+
+### 10.2 En-tête et barre d'onglets
+
+**En-tête** : même `Navbar`, toujours `sticky`, 64 px de haut, `padding: 0 28px 0 var(--gutter)`. Le nom passe à 24 px. Les quatre liens sont masqués ; restent les boutons thème et langue (drapeau, comme sur bureau), en `IconLink` de 44 px.
+
+**Barre d'onglets (`TabBar`)**, affichée seulement sous le point de rupture :
+
+- `nav` avec l'`aria-label` de la navigation principale, qui contient une `ul`. La `nav` du bureau est masquée (`display: none`) au même moment : une seule est lue à la fois.
+- `position: fixed` en bas, pleine largeur, hauteur `var(--tabbar-h)` plus `padding-bottom: env(safe-area-inset-bottom)`, fond `--bg`, filet haut `1px solid var(--line)`.
+- Quatre onglets en `grid-template-columns: repeat(4, 1fr)` : Skills, Projects, About, Contact (pas d'onglet Accueil). Chacun : icône de 22 px (`stroke-width: 1.6`) au-dessus du libellé (12 px), écart de 4 px, zone cliquable sur toute la hauteur.
+- Icônes : les tracés SVG de la maquette (dessins de Lucide, licence ISC), recopiés dans un composant `TabIcon`. Pas de dépendance `lucide-react`.
+- Onglet inactif `--muted` ; onglet actif `--accent`, graisse 500, `aria-current` comme dans la `Navbar`, et un trait de 28 × 2 px `--accent` centré sur le filet du haut.
+- Mêmes liens et même mécanisme que la `Navbar` (`Link` vers `/` avec `state`, puis `scrollToSection`), donc fonctionnels depuis `/projects`. Actif : la section visible (`useActiveSection`), aucun dans le hero ; sur `/projects`, Projects.
+- Le `body` reçoit `padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom))` : le pied de page ne passe pas sous la barre.
+
+### 10.3 Hero
+
+- Hauteur naturelle (plus de centrage vertical), `padding: var(--section-y) var(--gutter) 80px` : le `h1` « Yoan Cuervo » était réglé à la même distance de l'en-tête que les titres `h2` des sections (décision de Yoan, 20 octobre 2026). Depuis que les sections sont passées à 22 px en haut (10.1), le hero garde ses 72 px et son titre est plus bas que les autres ; l'aligner reste à décider.
+- Contenu aligné à gauche : nom, rôle, les quatre ronds (44 px, même ordre et mêmes liens), puis les trois paragraphes de 6.2, textes inchangés. Filet doré et décalage de 40 px gardés, comme sur bureau (décision de Yoan, 20 octobre 2026).
+- Le champ de code (`CodeField`) et sa lentille restent affichés, comme sur bureau (décision de Yoan, 20 octobre 2026). La taille de la lentille (ombre, anneau, zone de distorsion) suit celle du « o » de « Cuervo », sa référence : rendu inchangé à 1440 px, plus petite quand le nom rétrécit. Valeurs réglées à l'écran à T24c.
+- Les trois halos flous (`BlurDecor`) du hero ne sont pas affichés sur mobile. À leur place, un dégradé part du coin haut droit : `radial-gradient(200px 250px at 100% 0, …)` en `--halo-amber`, dense dans le coin, plus léger à mi-chemin, nul au bord (sombre : 28 % puis 14 % ; clair : 70 % puis 23 %). Il couvre le coin jusqu'au « v » de « Cuervo » et à « Développeur web », sans toucher les ronds ni les paragraphes (décision de Yoan, 20 octobre 2026). Les halos des autres sections ne changent pas.
+- Le rôle s'anime comme sur bureau.
+
+### 10.4 Skills
+
+- Sans grille (T25, 22 octobre 2026 ; grille de deux colonnes avant) : chaque groupe sur toute la largeur, aligné à gauche, 22 px entre les groupes. Le libellé devient un titre (Cormorant 24 px, graisse 500, `--accent`), ses pastilles à la ligne dessous, avec retour à la ligne naturel et 4 pastilles au plus par ligne (8 px entre les pastilles). Le passage forcé après la quatrième ne joue qu'une fois quatre pastilles de la rangée tenues sur une ligne (Learning dès 360 px, Tools dès 440 px) : plus étroit, les pastilles passent déjà à la ligne plus tôt et la coupure laisserait une pastille seule. Le filet sous « Stack » court sur toute la largeur, à 14 px du titre. Mêmes `Pill` que sur bureau, icônes comprises ; ligne Learning en pointillés.
+- Certifications : les deux blocs empilés, contenu et étiquettes de 6.3.
+
+### 10.5 Projects (accueil) : carrousel
+
+- Jusqu'à 834 px (`@media (max-width: 834px)`, au-delà du point de rupture du site depuis T25 : les iPad en portrait, 768 à 834 px, l'ont aussi ; le reste de la section et du site y garde la version bureau ; la section y garde la hauteur d'un écran, et le carrousel et « View all projects » sont centrés verticalement sous le titre par deux marges `auto`), `ProjectCarousel` remplace la grille de trois cartes, avec les trois projets `featured` : la carte active au centre, les deux autres derrière elle, une de chaque côté (décision de Yoan, 20 octobre 2026). Le passage au mobile ne change que les positions, pas le design des cartes.
+- Disposition : les trois cartes sont superposées dans la même case d'une grille CSS (le conteneur prend la hauteur de la plus haute). Chacune reçoit une position selon la carte active : au centre (taille normale, devant), à droite (la suivante) ou à gauche (la précédente). Les cartes de fond sont à `scale(0.9)` et `opacity: 0.6` (le recul des cartes du bureau), décalées de `calc(5% + 60px)` : elles dépassent de 60 px de chaque côté de la carte du centre à toutes les largeurs, remplissent la marge latérale et débordent de l'écran, coupées par le `overflow: hidden` de la section, sans défilement horizontal (décision de Yoan, 20 octobre 2026). Avec trois projets, il y a toujours une carte de chaque côté.
+- Un glissement ne doit pas ouvrir la carte, qui est un lien : un clic qui suit un glissement est annulé en phase de capture (`onClickCapture` + `preventDefault`), drapeau remis à zéro à chaque appui (T25).
+- Changement de carte : les cartes glissent à leur nouvelle position en 300 ms `cubic-bezier(.2,.7,.2,1)` ; en mouvement réduit, sans transition.
+- Glissement au doigt sans bibliothèque, par les événements `pointer` : au-delà de 40 px horizontaux entre l'appui et le relâchement, carte suivante (vers la gauche) ou précédente (vers la droite). `touch-action: pan-y` laisse le défilement vertical de la page au navigateur. La carte ne suit pas le doigt pendant le geste. Le défilement natif (`scroll-snap`) a été écarté le 20 octobre 2026 : il ne peut pas montrer une carte de chaque côté de la première et de la dernière.
+- Sous les cartes, à 7 px : boutons Précédent et Suivant (ronds de 44 px, `aria-label` traduits) aux deux bords, et au centre trois points cliquables (zone de 32 × 44 px, `aria-label` traduits) au-dessus d'un compteur « 1 / 3 » (12 px, `--muted`). Point actif : 24 × 6 px `--accent` ; inactifs : 6 × 6 px `--muted`. La navigation boucle (après le dernier, le premier). Boutons, points, compteur et glissement mettent à jour la même carte active.
+- Accessibilité : conteneur en `<section>` nommée (rôle « region »), `aria-roledescription` traduit (« carousel » / « carrousel »), `aria-label` = titre de la section. Le compteur est en `aria-live="polite"`. Les cartes de fond sont `inert` : visibles, mais le Tab, le toucher et les lecteurs d'écran ne passent que par la carte du centre.
+- Carte : même `FeaturedProjectCard`, même design que sur bureau (capture sur toute la carte, voile `--scrim`, texte calé en bas, étiquette en haut à droite, carte entière en lien vers la rangée du projet sur `/projects`). Différences sous le point de rupture (décisions de Yoan, 20 octobre 2026) :
+  - mêmes pastilles de techno que sur bureau (28 px, texte 13 px ; réduites à 22 px jusqu'au 22 octobre 2026, T25) : les cinq de Wedoo passent sur deux lignes ;
+  - hauteur minimale de 540 px : depuis le retrait de « How it was built » (T25), la carte garde sa hauteur d'avant à 390 px et montre plus de capture.
+- Lisibilité : même règle que sur bureau (6.4), le type et les résumés en `--fg` sur toutes les cartes, dans les deux thèmes.
+- « View all projects » calé à droite, comme sur bureau.
+- Marge haute de la section : 22 px (10.1), soit l'écart entre le titre et les cartes. À l'œil, le filet de l'en-tête est aussi loin du haut des lettres de « Projects » que leur ligne de base l'est des cartes (32 px). Objectif : faire tenir le titre, la carte et les contrôles sur plus de téléphones (décision de Yoan, 20 octobre 2026).
+
+### 10.6 Page `/projects`
+
+- Les `ProjectRow` gardent leur design du bureau (6.4), réagencé en une colonne : pas le style de la carte de l'accueil (décision de Yoan, 20 octobre 2026 : sur mobile, on change les positions, pas le design). De haut en bas : `ProjectCard` en pleine largeur (capture, ou zone en pointillés, sur toute la largeur et 200 px de haut, puis titre et type dessous), les pastilles, « The project » et son résumé, « How it was built » et son résumé, puis une dernière ligne avec l'étiquette « Team Project » ou « Solo Project » à gauche et « View GitHub repo » à droite (décision de Yoan, 20 octobre 2026). L'étiquette et le lien sont rendus une seconde fois en bas de la rangée et le CSS affiche la bonne copie selon la largeur (jusqu'à 834 px depuis T25, pour les iPad en portrait) : l'ordre lu et l'ordre du Tab suivent l'ordre affiché, ce qu'un réordonnancement en CSS ne garantit pas. Entre 768 et 834 px, la carte garde sa largeur de bureau et est centrée, comme les pastilles. Pas de carrousel. Niveaux de titres inchangés.
+- Pas de filet entre les deux blocs (il n'existe pas dans `ProjectRow` sur bureau). Pastilles centrées, à la taille du bureau comme sur les cartes de l'accueil (10.5) : 28 px, texte 13 px (T25, 22 octobre 2026 ; réduites à 22 px et 10 px avant). Le reste de la rangée reste aligné à gauche.
+- `main` : marge haute de 22 px au-dessus de « Back », comme les sections de l'accueil (10.1) ; marges latérales `--gutter`, marge basse `--section-y`.
+- Barre d'onglets présente, Projects actif.
+
+### 10.7 About et références
+
+- Accroche, paragraphes et conclusion de 6.5, dans le style du bureau (`strong` inchangé), puis Soft Skills. Seule l'accroche change : en Cormorant droit (pas d'italique), 24 px, graisse 500, interligne 1,25 (30 px), couleur `--accent` comme les sous-titres, d'une seule traite (quatre lignes à 390 px ; en anglais, espace insécable entre « I » et « traded » pour que « I » ne finisse jamais une ligne seul ; le texte n'a plus de retour à la ligne depuis T25, sur bureau non plus). Sur bureau, elle reste en IBM Plex Sans (`--accent` depuis T25) mais passe de 28 à 24 px, graisse 400, interligne 30 px (décisions de Yoan, 21 octobre 2026, après essais à 17, 22 et 28 px ; exception à la règle « rendu bureau inchangé » du Lot 7).
+- Pastilles des soft skills réduites, à la taille de celles des cartes de projet (T25, 22 octobre 2026 ; 26 px et 12 px avant) : texte 13 px, hauteur 28 px, `padding: 0 12px`, 4 px d'écart entre pastilles et entre lignes. Elles vont à la ligne librement (les listes par ligne de 6.5 passent en `display: contents`) : trois par ligne ne tiennent qu'à partir d'environ 430 px à cette taille. Le 10 px des cartes de projet, qui permettait trois par ligne dès 375 px, a été essayé et jugé illisible (décisions de Yoan, 21 octobre 2026).
+- Filet `--line` sous le titre « Soft Skills », à 14 px, comme sous « Stack » et « Certifications », **sur mobile et sur bureau** : sur bureau, ces deux titres en ont déjà un (bord haut de leur première ligne), « Soft Skills » était le seul sans (décision de Yoan, 20 octobre 2026 ; exception à la règle « rendu bureau inchangé » du Lot 7).
+- Les références restent dans About, avec leur titre et le bouton pause sur la même ligne (WCAG 2.2.2). Depuis T25 (22 octobre 2026), le titre ne se coupe pas à partir de 360 px (`white-space: nowrap`, 292 px) : le bouton passe à un rond de 32 px, avec une zone de toucher de 44 px conservée par un `::before` invisible. En dessous de 360 px, le titre ne tient pas sur une ligne même sans bouton : il passe à la ligne.
+- Tuiles réduites à 80 % (128 × 70 px, case du logo 96 × 45 px, 13 px de marge intérieure et entre tuiles, nom de secours en 14 px), bords fondus à 15 % au lieu de 7 % (validé à l'écran par Yoan, 21 octobre 2026). Une rangée (1 410 px) couvre toujours le carrousel : boucle sans vide jusqu'à 767 px.
+
+### 10.8 Contact et pied de page
+
+- Titre aligné à gauche, comme les autres titres de section ; première partie à 42 px, seconde à 32 px, `--accent`. En français, « Parlons-en ! » reste sur sa ligne ; en anglais, « Let's talk! » suit directement « What's on your mind? » (`html[lang="en"]`, `display: inline`), car la question passe déjà sur deux lignes à 42 px : deux lignes en tout de 375 à 430 px, trois à 320 px. Puis le formulaire, 22 px plus bas (plus d'introduction). Sur bureau, le titre reste centré, la seconde partie sur sa ligne (décisions de Yoan, 21 octobre 2026). Exception à la règle « rendu bureau inchangé » du Lot 7 (21 octobre 2026). Le cadre autour des champs est gardé tel quel (`padding: 28px`, bordure `--line`), champs empilés avec 18 px d'écart, comme sur bureau (décision de Yoan, 21 octobre 2026 : sur mobile, on change les positions, pas le design ; le retrait du cadre proposé par la maquette n'est pas repris).
+- Champs de 56 px de haut et texte à 18 px, comme sur bureau (6.6) : au-dessus du minimum tactile de 44 px et des 16 px sous lesquels iOS zoome au focus.
+- Bouton d'envoi en pleine largeur du formulaire, 56 px de haut, couleurs de 6.6 (décision de Yoan, 21 octobre 2026).
+- Pied de page sous la section, `margin-top: 40px` (sur l'accueil, il ne colle plus au bouton d'envoi), `padding: 24px 0 12px` (les marges latérales viennent du parent) : « © 2026 Yoan Cuervo » à droite comme sur bureau (contraste sur les halos). Pas de lien « Haut de page » : le nom dans l'en-tête y ramène déjà (décision de Yoan, 20 octobre 2026). Même pied de page sur `/projects`.
 
 ## 11. Déploiement
 
 - Dépôt GitHub public. Nom du dépôt **[À FOURNIR]** : il fixe `base` dans `vite.config.ts` (`'/nom-du-depot/'`, ou `'/'` si le dépôt s'appelle `<utilisateur>.github.io`).
-- GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`).
+- GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`). Le build reçoit la clé Web3Forms par la variable du dépôt `VITE_WEB3FORMS_KEY` (Settings → Secrets and variables → Actions → Variables).
 - Dans les réglages du dépôt : Pages › Source = GitHub Actions.
 - Les images sont importées depuis `src/assets` (Vite gère alors le préfixe `base`). Ne jamais écrire de chemin absolu en `/…` à la main.
-- Balises à prévoir dans `index.html` : `title`, `description`, Open Graph (titre, description, image), `theme-color`. Image de partage **[À FOURNIR]** ou générée à partir du hero.
+- Balises de `index.html` (T18) : `title` (« Yoan Cuervo », comme `meta.title`), `description`, `theme-color` (`#0f0f0f` dans le HTML, puis `ThemeContext` y recopie `--bg` au chargement et à chaque changement de thème : la barre du navigateur mobile suit le thème affiché), favicon et icône d'écran d'accueil (`/favicon.png` : Vite ajoute le préfixe `base` à ce chemin absolu, en développement comme en build ; `%BASE_URL%` le doublait en développement), Open Graph (type, URL, titre « Yoan Cuervo · Web Developer », description, image avec dimensions et texte alternatif) et `twitter:card`. Les robots des réseaux n'exécutent pas JavaScript et veulent des adresses absolues : l'URL du site, `https://yoancuervo.github.io/Portfolio/`, est écrite en entier. Ces balises restent en anglais (langue par défaut du site).
+- Les images de `public/` ne sont pas importées depuis `src/assets` : elles sont référencées par `index.html`, hors de React. Elles sont générées par Edge en mode sans interface à partir de `scripts/share-images/*.html` (commande en tête de chaque fichier) : l'image de partage reprend le hero en thème sombre, la favicon recolore le monogramme fourni par Yoan.
 
 ## 12. Contenus manquants
 
+État au 11 novembre 2026 : il ne manque plus que la version en ligne de Poke_Gacha. Yoan la fournira une fois le projet déployé (décision du 16 octobre 2026).
+
 | Élément | Où |
 |---|---|
-| URL GitHub, LinkedIn, Discord | Hero |
-| URL du site en ligne et du dépôt de Wedoo et de Poke_Gacha | Projets |
-| Captures d'écran de Wedoo et de Poke_Gacha | Projets |
-| Projet 3 complet (et projets 4 et 5 pour `/projects`, sinon la page n'en liste que deux ou trois) | Projets |
-| Logos des productions et clients (format SVG de préférence, version lisible sur fond sombre et sur fond clair) | Carrousel |
-| Trois noms manquants du carrousel (une agence, un client, une production) | Carrousel |
-| Validation des textes français proposés | Fichier `fr.ts` |
-| Nom du dépôt GitHub | Déploiement |
-| Compte et clé du service de formulaire | Contact |
-| Favicon et image de partage | `index.html` |
+| URL du site en ligne et vraie capture d'écran de Poke_Gacha (le dépôt GitHub est renseigné) | Projets |
+| **Dette technique** : la capture de Poke_Gacha est une image de test (`src/assets/projects/poke-gacha-test.jpg`, une aquarelle d'un illustrateur tiers, gardée pour juger le voile des cartes, décision de Yoan du 20 octobre 2026). À remplacer par la vraie capture au moment de mettre le projet en ligne, puis supprimer le fichier. Yoan a choisi de la garder pour la première mise en ligne du portfolio (11 novembre 2026). Le dépôt étant public, elle reste dans l'historique Git. | Projets |
 
-Remarque de fond sur un texte validé : « I worked as a 1st AD in audiovisual industry » est fautif en anglais. La forme correcte est « in **the** audiovisual industry ». De plus, « 1st AD » ne sera pas compris hors du milieu : « first assistant director » est plus sûr (c'est déjà la formule utilisée dans la section About).
+Réglés depuis : Atropos, Brick Blaster Remastered et Wedoo (version en ligne weGather) complets ; l'emplacement vide « projet 5 » retiré avant la mise en ligne (11 novembre 2026) ; carrousel complet avec ses 20 logos (T23), textes français validés par Yoan (20 octobre 2026), nom du dépôt (`Portfolio`), service de formulaire (Web3Forms, clé fournie par la CI, T13), liens GitHub, LinkedIn et Discord, formule « first assistant director in the audiovisual industry ».
 
 ## 13. Backlog
 
@@ -539,7 +703,7 @@ Critères : changer `data-theme` à la main dans l'inspecteur bascule toutes les
 
 **T04 · Thème** — dépend de T03
 `ThemeContext`, script anti-flash, mémorisation.
-Critères : le choix survit au rechargement ; pas de flash ; première visite conforme à la préférence système.
+Critères : le choix survit au rechargement ; pas de flash ; première visite en thème sombre.
 
 **T05 · Langue** — dépend de T01
 `LanguageContext`, `en.ts` complet, `fr.ts` typé `typeof en`, attribut `lang` de `<html>`.
@@ -564,7 +728,7 @@ Critères : ordre des pastilles identique au tableau ; ligne Learning en pointil
 
 **T10 · Projects** — dépend de T07 · spécification 6.4
 `ProjectCard`, `ProjectRow` (prop `headingLevel`), `ProjectsSection`, `data/projects.ts`.
-Critères : la card entière est un lien externe ; pas de lien si `liveUrl` est `null` ; pas de lien GitHub si `repoUrl` est `null` ; l'accueil n'affiche que les projets `featured` ; « View all projects » est à droite.
+Critères : la card entière est un lien externe (sur l'accueil, lien vers `/projects` depuis T25) ; pas de lien si `liveUrl` est `null` ; pas de lien GitHub si `repoUrl` est `null` ; l'accueil n'affiche que les projets `featured` ; « View all projects » est à droite.
 
 **T11 · About et carrousel** — dépend de T07 · spécification 6.5
 Critères : deux rangées en sens opposés, sans saut visible à la boucle ; pause au survol ; à l'arrêt en mouvement réduit ; la copie dupliquée est ignorée des lecteurs d'écran.
@@ -579,17 +743,25 @@ Critères : un message de test arrive dans la boîte de Yoan ; chaque état du t
 ### Lot 3 — Page des projets
 
 **T14 · `/projects`** — dépend de T10 · spécification 6.7
-Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back to home » ramène en haut de l'accueil ; niveaux de titres corrects.
+Critères : tous les projets listés ; « Projects » souligné dans la navigation ; « Back » ramène sur la section Projects de l'accueil (modifié le 20 octobre 2026, avant : en haut de l'accueil) ; niveaux de titres corrects.
 
 ### Lot 4 — Mouvement
 
 **T15 · Animations d'entrée** — dépend de T08 à T11 · spécification 7
-`useReveal`, animation du nom, apparitions par section, survols.
-Critères : durées et décalages du tableau ; chaque animation ne se joue qu'une fois ; rien ne bouge en mouvement réduit.
+`useReveal`, `AnimatedRole` (le rôle remplace le nom comme élément animé, décidé à T15), apparitions par section, survols (cards, pastilles, étiquettes rectangulaires).
+Critères : durées et décalages du tableau ; seul le rôle s'anime dans le hero ; chaque animation ne se joue qu'une fois ; rien ne bouge ni ne reste masqué en mouvement réduit.
 
 **T16 · Lien de navigation actif** — dépend de T06
 `useActiveSection`.
 Critères : le lien souligné suit le défilement, sans clignotement entre deux sections.
+
+**T22 · Champ de code du hero** — dépend de T08 · spécification 6.2 (ajouté le 15 octobre 2026)
+`CodeField` (canvas), `data/codeGlyphs.ts`, tokens `--font-mono`, `--hole`, `--lens`, `--code-intensity`, `data-lens-anchor` sur la dernière lettre du nom, fond plein des `IconLink`.
+Critères : champ à peine visible au repos, en tronçons ; les lignes glissent vers la gauche à des vitesses différentes ; la lentille courbe les lignes autour d'une ombre de 48 px et suit le curseur sans retard visible ; souris hors du hero, la lentille revient en douceur sur le « o » de « Cuervo » ; le texte du hero reste lisible ; défilement fluide avec la lentille active ; révélateur simple et aucun mouvement en mouvement réduit ; animation suspendue quand le hero n'est plus à l'écran ; ignoré des lecteurs d'écran ; conforme dans les deux thèmes.
+
+**T23 · Carrousel des références** — dépend de T11 · spécification 6.5 (ajouté le 16 octobre 2026, repris de T20)
+`data/clients.ts` en deux rangées mélangées (diffuseurs, productions, agences, marques), logos dans `src/assets/logos/`.
+Critères : noms tirés du parcours de Yoan ; un logo officiel par nom, sans nom affiché ; logos en couleurs d'origine ; au survol, la rangée s'arrête, le logo grossit légèrement et une infobulle donne le nom sans être coupée ; le bouton pause reste cliquable ; boucle sans vide sur grand écran ; conforme dans les deux thèmes.
 
 ### Lot 5 — Finitions
 
@@ -600,29 +772,63 @@ Critères : parcours complet au clavier ; audit Lighthouse accessibilité à 100
 `title`, `description`, Open Graph, `theme-color`, favicon.
 Critères : l'aperçu de lien affiche titre, description et image.
 
-**T19 · Performance** — dépend de T20
+**T19 · Project Cards** — dépend de T10 · spécification 6.4 (ajouté le 17 octobre 2026, maquette fournie le 19 octobre 2026)
+Refonte visuelle de la section Projects de la page d'accueil : trois grandes cartes. Chaque carte est une image qui contient tous les éléments actuels : titre, type, étiquettes, « Le projet », « Sa construction » et lien GitHub. La page `/projects` garde la présentation actuelle en rangées.
+Critères : trois cartes côte à côte à 1440 px, la section tient dans l'écran sous la `Navbar` ; capture sur toute la carte, texte lisible dans les deux thèmes ; textes de 6.4 inchangés ; chaque carte est une étape du Tab, suivie de son lien GitHub ; entrée en éventail et effets de survol de 6.4, tous coupés en mouvement réduit, la mise en avant aussi au clavier ; `/projects` inchangée.
+
+**T21 · Performance** — dépend de T19, T20 (ancien T19, renuméroté le 17 octobre 2026) · peut commencer sans attendre T20 : les captures des projets passeront par le même traitement à leur arrivée
 Images au bon format et à la bonne taille, `loading="lazy"` hors du premier écran, `width` et `height` renseignés.
 Critères : Lighthouse performance ≥ 90 sur mobile ; aucun décalage de mise en page au chargement.
 
 ### Lot 6 — Contenu
 
-**T20 · Contenus réels** — dépend de la fourniture des éléments de la section 12
+**T20 · Contenus réels** — dépend de la fourniture des éléments de la section 12 · **en attente** du déploiement des projets (il ne reste que leurs contenus)
 Critères : plus aucun texte entre crochets ni zone en pointillés sur le site en ligne.
 
 ### Lot 7 — Mobile
 
-**T21 · Version mobile** — **bloqué** tant que la maquette mobile n'existe pas
-À découper en tickets une fois la maquette validée (navigation, hero, rangées de projet, carrousel, formulaire).
+T24 (version mobile) est découpé en sept tickets le 20 octobre 2026, une fois la maquette reçue · spécification 10. Exception à la règle des demandes de fusion (décision de Yoan, 20 octobre 2026) : chaque ticket T24 part de la branche d'intégration `docs/T24-mobile-tickets` et y revient par sa demande de fusion ; cette branche ne rejoint `develop` qu'une fois les sept tickets finis, par une seule demande de fusion. La CI ne tourne pas sur ces demandes intermédiaires : `npm run check` et `npm run build` en local en tiennent lieu. Pour chacun, en plus des critères listés : rendu bureau inchangé à 1440 px ; aucun défilement horizontal à 320, 375, 390, 430 et 767 px ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
 
-Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T13 → T15, T16 → T17, T18 → T20 → T19 → T21. Déployer dès T02 : chaque ticket suivant est alors vérifiable en ligne.
+**T24a · Socle mobile** · spécification 10 et 10.1
+Point de rupture, variables, `viewport-fit=cover`, tailles de titres, hauteurs naturelles et filets des sections, survols sous `@media (hover: hover)`, correction du débordement.
+Critères : aucun défilement horizontal aux largeurs listées ni à 768 et 1024 px ; aucun survol ne reste affiché après un appui au toucher ; à l'arrivée sur une section, son titre n'est pas masqué par l'en-tête de 64 px.
+
+**T24b · Navigation mobile** — dépend de T24a · spécification 10.2 et 10.8 (pied de page)
+En-tête mobile, `TabBar`, `TabIcon`, pied de page mobile.
+Critères : les quatre onglets défilent vers la bonne section depuis les deux pages ; l'onglet actif suit la section visible, aucun dans le hero, Projects sur `/projects` ; une seule `nav` principale lue à la fois ; le pied de page n'est pas caché par la barre, zone de sécurité de l'iPhone comprise ; cibles de 44 px au moins.
+
+**T24c · Hero et Skills mobiles** — dépend de T24a · spécification 10.3 et 10.4
+Critères : disposition de la maquette, textes du cahier ; `h1` à la même distance de l'en-tête que les titres des autres sections ; champ de code et lentille affichés, lentille à l'échelle du « o » ; dégradé du coin haut droit à la place des halos du hero ; le nom est lu « Yoan Cuervo » par un lecteur d'écran ; ordre des pastilles inchangé, ligne Learning en pointillés.
+
+**T24d · Carrousel des projets** — dépend de T24a · spécification 10.5
+`ProjectCarousel`, disposition mobile de `FeaturedProjectCard`.
+Critères : glissement au doigt d'une carte à l'autre ; boutons, points et compteur synchronisés avec le glissement ; la navigation boucle ; seule la carte visible est atteignable au Tab ; le changement de carte est annoncé ; changement sans glissement en mouvement réduit ; grille de trois cartes inchangée sur bureau.
+
+**T24e · `/projects` mobile** — dépend de T24a · spécification 10.6
+Critères : rangées empilées au style de la carte mobile ; niveaux de titres inchangés ; « Back » toujours fonctionnel.
+
+**T24f · About et références mobiles** — dépend de T24a · spécification 10.7
+Critères : boucle du carrousel sans vide à toutes les largeurs listées ; bouton pause atteignable et fonctionnel ; taille des tuiles validée à l'écran par Yoan.
+
+**T24g · Contact mobile** — dépend de T24a · spécification 10.8
+Critères : pas de zoom au focus sur iOS ; bouton en pleine largeur ; tous les états du tableau 6.6 inchangés.
+
+### Lot 8 — Corrections
+
+**T25 · Corrections d'interface** — dépend du lot 7 (ajouté le 22 octobre 2026)
+Marges `--gutter` (contenu limité à 1200 px et centré, 6 % au moins sur bureau ; 16 px sur mobile) ; Skills mobile sans grille ; cartes de l'accueil sans « How it was built » ni lien GitHub, carte entière en lien, lueur réduite puis renforcée, « The project » collé à son résumé, pastilles mobiles à la taille du bureau, clic vers la rangée du projet sur `/projects` ; étiquettes dorées en thème clair (`--tag*`, doré plein `#d4a574`, texte noir) ; accroche d'About en `--accent` sur bureau, sans retour à la ligne ; colonne de texte d'About limitée à 600 px ; « Back » de `/projects` dans le style de « View all projects » ; pastilles de `/projects` et des Soft Skills à la taille des cartes sur mobile ; titre « Productions & collaborations » sur une ligne dès 360 px, bouton pause de 32 px ; carrousel des projets jusqu'à 834 px (iPad en portrait) ; sur `/projects`, disposition mobile des rangées jusqu'à 834 px (carte et pastilles centrées, étiquette en bas à gauche, GitHub à droite), bureau inchangé au-delà.
+Critères : aucun défilement horizontal de 320 à 767 px ; sur `/projects` ouverte depuis une carte, rangée encadrée et haut de page accessible ; le cadre passe à la rangée cliquée, touchée ou atteinte au Tab ; Skills mobile à 4 pastilles au plus par ligne, sans pastille seule ; la section Projects tient dans l'écran sous la `Navbar` à 1440 × 900 ; un clic sur une carte ouvre `/projects` sur la rangée du projet, sous l'en-tête ; « Back » toujours fonctionnel ; conforme dans les deux thèmes et les deux langues, au clavier et en mouvement réduit.
+
+Ordre conseillé : T01 → T02 → T03 → T04, T05 → T06 → T07 → T08 à T12 → T14 → T22 → T13 → T15, T16 → T17, T18 → T23 → T19 → T20 → T21 → T24a → T24b → T24c à T24g → T25. Chaque ticket passe par une demande de fusion vers `develop`, vérifiée par le job `build` et en local avec `npm run preview`. `main`, qui déclenche la mise en ligne, ne reçoit `develop` qu'en fin de projet, par une seule demande de fusion (décision du 8 octobre 2026 : ne pas exposer un site à moitié fini).
 
 ## 14. Consignes pour Claude Code
 
 À recopier dans le `CLAUDE.md` du dépôt :
 
 - Ce fichier (`docs/ARCHITECTURE.md`) est la source de vérité. En cas d'écart avec une demande, le signaler avant de coder.
+- **Aucune liberté.** Ne faire que ce que Yoan demande explicitement. Tout ce qui retire, ajoute ou modifie un élément visible (filet, décalage, effet, champ de code, halo…) sans demande explicite de Yoan se pose d'abord comme une question, avec l'élément nommé. Une ligne du cahier validée en bloc ne vaut pas accord pour retirer un élément visible : le signaler à part avant de l'appliquer. Une branche se crée seulement à la demande de Yoan, depuis la branche de base à jour (récupérée sur GitHub, ticket précédent fusionné). Décision de Yoan, 20 octobre 2026.
 - Un ticket par branche et par demande de fusion. Ne pas déborder du ticket.
-- Aucune nouvelle dépendance sans accord. Dépendances prévues : `react`, `react-dom`, `react-router-dom`, `@fontsource/cormorant`, `@fontsource/ibm-plex-sans`, `simple-icons` ; en développement : `vite`, `typescript`, `@biomejs/biome`.
+- Aucune nouvelle dépendance sans accord. Dépendances prévues : `react`, `react-dom`, `react-router`, `@fontsource/cormorant`, `@fontsource/ibm-plex-sans`, `simple-icons` ; en développement : `vite`, `typescript`, `@biomejs/biome`.
 - Aucune couleur ni graisse en dur dans les composants : uniquement les variables de `tokens.css`.
 - Aucun texte visible en dur dans les composants : tout passe par `locales/`.
 - Pas de style en ligne (les maquettes en utilisent, c'est une contrainte de l'outil de maquette, pas un modèle).

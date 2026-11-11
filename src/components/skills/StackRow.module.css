@@ -1,0 +1,116 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.label {
+  flex: 0 0 140px;
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: var(--w-semibold);
+}
+
+.pills {
+  flex: 1 1 320px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+/* Mobile (spec 10.4): each group on its own lines, left-aligned: the label as a
+   title, then its pills, no rule between rows. The pills lose their own margin
+   (shared with the other Pill uses) for a gap. */
+@media (max-width: 767px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  /* Same rule as above the first certification, under the "Stack" subtitle. */
+  .row:first-of-type {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* 14 px from the stack gap + 8 px: 22 px between groups, while the rule
+     stays 14 px under the "Stack" subtitle. */
+  .row:not(:first-of-type) {
+    margin-top: 8px;
+  }
+
+  .label {
+    flex: none;
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: var(--w-medium);
+  }
+
+  .pills {
+    flex: none;
+    /* 4 px above and below each pill instead of a row gap: the invisible line
+       break below (from 426px) then adds no extra space. */
+    column-gap: 8px;
+    margin-block: -4px;
+  }
+
+  .pills > li {
+    margin-block: 4px;
+  }
+
+  .pills > li > * {
+    margin: 0;
+  }
+}
+
+/* Four pills per line at most: a full-width empty item breaks the line and the
+   pills from the fifth on are placed after it. Only once four pills of the row fit
+   on a line (Learning from 360px, Tools from 440px): below, the pills already wrap
+   earlier and the forced break would leave a pill alone on its line. */
+@media (min-width: 360px) and (max-width: 767px) {
+  .row:last-of-type .pills::after {
+    content: "";
+    flex-basis: 100%;
+  }
+
+  .row:last-of-type .pills > li:nth-child(n + 5) {
+    order: 1;
+  }
+}
+
+@media (min-width: 440px) and (max-width: 767px) {
+  .pills::after {
+    content: "";
+    flex-basis: 100%;
+  }
+
+  .pills > li:nth-child(n + 5) {
+    order: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    opacity: 0;
+  }
+
+  .row.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+    animation-delay: calc(var(--i) * 75ms);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

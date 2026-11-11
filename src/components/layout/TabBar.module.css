@@ -1,0 +1,67 @@
+.bar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .bar {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    height: 100%;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: flex;
+  }
+
+  .tab {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: var(--w-regular);
+    line-height: 1;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  /* Inside the bar: the default offset would push the outline off screen. */
+  .tab:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .tab[aria-current] {
+    color: var(--accent);
+    font-weight: var(--w-medium);
+  }
+
+  /* Accent mark centered on the top border line. */
+  .tab[aria-current]::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: 28px;
+    height: 2px;
+    margin-left: -14px;
+    background: var(--accent);
+  }
+}

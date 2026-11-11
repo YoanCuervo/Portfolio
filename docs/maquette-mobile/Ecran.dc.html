@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Écran projets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=IBM+Plex+Sans:wght@300;400;500&amp;display=swap">
+<style>
+body{margin:0;background:#0f0f0f}
+a{color:#d4a574}a:hover{color:#e8c39a}
+.strip{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.hero{background:radial-gradient(120% 60% at 80% 0%,rgba(212,165,116,0.16),rgba(15,15,15,0) 70%)}
+</style>
+</helmet>
+<div style="position: relative; width: 428px; height: 926px; box-sizing: border-box; background: #0f0f0f; color: #e8e4df; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6; display: flex; flex-direction: column; overflow: hidden">
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 28px 0 36px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(232,228,223,0.10); background: rgba(15,15,15,0.92)">
+<a href="#home" style="font-family: Cormorant, Georgia, serif; font-size: 24px; font-weight: 600; color: #e8e4df; text-decoration: none; line-height: 1">Yoan Cuervo</a>
+<div style="display: flex; align-items: center; gap: 2px">
+<button type="button" lang="en" aria-label="Switch to English" style="width: 44px; height: 44px; border: 0; background: transparent; color: #e8e4df; border-radius: 12px; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; cursor: pointer">EN</button>
+<button type="button" aria-label="Passer au thème clair" style="width: 44px; height: 44px; border: 0; background: transparent; color: #e8e4df; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+</button>
+</div>
+</header>
+<div style="flex-grow: 1; overflow: hidden">
+<section id="projects" style="padding: 32px 36px 96px; display: flex; flex-direction: column; gap: 24px; ">
+<h2 style="margin: 0; font-family: Cormorant, Georgia, serif; font-size: 42px; font-weight: 600; line-height: 1.1">Projets</h2>
+
+<div role="region" aria-roledescription="carrousel" aria-label="Projets" style="display: flex; flex-direction: column; gap: 16px">
+<div aria-live="polite" style="min-height: 760px; display: flex; flex-direction: column">
+<sc-if value="{{is0}}" hint-placeholder-val="{{ true }}">
+<article style="position: relative; overflow: hidden; background: #181716; border: 1px solid #34302c; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: absolute; top: 14px; right: 14px; bottom: 14px; left: 14px; border: 1px dashed #6e6558; pointer-events: none"></div>
+<span style="position: absolute; top: 14px; right: 14px; height: 28px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid #e8b4b8; border-radius: 2px; background: #181716; font-size: 13px; font-weight: 400; color: #e8b4b8">Projet d'équipe</span>
+<div style="height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 300; color: #9a9590">[Capture d'écran de Wedoo]</div>
+<div style="padding: 0 28px 64px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h3 style="margin: 0; font-family: Cormorant, Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.2; color: #e8e4df">Wedoo</h3>
+<p style="margin: 0; font-size: 14px; font-weight: 300; color: #9a9590">Application web</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Le projet</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">Application web de gestion et de création d'événements, présentée pour le titre de développeur web et web mobile.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 16px; border-top: 1px solid #34302c">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Sa construction</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">J'ai développé tout le système de signalement, du formulaire utilisateur au traitement par l'administrateur, côté front et back.</p>
+</div>
+</div>
+<ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px"><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">React</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">TypeScript</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">Node.js</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">Express</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">MySQL</span></li></ul>
+</div>
+<a href="#" aria-label="GitHub de Wedoo (s'ouvre dans un nouvel onglet)" style="position: absolute; right: 14px; bottom: 6px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: {{accent}}; text-decoration: underline; text-underline-offset: 4px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>GitHub<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+</article>
+</sc-if>
+<sc-if value="{{is1}}" hint-placeholder-val="{{ false }}">
+<article style="position: relative; overflow: hidden; background: #181716; border: 1px solid #34302c; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: absolute; top: 14px; right: 14px; bottom: 14px; left: 14px; border: 1px dashed #6e6558; pointer-events: none"></div>
+<span style="position: absolute; top: 14px; right: 14px; height: 28px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid #e8b4b8; border-radius: 2px; background: #181716; font-size: 13px; font-weight: 400; color: #e8b4b8">Projet solo</span>
+<div style="height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 300; color: #9a9590">[Capture d'écran de Poke_Gacha]</div>
+<div style="padding: 0 28px 64px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h3 style="margin: 0; font-family: Cormorant, Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.2; color: #e8e4df">Poke_Gacha</h3>
+<p style="margin: 0; font-size: 14px; font-weight: 300; color: #9a9590">Jeu web, en cours</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Le projet</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">Jeu web de collection Pokémon : joueurs, collection, équipes, objets et évolutions.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 16px; border-top: 1px solid #34302c">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Sa construction</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">Base conçue en MCD Merise, puis schéma MySQL avec contraintes d'intégrité. API Express et interface React, en TypeScript.</p>
+</div>
+</div>
+<ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px"><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">React</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">TypeScript</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">Express</span></li><li style="display: flex"><span style="height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; border: 1px solid #c9b896; background: #0f0f0f; font-size: 13px; font-weight: 400; color: #e8e4df">MySQL</span></li></ul>
+</div>
+<a href="#" aria-label="GitHub de Poke_Gacha (s'ouvre dans un nouvel onglet)" style="position: absolute; right: 14px; bottom: 6px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: {{accent}}; text-decoration: underline; text-underline-offset: 4px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>GitHub<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+</article>
+</sc-if>
+<sc-if value="{{is2}}" hint-placeholder-val="{{ false }}">
+<article style="position: relative; overflow: hidden; background: #181716; border: 1px solid #34302c; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: absolute; top: 14px; right: 14px; bottom: 14px; left: 14px; border: 1px dashed #6e6558; pointer-events: none"></div>
+
+<div style="height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 300; color: #9a9590">[Capture d'écran du projet 3]</div>
+<div style="padding: 0 28px 64px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h3 style="margin: 0; font-family: Cormorant, Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.2; color: #e8e4df">[Project 3]</h3>
+<p style="margin: 0; font-size: 14px; font-weight: 300; color: #9a9590">[Type du projet 3]</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Le projet</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">[Résumé du projet 3]</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 16px; border-top: 1px solid #34302c">
+<h4 style="margin: 0; font-size: 14px; font-weight: 500; color: #e8e4df">Sa construction</h4>
+<p style="margin: 0; font-size: 14px; font-weight: 300; line-height: 1.6; color: #9a9590">[Construction du projet 3]</p>
+</div>
+</div>
+<ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px"></ul>
+</div>
+
+</article>
+</sc-if>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<button type="button" aria-label="Projet précédent" onClick="{{prev}}" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 999px; border: 1px solid rgba(232,228,223,0.28); background: transparent; color: #e8e4df; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+</button>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+<div style="display: flex; align-items: center">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="3">
+<button type="button" aria-label="{{d.label}}" onClick="{{d.go}}" style="width: 32px; height: 44px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<sc-if value="{{d.active}}" hint-placeholder-val="{{ false }}"><span style="display: block; width: 24px; height: 6px; border-radius: 999px; background: {{accent}}"></span></sc-if>
+<sc-if value="{{d.inactive}}" hint-placeholder-val="{{ true }}"><span style="display: block; width: 6px; height: 6px; border-radius: 999px; background: rgba(232,228,223,0.35)"></span></sc-if>
+</button>
+</sc-for>
+</div>
+<span style="font-size: 12px; color: #b5aea6">{{pos}} / 3</span>
+</div>
+<button type="button" aria-label="Projet suivant" onClick="{{next}}" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 999px; border: 1px solid rgba(232,228,223,0.28); background: transparent; color: #e8e4df; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+</button>
+</div>
+</div>
+
+<a href="#" style="align-self: flex-end; min-height: 44px; display: flex; align-items: center; font-family: Cormorant, Georgia, serif; font-size: 24px; font-style: italic; font-weight: 500; color: {{accent}}; text-decoration: underline; text-underline-offset: 4px">Voir tous les projets</a>
+</section>
+</div>
+<nav aria-label="Navigation principale" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; box-sizing: border-box; background: #0f0f0f; border-top: 1px solid #34302c">
+<ul style="list-style: none; margin: 0; padding: 0; height: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<li style="display: flex"><a href="#skills" style="position: relative; flex-grow: 1; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #9a9590"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg><span style="font-size: 12px; font-weight: 400; line-height: 1">Compétences</span></a></li>
+<li style="display: flex"><a href="#projects" aria-current="true" style="position: relative; flex-grow: 1; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{accent}}"><span aria-hidden="true" style="position: absolute; top: -1px; left: 50%; width: 28px; height: 2px; margin-left: -14px; background: {{accent}}"></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.751a.25.25 0 0 0 .407.195l2.28-1.834a.5.5 0 0 1 .627 0l2.28 1.834A.25.25 0 0 0 16 9.751V2"></path><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"></path></svg><span style="font-size: 12px; font-weight: 500; line-height: 1">Projets</span></a></li>
+<li style="display: flex"><a href="#about" style="position: relative; flex-grow: 1; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #9a9590"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size: 12px; font-weight: 400; line-height: 1">À propos</span></a></li>
+<li style="display: flex"><a href="#contact" style="position: relative; flex-grow: 1; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #9a9590"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg><span style="font-size: 12px; font-weight: 400; line-height: 1">Contact</span></a></li>
+</ul>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#d4a574","options":["#d4a574","#c9b896","#e8b4b8"]},"$preview":{"width":428,"height":926}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const n = 3;
+    const cur = (this.state && this.state.slide) || 0;
+    const go = (k) => this.setState({ slide: (k + n) % n });
+    const dots = [0, 1, 2].map((k) => ({
+      label: 'Aller au projet ' + (k + 1),
+      active: k === cur,
+      inactive: k !== cur,
+      go: () => go(k)
+    }));
+    return {
+      accent: this.props.accent ?? '#d4a574',
+      is0: cur === 0, is1: cur === 1, is2: cur === 2,
+      pos: cur + 1,
+      dots,
+      prev: () => go(cur - 1),
+      next: () => go(cur + 1)
+    };
+  }
+}
+</script>
+</body>
+</html>

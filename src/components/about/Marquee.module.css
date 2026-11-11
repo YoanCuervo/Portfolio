@@ -1,0 +1,96 @@
+/* In a mask only the opacity counts: #000 means "fully visible", it is not a displayed color. */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  /* The box grows on the tooltip side, so the tooltip is not clipped, and the
+     negative margin keeps the layout in place. The extra area lets clicks
+     through, to the pause button for instance: only the tiles catch the mouse. */
+  pointer-events: none;
+}
+
+/* Mobile: wider fades (15%), the edges of a narrow row are softer. */
+@media (max-width: 767px) {
+  .marquee {
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 15%,
+      #000 85%,
+      transparent
+    );
+  }
+}
+
+.above {
+  margin-top: -44px;
+  padding-top: 44px;
+}
+
+.below {
+  margin-bottom: -44px;
+  padding-bottom: 44px;
+}
+
+/* No gap here: the loop relies on translateX(-50%) landing exactly on the second copy. */
+.track {
+  display: flex;
+  width: max-content;
+  animation: 40s linear infinite;
+}
+
+.right {
+  animation-name: scroll-right;
+}
+
+.left {
+  animation-name: scroll-left;
+}
+
+.track.paused {
+  animation-play-state: paused;
+}
+
+/* On touch, a tap would pause the rows with no way to resume them: the pause button does it. */
+@media (hover: hover) {
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+}
+
+.list {
+  display: flex;
+  padding: 0;
+  list-style: none;
+  pointer-events: auto;
+}
+
+@keyframes scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Stop completely: the global rule would only shorten the animation and jump to its end. */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

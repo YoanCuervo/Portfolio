@@ -1,0 +1,211 @@
+.card {
+  --glow: color-mix(in srgb, var(--halo-amber) 45%, transparent);
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card);
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 300ms,
+    opacity 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    scale 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:global([data-theme="light"]) .card {
+  --glow: color-mix(in srgb, var(--halo-rose) 70%, transparent);
+}
+
+/* The card lifts slightly on hover (real pointer, motion allowed), with a faint glow
+   that brings out its outline: the second shadow has no offset. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    border-color: var(--control);
+    box-shadow:
+      0 18px 40px -18px var(--shadow),
+      0 0 24px var(--glow);
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  .card:hover .screenshot {
+    transform: scale(1.03);
+  }
+
+  /* Lighter veil on hover: more of the screenshot shows through. */
+  .card:hover .body::before {
+    opacity: 0.87;
+  }
+}
+
+/* The whole card is one link to the project's row on /projects. */
+.link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 56px; /* keeps the text clear of the team tag */
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The focus outline goes around the card: on the link, overflow: hidden would cut it. */
+.card:has(.link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+/* The screenshot fills the whole card, behind the text. */
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 200ms;
+}
+
+/* Missing screenshot (T20): the label sits in the empty top part of the card. */
+.placeholder {
+  position: absolute;
+  inset: 14px;
+  display: grid;
+  justify-items: center;
+  padding-top: 25%;
+  border: 1px dashed var(--control);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Solid background so the tag stays readable over the screenshot. */
+.team {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--card);
+}
+
+.body {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 28px 56px;
+}
+
+/* A translucent veil (dark or light with the theme) behind the text: the text stays
+   readable and the whole screenshot stays visible. */
+.card:has(.screenshot) .body::before {
+  content: "";
+  position: absolute;
+  inset: -80px 0 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, transparent, var(--scrim) 80px);
+  transition: opacity 300ms;
+}
+.title {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: var(--w-semibold);
+  line-height: 1.1;
+}
+
+/* Cancels the body's 14px gap: the type sits right under the title. */
+.type {
+  margin-top: -14px;
+  color: var(--fg);
+  font-size: 14px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+}
+
+.blockTitle {
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: var(--w-medium);
+}
+
+/* --fg, not --muted like ProjectRow: over the screenshot and its veil, grey text
+   drops below 4.5:1 in both themes. */
+.summary {
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: var(--w-body);
+  line-height: 1.5;
+}
+
+/* Desktop grid: the text starts at the same height in the three cards, so the
+   titles line up whatever the text length, and the pills sit at the bottom. */
+@media (min-width: 835px) {
+  .link {
+    justify-content: flex-start;
+    padding-top: 262px;
+  }
+
+  .body {
+    flex: 1;
+  }
+
+  .stack {
+    margin-top: auto;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  list-style: none;
+}
+
+/* In the carousel (up to 834px): same card and pills as on desktop. The card
+   keeps the height it had with the "How it was built" block (removed at T25):
+   the text sits at the bottom and more of the screenshot shows above it. */
+@media (max-width: 834px) {
+  .card {
+    min-height: 540px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    opacity: 0;
+  }
+
+  .card.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+    animation-delay: calc(var(--i) * 100ms);
+  }
+}
+
+/* In the carousel: ProjectCarousel enters as a whole, the cards have no entrance of their own. */
+@media (max-width: 834px) and (prefers-reduced-motion: no-preference) {
+  .card,
+  .card.revealed {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Fan entrance: the side cards start from the centre (--shift: 1 for the left card,
+   -1 for the right one, 0 for the middle one). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate(calc(var(--shift) * 60px), 32px);
+  }
+}

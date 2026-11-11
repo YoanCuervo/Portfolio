@@ -1,0 +1,127 @@
+import type { CSSProperties } from "react";
+import { useLanguage } from "../../context/LanguageContext";
+import type { Project } from "../../data/projects";
+import { useReveal } from "../../hooks/useReveal";
+import ArrowLink from "../ui/ArrowLink";
+import Pill from "../ui/Pill";
+import Tag from "../ui/Tag";
+import ProjectCard from "./ProjectCard";
+import styles from "./ProjectRow.module.css";
+
+type ProjectRowProps = {
+  project: Project;
+  // 3 on the home page (under the "Projects" h2), 2 on /projects (under the page h1).
+  headingLevel: 2 | 3;
+  index: number; // position in the entrance cascade
+  selected: boolean;
+  onSelect: () => void;
+};
+
+export default function ProjectRow({
+  project,
+  headingLevel,
+  index,
+  selected,
+  onSelect,
+}: ProjectRowProps) {
+  const { t } = useLanguage();
+  const { ref, revealed } = useReveal<HTMLElement>("projects");
+  const BlockTitle = headingLevel === 2 ? "h3" : "h4";
+  const text = t.projects.items[project.id];
+
+  // Rendered twice (desktop place and mobile footer), see the footer comment below.
+  const repoLinks = project.repoUrl && (
+    <div className={styles.repos}>
+      <ArrowLink href={project.repoUrl}>{t.projects.viewRepo}</ArrowLink>
+      {project.deployed && (
+        <ArrowLink href={project.deployed.repoUrl}>
+          {t.projects.viewDeployedRepo(project.deployed.name)}
+        </ArrowLink>
+      )}
+    </div>
+  );
+
+  return (
+    // The selection is only a visual frame, not an action: the row stays an
+    // article, not a button, so its links are not nested in another control.
+    // Keyboard users select it by tabbing into it (onFocus bubbles in React).
+    // biome-ignore lint/a11y/useKeyWithClickEvents: onFocus is the keyboard equivalent
+    <article
+      id={project.id}
+      ref={ref}
+      className={[
+        styles.row,
+        revealed && styles.revealed,
+        selected && styles.selected,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      style={{ "--i": index } as CSSProperties}
+      onClick={onSelect}
+      onFocus={onSelect}
+    >
+      <ProjectCard project={project} headingLevel={headingLevel} />
+
+      <div className={styles.details}>
+        <div className={styles.meta}>
+          {project.stack.length > 0 && (
+            <ul className={styles.stack}>
+              {project.stack.map((name) => (
+                <li key={name}>
+                  <Pill size="sm">{name}</Pill>
+                </li>
+              ))}
+            </ul>
+          )}
+          {project.team && (
+            <div className={styles.desktopOnly}>
+              <Tag>{t.projects.team[project.team]}</Tag>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.blocks}>
+          <div className={styles.block}>
+            <BlockTitle className={styles.blockTitle}>
+              {t.projects.theProject}
+            </BlockTitle>
+            <p className={styles.summary}>
+              {text.summary}
+              {"summaryMore" in text && ` ${text.summaryMore}`}
+              {project.deployed && (
+                <>
+                  {" "}
+                  {t.projects.deployedAs}{" "}
+                  <strong className={styles.highlight}>
+                    {project.deployed.name}
+                  </strong>
+                  , {t.projects.deployedBy} {project.deployed.author}.
+                </>
+              )}
+            </p>
+            {project.repoUrl && (
+              <div className={styles.desktopOnly}>{repoLinks}</div>
+            )}
+          </div>
+          <div className={styles.block}>
+            <BlockTitle className={styles.blockTitle}>
+              {t.projects.howBuilt}
+            </BlockTitle>
+            <p className={styles.summary}>{text.build}</p>
+          </div>
+        </div>
+
+        {/* Up to 834px, the tag and the GitHub link move below the two blocks. A second
+            copy rather than CSS reordering, so screen readers and Tab follow the visual order. */}
+        {(project.team || project.repoUrl) && (
+          <div className={styles.footer}>
+            {project.team && <Tag>{t.projects.team[project.team]}</Tag>}
+            {project.repoUrl && (
+              <div className={styles.footerRepo}>{repoLinks}</div>
+            )}
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}

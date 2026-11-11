@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -25,6 +25,9 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
+        env:
+          # Web3Forms access key, stored as a repository variable (Settings → Secrets and variables → Actions → Variables).
+          VITE_WEB3FORMS_KEY: ${{ vars.VITE_WEB3FORMS_KEY }}
       - if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v5
         with:

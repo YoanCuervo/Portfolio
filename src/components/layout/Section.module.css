@@ -1,0 +1,6 @@
+/* isolation creates a stacking context: the halos (z-index: -1) stay behind the content but inside the section. */
+.section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}

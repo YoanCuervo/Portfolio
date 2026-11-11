@@ -1,0 +1,83 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: var(--nav-height);
+  padding: 8px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.name {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: var(--w-semibold);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.links {
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: var(--w-regular);
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+  transition: text-decoration-color 150ms;
+}
+
+/* Active link: the current page (/projects), or the visible section (T16). */
+.link[aria-current] {
+  text-decoration-color: currentColor;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.flag {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+}
+
+/* Mobile: the section links move to the TabBar, which carries the main
+   navigation label: only one of the two navs is read at a time. */
+@media (max-width: 767px) {
+  .header {
+    min-height: 0;
+    height: var(--nav-height);
+    padding: 0 28px 0 var(--gutter);
+  }
+
+  .name {
+    font-size: 24px;
+  }
+
+  .nav {
+    display: none;
+  }
+}

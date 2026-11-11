@@ -1,0 +1,39 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 0 10px;
+  border-top: 1px solid var(--line);
+}
+
+.title {
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 27px;
+  font-weight: var(--w-semibold);
+  line-height: 1.15;
+}
+
+.detail {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    opacity: 0;
+  }
+
+  .item.revealed {
+    opacity: 1;
+    animation: rise 500ms var(--ease-out-slow) both;
+    animation-delay: calc(var(--i) * 75ms);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

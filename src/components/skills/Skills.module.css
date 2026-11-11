@@ -1,0 +1,38 @@
+.skills {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 36px;
+  padding: 0 var(--gutter) 48px;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px 72px;
+}
+
+.stack {
+  flex: 2 1 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.certifications {
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Mobile: natural height, a rule between sections, 22px above the title like the
+   other sections. */
+@media (max-width: 767px) {
+  .skills {
+    min-height: 0;
+    padding: 22px var(--gutter) var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+}
