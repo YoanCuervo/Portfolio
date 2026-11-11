@@ -29,7 +29,8 @@
   --code: var(--gold);
   --code-intensity: 1;
   --shadow: rgba(0, 0, 0, 0.55);
-  --scrim: rgba(0, 0, 0, 0.78);
+  --scrim: rgba(0, 0, 0, 0.75);
+  --on-scrim: #e8e4df;
   --pill-bg: #0f0f0f;
   --pill-fg: var(--fg);
   --pill-border: var(--gold);
@@ -78,7 +79,10 @@
   /* Dark text fading into a light background is much harder to see: the hero code field needs stronger opacities. */
   --code-intensity: 4;
   --shadow: rgba(15, 15, 15, 0.16);
-  --scrim: rgba(255, 255, 255, 0.65);
+  /* Same dark veil and light text as the dark theme: a white veil turns the
+     screenshots milky, and lighter it no longer keeps the text readable. */
+  --scrim: rgba(0, 0, 0, 0.75);
+  --on-scrim: #e8e4df;
   --pill-bg: #ffffff;
   --pill-fg: #0f0f0f;
   /* Pills follow the light theme's rose accent: border, logo, hover background. */
@@ -106,6 +110,9 @@
   --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
 
   --w-regular: 400;
+  /* Light text on the dark veil of the project cards, in both themes: the dark
+     theme body weight, since light text on dark looks heavier. */
+  --w-on-scrim: 300;
   --w-medium: 500;
   --w-semibold: 600;
 
