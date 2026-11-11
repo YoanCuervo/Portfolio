@@ -70,6 +70,17 @@
   display: none;
 }
 
+.highlight {
+  font-weight: var(--w-medium);
+}
+
+.repos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
 .footerRepo {
   margin-left: auto;
 }

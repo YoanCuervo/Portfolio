@@ -67,6 +67,10 @@ export const en = {
     theProject: "The project",
     howBuilt: "How it was built",
     viewRepo: "View GitHub repo",
+    viewDeployedRepo: (name: string) => `View ${name} repo`,
+    // Read as: "Now live as <name>, a version deployed and improved by developer <author>."
+    deployedAs: "Now live as",
+    deployedBy: "a version deployed and improved by developer",
     screenshotPlaceholder: "Project screenshot",
     carousel: {
       roleDescription: "carousel",
