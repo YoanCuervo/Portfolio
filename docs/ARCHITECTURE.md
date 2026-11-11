@@ -477,7 +477,7 @@ Implémentation : un hook `useReveal(sectionId)` (IntersectionObserver, seuil 20
 
 - Attribut `data-theme="dark" | "light"` sur `<html>`.
 - Mémorisé dans `localStorage` (clé `theme`), lecture et écriture dans un `try/catch`.
-- Première visite : préférence du système (`prefers-color-scheme`), sombre par défaut **[PROPOSÉ]**.
+- Première visite : thème sombre, quelle que soit la préférence du système (décision de Yoan, 11 novembre 2026).
 - Un petit script en ligne dans `index.html` pose `data-theme` **avant** le chargement de React, pour éviter un flash de mauvais thème.
 
 **Langue**
@@ -667,7 +667,7 @@ Décisions du 20 octobre 2026 :
 - GitHub Actions : à chaque `push` sur `main`, installation, `biome check`, `tsc --noEmit`, `vite build`, publication du dossier `dist` sur GitHub Pages (actions officielles `upload-pages-artifact` et `deploy-pages`). Le build reçoit la clé Web3Forms par la variable du dépôt `VITE_WEB3FORMS_KEY` (Settings → Secrets and variables → Actions → Variables).
 - Dans les réglages du dépôt : Pages › Source = GitHub Actions.
 - Les images sont importées depuis `src/assets` (Vite gère alors le préfixe `base`). Ne jamais écrire de chemin absolu en `/…` à la main.
-- Balises de `index.html` (T18) : `title` (« Yoan Cuervo », comme `meta.title`), `description`, `theme-color` (`#0f0f0f` en sombre, `#e8e4df` en clair, selon `prefers-color-scheme`), favicon et icône d'écran d'accueil (`/favicon.png` : Vite ajoute le préfixe `base` à ce chemin absolu, en développement comme en build ; `%BASE_URL%` le doublait en développement), Open Graph (type, URL, titre « Yoan Cuervo · Web Developer », description, image avec dimensions et texte alternatif) et `twitter:card`. Les robots des réseaux n'exécutent pas JavaScript et veulent des adresses absolues : l'URL du site, `https://yoancuervo.github.io/Portfolio/`, est écrite en entier. Ces balises restent en anglais (langue par défaut du site).
+- Balises de `index.html` (T18) : `title` (« Yoan Cuervo », comme `meta.title`), `description`, `theme-color` (`#0f0f0f` dans le HTML, puis `ThemeContext` y recopie `--bg` au chargement et à chaque changement de thème : la barre du navigateur mobile suit le thème affiché), favicon et icône d'écran d'accueil (`/favicon.png` : Vite ajoute le préfixe `base` à ce chemin absolu, en développement comme en build ; `%BASE_URL%` le doublait en développement), Open Graph (type, URL, titre « Yoan Cuervo · Web Developer », description, image avec dimensions et texte alternatif) et `twitter:card`. Les robots des réseaux n'exécutent pas JavaScript et veulent des adresses absolues : l'URL du site, `https://yoancuervo.github.io/Portfolio/`, est écrite en entier. Ces balises restent en anglais (langue par défaut du site).
 - Les images de `public/` ne sont pas importées depuis `src/assets` : elles sont référencées par `index.html`, hors de React. Elles sont générées par Edge en mode sans interface à partir de `scripts/share-images/*.html` (commande en tête de chaque fichier) : l'image de partage reprend le hero en thème sombre, la favicon recolore le monogramme fourni par Yoan.
 
 ## 12. Contenus manquants
@@ -705,7 +705,7 @@ Critères : changer `data-theme` à la main dans l'inspecteur bascule toutes les
 
 **T04 · Thème** — dépend de T03
 `ThemeContext`, script anti-flash, mémorisation.
-Critères : le choix survit au rechargement ; pas de flash ; première visite conforme à la préférence système.
+Critères : le choix survit au rechargement ; pas de flash ; première visite en thème sombre.
 
 **T05 · Langue** — dépend de T01
 `LanguageContext`, `en.ts` complet, `fr.ts` typé `typeof en`, attribut `lang` de `<html>`.
