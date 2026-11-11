@@ -104,10 +104,15 @@ export const en = {
         build:
           "Electron, React and SQLite, with pure logic kept apart from side effects and covered by 230 tests. Data stays on the computer; RGAA and GDPR audits with their fixes.",
       },
-      project4: {
-        type: "[Project 4 type]",
-        summary: "[Project 4 summary]",
-        build: "[Project 4 build]",
+      brickBlaster: {
+        type: "Browser and Windows game, in progress",
+        summary:
+          "Faithful remake of Brick Blaster, a 1999 French brick-breaker written in assembly.",
+        // Shown only on /projects, after the summary.
+        summaryMore:
+          "Its rules were recovered by reverse-engineering the original executable, and the remake fixes what makes it unplayable today.",
+        build:
+          "Deterministic engine in TypeScript and Canvas 2D, with no game engine, plus an FLC animation decoder written for the project. Analysis tools in Python, over 570 Vitest tests and a Windows version packaged with Electron.",
       },
       project5: {
         type: "[Project 5 type]",

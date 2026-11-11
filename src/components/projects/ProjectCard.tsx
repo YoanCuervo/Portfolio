@@ -16,11 +16,13 @@ export default function ProjectCard({
   const { t } = useLanguage();
   const Title = headingLevel === 2 ? "h2" : "h3";
 
+  const image = project.thumbnail ?? project.screenshot;
+
   const content = (
     <>
-      {project.screenshot ? (
+      {image ? (
         <span className={styles.shot}>
-          <img src={project.screenshot} alt="" className={styles.screenshot} />
+          <img src={image} alt="" className={styles.screenshot} />
         </span>
       ) : (
         <div className={styles.placeholder}>

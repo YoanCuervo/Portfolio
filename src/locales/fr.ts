@@ -106,10 +106,15 @@ export const fr: typeof en = {
         build:
           "Electron, React et SQLite, avec une logique pure séparée des effets de bord et couverte par 230 tests. Les données restent sur le poste ; audits RGAA et RGPD avec leurs corrections.",
       },
-      project4: {
-        type: "[Type du projet 4]",
-        summary: "[Résumé du projet 4]",
-        build: "[Construction du projet 4]",
+      brickBlaster: {
+        type: "Jeu web et Windows, en cours",
+        summary:
+          "Remake fidèle de Brick Blaster, un casse-briques français de 1999 écrit en assembleur.",
+        // Shown only on /projects, after the summary.
+        summaryMore:
+          "Les règles ont été retrouvées par rétro-ingénierie de l'exécutable d'origine, et le remake corrige ce qui le rend injouable aujourd'hui.",
+        build:
+          "Moteur déterministe en TypeScript et Canvas 2D, sans moteur de jeu, avec un décodeur d'animations FLC écrit pour le projet. Outils d'analyse en Python, plus de 570 tests Vitest et une version Windows empaquetée avec Electron.",
       },
       project5: {
         type: "[Type du projet 5]",

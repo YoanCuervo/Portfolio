@@ -1,4 +1,6 @@
 import atroposIllustration from "../assets/projects/atropos.jpg";
+import brickBlasterMenu from "../assets/projects/brick-blaster.jpg";
+import brickBlasterThumb from "../assets/projects/brick-blaster-thumb.jpg";
 import pokeGachaTest from "../assets/projects/poke-gacha-test.jpg";
 import wegatherScreenshot from "../assets/projects/wegather.jpg";
 import type { en } from "../locales/en";
@@ -13,6 +15,8 @@ export type Project = {
   // A version taken over and put online by another developer, from their own repo.
   deployed: { name: string; author: string; repoUrl: string } | null;
   screenshot: string | null; // image import
+  // Crop for the small /projects card, when the screenshot only suits the tall home card.
+  thumbnail: string | null;
   featured: boolean; // true = shown on the home page (3 at most)
 };
 
@@ -26,17 +30,19 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/YoanCuervo/Atropos",
     deployed: null,
     screenshot: atroposIllustration,
+    thumbnail: null,
     featured: true,
   },
   {
-    id: "pokeGacha",
-    title: "Poke_Gacha",
-    stack: ["React", "TypeScript", "Express", "MySQL"],
+    id: "brickBlaster",
+    title: "Brick Blaster Remastered",
+    stack: ["TypeScript", "Canvas", "Electron", "React", "Python", "MySQL"],
     team: "solo",
     liveUrl: null,
-    repoUrl: "https://github.com/YoanCuervo/Pokemon_Gacha_BACKEND",
+    repoUrl: "https://github.com/YoanCuervo/Brick-Blaster-Remastered",
     deployed: null,
-    screenshot: pokeGachaTest,
+    screenshot: brickBlasterMenu,
+    thumbnail: brickBlasterThumb,
     featured: true,
   },
   {
@@ -52,17 +58,19 @@ export const projects: Project[] = [
       repoUrl: "https://github.com/FARVACQUE-L/WeGather",
     },
     screenshot: wegatherScreenshot,
+    thumbnail: null,
     featured: true,
   },
   {
-    id: "project4",
-    title: "[Project 4]",
-    stack: [],
-    team: null,
+    id: "pokeGacha",
+    title: "Poke_Gacha",
+    stack: ["React", "TypeScript", "Express", "MySQL"],
+    team: "solo",
     liveUrl: null,
-    repoUrl: null,
+    repoUrl: "https://github.com/YoanCuervo/Pokemon_Gacha_BACKEND",
     deployed: null,
-    screenshot: null,
+    screenshot: pokeGachaTest,
+    thumbnail: null,
     featured: false,
   },
   {
@@ -74,6 +82,7 @@ export const projects: Project[] = [
     repoUrl: null,
     deployed: null,
     screenshot: null,
+    thumbnail: null,
     featured: false,
   },
 ];

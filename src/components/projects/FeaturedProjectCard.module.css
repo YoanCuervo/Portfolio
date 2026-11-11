@@ -146,6 +146,23 @@
   line-height: 1.5;
 }
 
+/* Desktop grid: the text starts at the same height in the three cards, so the
+   titles line up whatever the text length, and the pills sit at the bottom. */
+@media (min-width: 835px) {
+  .link {
+    justify-content: flex-start;
+    padding-top: 262px;
+  }
+
+  .body {
+    flex: 1;
+  }
+
+  .stack {
+    margin-top: auto;
+  }
+}
+
 .stack {
   display: flex;
   flex-wrap: wrap;
