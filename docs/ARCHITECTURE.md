@@ -408,11 +408,11 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 
 | Libellé | Balise | Attributs | Texte indicatif EN | Texte indicatif FR |
 |---|---|---|---|---|
-| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis | Your name | Ton nom |
-| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis | you@example.com | toi@exemple.fr |
-| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` | Describe your project… | Décris ton projet… |
+| Name | `input type="text"` | `name="name"`, `autocomplete="name"`, requis | Your name | Votre nom |
+| Email address | `input type="email"` | `name="email"`, `autocomplete="email"`, requis | you@example.com | vous@exemple.fr |
+| Project description | `textarea rows="6"` | `name="message"`, requis, `resize: vertical` | Describe your project… | Décrivez votre projet… |
 
-- Textes indicatifs (`placeholder`, 21 octobre 2026) en `--muted` : ils complètent les libellés, qui restent au-dessus des champs. Le français tutoie dans toute la section Contact (décision de Yoan, 21 octobre 2026, une fois l'introduction au vouvoiement retirée).
+- Textes indicatifs (`placeholder`, 21 octobre 2026) en `--muted` : ils complètent les libellés, qui restent au-dessus des champs. Le français vouvoie dans toute la section Contact (décision de Yoan, 12 novembre 2026, qui remplace le tutoiement retenu le 21 octobre).
 
 - Style des champs : hauteur 56 px (`input`), `padding: 0 16px` (`textarea` : `14px 16px`, interligne 1.5), fond `--form-bg`, bordure `1px solid var(--control)`, arrondi 2 px, texte 18 px `--fg` ; messages d'erreur en 16 px. Formulaire agrandi le 21 octobre 2026 pour la lisibilité et le confort au toucher, sur la place libérée par l'introduction (avant : libellés 14 px, champs 48 px et texte 16 px, erreurs 14 px, cadre 28 px, bouton 48 px et 15 px). Sur bureau, Contact et le pied de page tiennent toujours dans 900 px.
 - Bouton « Send my request » : hauteur 56 px, `padding: 0 40px`, sans bordure, arrondi 2 px, 17 px graisse 500. Fond `--accent`, la couleur de « Let's talk! », dans les deux thèmes ; texte `--btn-fg` : noir sur le doré en sombre (≈ 8,5:1), crème sur le rouge rosé en clair (≈ 5,6:1 ; un texte noir n'y atteindrait que 2,7:1) (décisions de Yoan, 21 octobre 2026, après un essai en blanc ; l'accent du thème clair est passé au rouge rosé le même jour, voir 5.1).
@@ -425,10 +425,10 @@ Chaque ligne est une liste à part dans `src/data/softSkills.ts` (`softSkillRows
 |---|---|---|---|
 | Champ actif | Bordure `--accent`, transition 150 ms | | |
 | Champ vide à l'envoi | Message sous le champ, relié par `aria-describedby`, `aria-invalid="true"` | This field is required. | Ce champ est obligatoire. |
-| E-mail invalide | idem | Enter a valid email address. | Saisis une adresse e-mail valide. |
+| E-mail invalide | idem | Enter a valid email address. | Saisissez une adresse e-mail valide. |
 | Envoi | Bouton désactivé, texte changé | Sending… | Envoi en cours… |
-| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je te réponds par e-mail. |
-| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessaie dans un instant. |
+| Succès | Un message **remplace** le formulaire, annoncé par `role="status"` | Message sent. I'll get back to you by email. | Message envoyé. Je vous réponds par e-mail. |
+| Échec réseau | Message au-dessus du bouton, `role="alert"`, le contenu saisi est conservé | Sending failed. Try again in a moment. | L'envoi a échoué. Réessayez dans un instant. |
 
 Envoi (T13) : `fetch` en `POST` vers `https://api.web3forms.com/submit`, corps JSON `{ access_key, name, email, message, botcheck }`. La clé est dans `VITE_WEB3FORMS_KEY` : `.env.local` en local (ignoré par git), variable du dépôt GitHub pour la mise en ligne. Elle est publique par nature (visible dans le code livré) ; l'adresse mail de Yoan reste configurée côté service et n'apparaît jamais dans le dépôt.
 
